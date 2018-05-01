@@ -16,37 +16,12 @@ namespace Assets.Sample
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            IEnumerator e = null;
-            byte[] jsonArray;
-            switch (request.Method.ToString())
+            byte[] jsonArray = null;
+            if (request.Content != null)
             {
-                case "GET":
-                    e = SendUnityRequest(request.RequestUri.AbsoluteUri, null, "GET");
-                    break;
-                case "POST":
-                    jsonArray = await request.Content.ReadAsByteArrayAsync();
-                    e = SendUnityRequest(request.RequestUri.AbsoluteUri, jsonArray, "POST");
-                    break;
-                case "PATCH":
-                    jsonArray = await request.Content.ReadAsByteArrayAsync();
-                    e = SendUnityRequest(request.RequestUri.AbsoluteUri, jsonArray, "PATCH");
-                    break;
-                case "DELETE":
-                    e = SendUnityRequest(request.RequestUri.AbsoluteUri, null, "DELETE");
-                    break;
-                default:
-                    if (request.RequestUri.AbsoluteUri.Contains("https"))
-                    {
-                        UriBuilder builder = new UriBuilder(request.RequestUri);
-                        string scheme = builder.Scheme;
-                        scheme = scheme.Replace("https", "http");
-                        builder.Scheme = scheme;
-                        builder.Port = 80;
-                        request.RequestUri = builder.Uri;
-                    }
-                    _result = await base.SendAsync(request, cancellationToken);
-                    break;
+                jsonArray = await request.Content.ReadAsByteArrayAsync();
             }
+            IEnumerator e = SendUnityRequest(request.RequestUri.AbsoluteUri, jsonArray, request.Method.ToString());
 
             if (e != null)
             {
@@ -54,11 +29,6 @@ namespace Assets.Sample
                     if (e.Current != null)
                         Debug.Log("e.current " + e.Current as string);
             }
-
-            Debug.Log("Result: " + request.Method);
-            Debug.Log("Result: " + _result.ToString());
-            Debug.Log("Result Content: " + await _result.Content.ReadAsStringAsync());
-
             return _result;
         }
 
@@ -86,8 +56,6 @@ namespace Assets.Sample
             }
             else
             {
-                Debug.Log("Received from " + method + ": " + uwr.downloadHandler.text);
-
                 _result.StatusCode = (HttpStatusCode)uwr.responseCode;
                 _result.ReasonPhrase = _result.StatusCode.ToString();
                 _result.Content = new StringContent(uwr.downloadHandler.text, Encoding.UTF8, "application/json");
