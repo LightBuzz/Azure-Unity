@@ -32,26 +32,28 @@ namespace Assets.Sample
             //Initialize local db
             await InitLocalStore();
 
+            MobileAppsTableDAO<TodoItem> todoItemDAO = new MobileAppsTableDAO<TodoItem>(AzureClient);
+
             //Insert a new item
             TodoItem item1 = new TodoItem {Text = "Item 1 " + PlatformExtensions.OperatingSystem};
-            await InsertItem(item1);
+            await todoItemDAO.Insert(item1);
             TodoItem item2 = new TodoItem { Text = "Item 2 " + PlatformExtensions.OperatingSystem };
-            await InsertItem(item2);
+            await todoItemDAO.Insert(item2);
             TodoItem item3 = new TodoItem { Text = "Item 3 " + PlatformExtensions.OperatingSystem };
-            await InsertItem(item3);
+            await todoItemDAO.Insert(item3);
 
             //Update last item
             TodoItem lastItem = await GetLastItem();
             lastItem.Complete = true;
             lastItem.Text += " Updated " + PlatformExtensions.OperatingSystem;
-            await UpdateItem(lastItem);
+            await todoItemDAO.Update(lastItem);
 
             //Print list of complete items
             await ListComplete();
 
             //Delete last non complete item
             TodoItem lastNonCompleteItem = await GetLastNonCompleteItem();
-            await DeleteItem(lastNonCompleteItem);
+            await todoItemDAO.Delete(lastNonCompleteItem);
 
             //Push changes to server
             await PushAsync();
@@ -60,23 +62,7 @@ namespace Assets.Sample
 
         }
 
-        private async Task InsertItem(TodoItem item)
-        {
-            Debug.Log("Inserting new items");
-            await _todoItemsTable.InsertAsync(item);
-        }
-
-        private async Task UpdateItem(TodoItem item)
-        {
-            Debug.Log("Updating item");
-            await _todoItemsTable.UpdateAsync(item);
-        }
-
-        private async Task DeleteItem(TodoItem item)
-        {
-            Debug.Log("Deleting item");
-            await _todoItemsTable.DeleteAsync(item);
-        }
+        
 
         private async Task ListComplete()
         {
