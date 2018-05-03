@@ -8,47 +8,66 @@ using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 
-namespace Assets.Sample
+namespace LightBuzz
 {
     public class Sample : MonoBehaviour
     {
-        [SerializeField] protected string MobileAppUri = "https://testtodolightbuzz.azurewebsites.net";
-        protected MobileServiceClient AzureClient;
+        [SerializeField]
+        private string MobileAppUri = "https://testtodolightbuzz.azurewebsites.net";
+
+        private MobileServiceClient _azureClient;
         private IMobileServiceSyncTable<TodoItem> _todoItemsTable;
 
-        // Use this for initialization
-        void Start()
+        private string LocalDatabaseName
         {
-            var handler = new LightBuzzHttpsHandler() { AutomaticDecompression = DecompressionMethods.Deflate };
-            AzureClient = new MobileServiceClient(MobileAppUri, handler);
+            get
+            {
+                return "localstore.db";
+            }
+        }
+
+        private string LocalDatabasePath
+        {
+            get
+            {
+                return Path.Combine(Application.persistentDataPath, LocalDatabaseName);
+            }
+        }
+
+        private void Start()
+        {
+            _azureClient = new MobileServiceClient(MobileAppUri, new LightBuzzHttpsHandler());
         }
 
         public async void RunSample()
         {
-            Debug.Log("-- Start Sample --");
+            Debug.Log("-- Sample started --");
 
-            //Initialize local db
+            // Initialize the local database
             await InitLocalStore();
+            await SyncAsync();
 
-            MobileAppsTableDAO<TodoItem> todoItemDAO = new MobileAppsTableDAO<TodoItem>(AzureClient);
+            MobileAppsTableDAO<TodoItem> todoItemDAO = new MobileAppsTableDAO<TodoItem>(_azureClient);
 
-            //Insert a new item
-            TodoItem item1 = new TodoItem {Text = "Item 1 " + PlatformExtensions.OperatingSystem};
+            // Insert a new item
+            TodoItem item1 = new TodoItem { Text = "Item 1 " + PlatformTools.TargetPlatform };
             await todoItemDAO.Insert(item1);
-            TodoItem item2 = new TodoItem { Text = "Item 2 " + PlatformExtensions.OperatingSystem };
+
+            TodoItem item2 = new TodoItem { Text = "Item 2 " + PlatformTools.TargetPlatform };
             await todoItemDAO.Insert(item2);
-            TodoItem item3 = new TodoItem { Text = "Item 3 " + PlatformExtensions.OperatingSystem };
+
+            TodoItem item3 = new TodoItem { Text = "Item 3 " + PlatformTools.TargetPlatform };
             await todoItemDAO.Insert(item3);
 
-            //Update last item
+            // Update the last item
             TodoItem lastItem = await GetLastItem();
             lastItem.Complete = true;
-            lastItem.Text += " Updated " + PlatformExtensions.OperatingSystem;
+            lastItem.Text += " Updated " + PlatformTools.TargetPlatform;
+
             await todoItemDAO.Update(lastItem);
 
-            //Print list of complete items
+            // Print a list of complete items
             await ListComplete();
 
             //Delete last non complete item
@@ -58,16 +77,15 @@ namespace Assets.Sample
             //Push changes to server
             await PushAsync();
 
-            Debug.Log("-- Sample Complete --");
-
+            Debug.Log("-- Sample completed --");
         }
-
-        
 
         private async Task ListComplete()
         {
-            Debug.Log("Getting completed items");
+            Debug.Log("Getting completed items...");
+
             List<TodoItem> listComplete = await _todoItemsTable.Where(x => x.Complete).Take(5).ToListAsync();
+
             foreach (TodoItem item in listComplete)
             {
                 Debug.Log($"{item.Id} - {item.Text} - {item.Complete}");
@@ -77,40 +95,52 @@ namespace Assets.Sample
         private async Task<List<TodoItem>> ListAll()
         {
             Debug.Log("Getting all items");
-            List<TodoItem> listAll = await _todoItemsTable.ToListAsync();
-            Debug.Log("Total items no " + listAll.Count);
-            return listAll;
+
+            List<TodoItem> list = await _todoItemsTable.ToListAsync();
+
+            Debug.Log("Total items no " + list.Count);
+
+            return list;
         }
 
         private async Task<TodoItem> GetLastItem()
         {
             List<TodoItem> list = await ListAll();
+
             return list.LastOrDefault();
         }
 
         private async Task<TodoItem> GetLastNonCompleteItem()
         {
             List<TodoItem> list = await ListAll();
-            return list.LastOrDefault(x=>!x.Complete);
+
+            return list.LastOrDefault(x => !x.Complete);
         }
 
         private async Task InitLocalStore()
         {
-            if (!AzureClient.SyncContext.IsInitialized)
+            if (!_azureClient.SyncContext.IsInitialized)
             {
                 try
                 {
                     Debug.Log("-- Check if local db exists --");
-                    Debug.Log("Path: " + Application.persistentDataPath);
+                    Debug.Log("Path: " + LocalDatabasePath);
 
-                    string databasePath = CreateLocalDb();
+                    if (!File.Exists(LocalDatabasePath))
+                    {
+                        Debug.Log("-- Creating local db --");
+
+                        PlatformTools.CopyDatabase(LocalDatabaseName, LocalDatabasePath);
+                    }
 
                     Debug.Log("-- Opening local db --");
-                    var store = new MobileServiceSQLiteStore(databasePath);
+
+                    MobileServiceSQLiteStore store = new MobileServiceSQLiteStore(LocalDatabasePath);
 
                     Debug.Log("-- Create table --");
+
                     store.DefineTable<TodoItem>();
-                    await AzureClient.SyncContext.InitializeAsync(store);
+                    await _azureClient.SyncContext.InitializeAsync(store);
 
                     GetTable();
                 }
@@ -126,25 +156,13 @@ namespace Assets.Sample
             }
 
             Debug.Log("-- Sync --");
-            await SyncAsync();
         }
 
         private void GetTable()
         {
             Debug.Log("-- Getting table --");
-            _todoItemsTable = AzureClient.GetSyncTable<TodoItem>();
-        }
 
-        private static string CreateLocalDb()
-        {
-            string databasePath = Application.persistentDataPath + "\\localstore.db";
-            if (!File.Exists(databasePath))
-            {
-                Debug.Log("-- Creating local db --");
-                File.Create(databasePath);
-            }
-
-            return databasePath;
+            _todoItemsTable = _azureClient.GetSyncTable<TodoItem>();
         }
 
         private async Task SyncAsync()
@@ -168,13 +186,15 @@ namespace Assets.Sample
         private async Task PullAsync()
         {
             Debug.Log("-- Pull --");
+
             await _todoItemsTable.PullAsync("todoItems", _todoItemsTable.CreateQuery());
         }
 
         private async Task PushAsync()
         {
             Debug.Log("-- Push --");
-            await AzureClient.SyncContext.PushAsync();
+
+            await _azureClient.SyncContext.PushAsync();
         }
 
     }

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Assets.Sample
+namespace LightBuzz
 {
     public class TodoItem
     {

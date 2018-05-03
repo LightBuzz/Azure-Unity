@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 
-namespace Assets.Sample
+namespace LightBuzz
 {
-    class MobileAppsTableDAO<T>
+    public class MobileAppsTableDAO<T>
     {
         public IMobileServiceSyncTable<T> Table { get; set; }
 

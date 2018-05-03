@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -8,11 +7,16 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Assets.Sample
+namespace LightBuzz
 {
-    class LightBuzzHttpsHandler : HttpClientHandler
+    public class LightBuzzHttpsHandler : HttpClientHandler
     {
         private HttpResponseMessage _result = new HttpResponseMessage();
+
+        public LightBuzzHttpsHandler()
+        {
+            AutomaticDecompression = DecompressionMethods.Deflate;
+        }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
