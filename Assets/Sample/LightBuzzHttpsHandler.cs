@@ -9,30 +9,56 @@ using UnityEngine.Networking;
 
 namespace LightBuzz
 {
+    /// <summary>
+    /// A Unity-ready secure HTTPS handler.
+    /// </summary>
     public class LightBuzzHttpsHandler : HttpClientHandler
-    {
+    { 
         private HttpResponseMessage _result = new HttpResponseMessage();
 
+        /// <summary>
+        /// The Content Type header type (default: application/json).
+        /// </summary>
+        public string ContentType { get; set; }
+
+        /// <summary>
+        /// The ZUMO API version number.
+        /// </summary>
+        public string ZumoApiVersion { get; set; }
+
+        /// <summary>
+        /// The encoding of the response message.
+        /// </summary>
+        public Encoding Encoding { get; set; }
+
+        /// <summary>
+        /// Creates a new LightBuzz secure HTTPS handler.
+        /// </summary>
         public LightBuzzHttpsHandler()
         {
             AutomaticDecompression = DecompressionMethods.Deflate;
+            ContentType = "application/json";
+            ZumoApiVersion = "2.0.0";
+            Encoding = Encoding.UTF8;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            byte[] jsonArray = null;
-            if (request.Content != null)
-            {
-                jsonArray = await request.Content.ReadAsByteArrayAsync();
-            }
-            IEnumerator e = SendUnityRequest(request.RequestUri.AbsoluteUri, jsonArray, request.Method.ToString());
+            byte[] jsonArray = request.Content != null ? await request.Content.ReadAsByteArrayAsync() : null;
 
-            if (e != null)
+            IEnumerator enumerator = SendUnityRequest(request.RequestUri.AbsoluteUri, jsonArray, request.Method.ToString());
+
+            if (enumerator != null)
             {
-                while (e.MoveNext())
-                    if (e.Current != null)
-                        Debug.Log("e.current " + e.Current as string);
+                while (enumerator.MoveNext())
+                {
+                    if (enumerator.Current != null)
+                    {
+                        //Debug.Log("e.current " + enumerator.Current as string);
+                    }
+                }
             }
+
             return _result;
         }
 
@@ -41,11 +67,11 @@ namespace LightBuzz
             var uwr = new UnityWebRequest(url, method);
             if (jsonArray != null)
             {
-                uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonArray);
+                uwr.uploadHandler = new UploadHandlerRaw(jsonArray);
             }
-            uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-            uwr.SetRequestHeader("Content-Type", "application/json");
-            uwr.SetRequestHeader("ZUMO-API-VERSION", "2.0.0");
+            uwr.downloadHandler = new DownloadHandlerBuffer();
+            uwr.SetRequestHeader("Content-Type", ContentType);
+            uwr.SetRequestHeader("ZUMO-API-VERSION", ZumoApiVersion);
 
             //Send the request then wait here until it returns
             yield return uwr.SendWebRequest();
@@ -55,14 +81,16 @@ namespace LightBuzz
 
             if (uwr.isNetworkError || uwr.isHttpError)
             {
-                Debug.Log("Error While Sending: " + uwr.error);
+                Debug.LogWarning("Error While Sending: " + uwr.error);
+
                 yield return uwr.error;
             }
             else
             {
                 _result.StatusCode = (HttpStatusCode)uwr.responseCode;
                 _result.ReasonPhrase = _result.StatusCode.ToString();
-                _result.Content = new StringContent(uwr.downloadHandler.text, Encoding.UTF8, "application/json");
+                _result.Content = new StringContent(uwr.downloadHandler.text, Encoding.UTF8, ContentType);
+
                 yield return uwr.downloadHandler.text;
             }
         }

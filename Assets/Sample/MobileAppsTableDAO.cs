@@ -8,45 +8,132 @@ using Microsoft.WindowsAzure.MobileServices.Sync;
 
 namespace LightBuzz
 {
+    /// <summary>
+    /// A generic table data access object.
+    /// </summary>
+    /// <typeparam name="T">The type of table to handle.</typeparam>
     public class MobileAppsTableDAO<T>
     {
-        public IMobileServiceSyncTable<T> Table { get; set; }
+        /// <summary>
+        /// The database table to handle.
+        /// </summary>
+        public IMobileServiceSyncTable<T> TableLocal { get; set; }
 
-        public MobileAppsTableDAO(MobileServiceClient azureClient)
+        /// <summary>
+        /// The database table to handle.
+        /// </summary>
+        public IMobileServiceTable<T> TableCloud { get; set; }
+
+        /// <summary>
+        /// Determines whether the app will store data locally.
+        /// </summary>
+        public bool SupportsLocalStore { get; set; }
+
+        /// <summary>
+        /// Creates a new instance of the data access object.
+        /// </summary>
+        /// <param name="azureClient">The Azure App Service client.</param>
+        protected MobileAppsTableDAO(MobileServiceClient azureClient)
         {
-            Table = azureClient.GetSyncTable<T>();
+            if (SupportsLocalStore)
+                TableLocal = azureClient.GetSyncTable<T>();
+            else
+                TableCloud = azureClient.GetTable<T>();
         }
 
-        public async Task LocalPullAsync(CancellationToken ct, string uniqueQueryId, Expression<Func<T, bool>> predicate)
+        public static async Task<MobileAppsTableDAO<T>> Init(MobileServiceClient azureClient)
         {
-            await Table.PullAsync(uniqueQueryId, Table.Where(predicate), ct);
+            return await Init(azureClient, true);
         }
 
+        public static async Task<MobileAppsTableDAO<T>> Init(MobileServiceClient azureClient, bool supportLocal)
+        {
+            MobileAppsTableDAO<T> dao = new MobileAppsTableDAO<T>(azureClient);
+
+            if (supportLocal)
+            {
+                await LocalStore.Init(azureClient);
+                await LocalStore.Sync();
+            }
+
+            return dao;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ct"></param>
+        /// <param name="uniqueQueryId"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public async Task Pull(CancellationToken ct, string uniqueQueryId, Expression<Func<T, bool>> predicate)
+        {
+            if (SupportsLocalStore)
+                await TableLocal.PullAsync(uniqueQueryId, TableLocal.Where(predicate), ct);
+        }
+
+        /// <summary>
+        /// Insert operation.
+        /// </summary>
+        /// <param name="objectToSave">The object to save.</param>
+        /// <returns></returns>
         public async Task Insert(T objectToSave)
         {
-            await Table.InsertAsync(objectToSave);
+            if (SupportsLocalStore)
+                await TableLocal.InsertAsync(objectToSave);
+            else
+                await TableCloud.InsertAsync(objectToSave);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objectToUpdate"></param>
+        /// <returns></returns>
         public async Task Update(T objectToUpdate)
         {
-            await Table.UpdateAsync(objectToUpdate);
+            if (SupportsLocalStore)
+                await TableLocal.UpdateAsync(objectToUpdate);
+            else
+                await TableCloud.UpdateAsync(objectToUpdate);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objectToDelete"></param>
+        /// <returns></returns>
         public async Task Delete(T objectToDelete)
         {
-            await Table.DeleteAsync(objectToDelete);
+            if (SupportsLocalStore)
+                await TableLocal.DeleteAsync(objectToDelete);
+            else
+                await TableCloud.DeleteAsync(objectToDelete);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<T>> FindAll()
         {
-            List<T> res = await Table.ToListAsync();
-            return res;
+            if (SupportsLocalStore)
+                return await TableLocal.ToListAsync();
+            else
+                return await TableCloud.ToListAsync();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public async Task<List<T>> FindAll(Expression<Func<T, bool>> predicate)
         {
-            List<T> res = await Table.Where(predicate).ToListAsync();
-            return res;
+            if (SupportsLocalStore)
+                return await TableLocal.Where(predicate).ToListAsync();
+            else
+                return await TableCloud.Where(predicate).ToListAsync();
         }
     }
 }
