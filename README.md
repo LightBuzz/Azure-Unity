@@ -36,13 +36,32 @@ The LightBuzz Azure SDK for Unity supports the following platforms:
 * MacOS
 * UWP (coming soon)
 
+## Requirements
+
+To use the SDK, you need **[Unity 2017.1 or later](https://store.unity.com/)**. 
+
+The SDK is built with the latest C# features, so you need to use the **.NET 4.6 Scripting Runtime version**.
+
+![unity-scripting-runtime](https://docs.unity3d.com/uploads/Main/ScriptingRunetimePreview.png)
+
+_If using Unity 2018, the scripting runtime is set to 4.6 by default._
+
 ## How to use
 
 In the included samples, we have created a simple demo that implements Microsoft's [ToDo List example](https://azure.microsoft.com/en-us/resources/samples/app-service-api-dotnet-todo-list/).
 
+To use the code 
+
+We have implemented a generic **Data Access Object** for you to use, called ```MobileAppsTableDAO```. The ```MobileAppsTableDAO``` supports all of the common operations out-of-the-box. All you need to do is call the proper C# methods.
+
 Using the code is fairly simple:
 
+### Initialization
+
 ```
+private MobileServiceClient azureClient;
+private MobileAppsTableDAO<TodoItem> todoTableDAO;
+
 private async Task Init()
 {
     azureClient = new MobileServiceClient(mobileAppUri, new LightBuzzHttpsHandler());
@@ -54,7 +73,11 @@ private async Task Init()
         await LocalStore.Sync();
     }
 }
+```
 
+### Get
+
+```
 private async Task Get()
 {
     List<TodoItem> list = await todoTableDAO.FindAll();
@@ -64,18 +87,25 @@ private async Task Get()
         Debug.Log("Text: " + item.Text);
     }
 }
+```
 
+### Insert
+
+```
 private async Task Insert()
 {
     TodoItem item = new TodoItem
     {
-        Text = inputInsert.text,
-        Complete = toggleInsert.isOn
+        Text = "Hello World!"
     };
 
     await todoTableDAO.Insert(item);
 }
+```
 
+### Delete
+
+```
 private async Task Delete()
 {
     List<TodoItem> list = await todoTableDAO.FindAll();
@@ -87,7 +117,11 @@ private async Task Delete()
         await todoTableDAO.Delete(item);
     }
 }
+```
 
+### Sync local and remote data
+
+```
 private async Task Sync()
 {
     if (todoTableDAO.SupportsLocalStore)
