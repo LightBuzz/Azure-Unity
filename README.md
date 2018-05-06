@@ -2,15 +2,13 @@
 
 The LightBuzz Azure App Service SDK for Unity3D is a framework that allows you to consume remote Azure services and even store data locally. It's secured using HTTPS. Supports Android, iOS, Windows Standalone, MacOS, and UWP.
 
-![lightbuzz-azure-unity](https://user-images.githubusercontent.com/562680/39676374-63a5e20c-5172-11e8-964a-aaa0246a3464.png)
+![lightbuzz-azure-unity](https://user-images.githubusercontent.com/562680/39676676-6faec9d8-5177-11e8-9277-dbed9bbcbd96.png)
 
 ## Download
 
 To use the SDK, you can either clone the current repository or download the .unitypackage file from the [Releases](https://github.com/LightBuzz/Azure-Unity/releases/) section.
 
 > :inbox_tray: [Download](https://github.com/LightBuzz/Azure-Unity/releases/download/v1.0.0/lightbuzz-azure-unity-1.0.0.unitypackage) the latest stable version.
-
-> _For older versions, check the [Releases](https://github.com/LightBuzz/Azure-Unity/releases/) page._
 
 ## Features
 
@@ -45,6 +43,58 @@ In the included samples, we have created a simple demo that implements Microsoft
 Using the code is fairly simple:
 
 ```
+private async Task Init()
+{
+    azureClient = new MobileServiceClient(mobileAppUri, new LightBuzzHttpsHandler());
+    todoTableDAO = new MobileAppsTableDAO<TodoItem>(azureClient, supportLocalDatabase);
+
+    if (todoTableDAO.SupportsLocalStore)
+    {
+        await LocalStore.Init(azureClient);
+        await LocalStore.Sync();
+    }
+}
+
+private async Task Get()
+{
+    List<TodoItem> list = await todoTableDAO.FindAll();
+
+    foreach (TodoItem item in list)
+    {
+        Debug.Log("Text: " + item.Text);
+    }
+}
+
+private async Task Insert()
+{
+    TodoItem item = new TodoItem
+    {
+        Text = inputInsert.text,
+        Complete = toggleInsert.isOn
+    };
+
+    await todoTableDAO.Insert(item);
+}
+
+private async Task Delete()
+{
+    List<TodoItem> list = await todoTableDAO.FindAll();
+
+    TodoItem item = list.LastOrDefault();
+
+    if (item != null)
+    {
+        await todoTableDAO.Delete(item);
+    }
+}
+
+private async Task Sync()
+{
+    if (todoTableDAO.SupportsLocalStore)
+    {
+        await LocalStore.Sync();
+    }
+}
 ```
 
 ## Contributors
