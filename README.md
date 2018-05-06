@@ -50,8 +50,6 @@ _If using Unity 2018, the scripting runtime is set to 4.6 by default._
 
 In the included samples, we have created a simple demo that implements Microsoft's [ToDo List example](https://azure.microsoft.com/en-us/resources/samples/app-service-api-dotnet-todo-list/).
 
-To use the code 
-
 We have implemented a generic **Data Access Object** for you to use, called ```MobileAppsTableDAO```. The ```MobileAppsTableDAO``` supports all of the common operations out-of-the-box. All you need to do is call the proper C# methods.
 
 Using the code is fairly simple:
