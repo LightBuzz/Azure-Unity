@@ -20,7 +20,7 @@ The **LightBuzz Azure SDK for Unity** consumes [Azure App Service APIs](http://a
 
 The LightBuzz SDK is built with security in mind. The native Microsoft ```HttpClient``` modules do not support HTTPS in Unity. Our team has built the ```HttpClient``` from scratch to support HTTPS, providing your data with a secure connection.
 
-### Local Store
+### Local Database
 
 Unlike most of the available SDKs, the LightBuzz Azure SDK for Unity fully supports local database storage. This means you can use the Azure App Services to store data into a local SQLite database. You can sync (pull/push) your local data with the remote server.
 
@@ -63,7 +63,7 @@ private MobileAppsTableDAO<TodoItem> todoTableDAO;
 private async Task Init()
 {
     azureClient = new MobileServiceClient(mobileAppUri, new LightBuzzHttpsHandler());
-    todoTableDAO = new MobileAppsTableDAO<TodoItem>(azureClient, supportLocalDatabase);
+    todoTableDAO = new MobileAppsTableDAO<TodoItem>(azureClient);
 
     if (todoTableDAO.SupportsLocalStore)
     {
