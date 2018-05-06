@@ -26,7 +26,7 @@ namespace LightBuzz
     {
         private static readonly string LocalDatabaseName = "localstore.db";
 
-        private static MobileServiceSQLiteStore store;
+        private static MobileServiceSQLiteStore _localStore;
 
         private static MobileServiceClient _azureClient;
 
@@ -96,11 +96,11 @@ namespace LightBuzz
                         }
                     }
 
-                    store = new MobileServiceSQLiteStore(LocalDatabasePath);
+                    _localStore = new MobileServiceSQLiteStore(LocalDatabasePath);
 
                     DefineTables();
 
-                    await _azureClient.SyncContext.InitializeAsync(store);
+                    await _azureClient.SyncContext.InitializeAsync(_localStore);
                 }
                 catch (Exception e)
                 {
@@ -115,7 +115,7 @@ namespace LightBuzz
         private static void DefineTables()
         {
             // EDIT - Add your own tables here...
-            store.DefineTable<TodoItem>();
+            _localStore.DefineTable<TodoItem>();
         }
 
         public static async Task Sync()
@@ -137,7 +137,7 @@ namespace LightBuzz
         public static async Task Pull()
         {
             // EDIT - Add your own tables here.
-            MobileAppsTableDAO<TodoItem> todoTableDAO = await MobileAppsTableDAO<TodoItem>.Init(_azureClient);
+            MobileAppsTableDAO<TodoItem> todoTableDAO = new MobileAppsTableDAO<TodoItem>(_azureClient);
 
             await todoTableDAO.Pull(new CancellationToken(), "todoItems", (x) => x.Id != null);
         }

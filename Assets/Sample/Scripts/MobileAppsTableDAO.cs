@@ -25,7 +25,7 @@ namespace LightBuzz
         public IMobileServiceTable<T> TableCloud { get; set; }
 
         /// <summary>
-        /// Determines whether the app will store data locally.
+        /// Specifies whether the app will store data locally.
         /// </summary>
         public bool SupportsLocalStore { get; set; }
 
@@ -33,30 +33,23 @@ namespace LightBuzz
         /// Creates a new instance of the data access object.
         /// </summary>
         /// <param name="azureClient">The Azure App Service client.</param>
-        protected MobileAppsTableDAO(MobileServiceClient azureClient)
+        public MobileAppsTableDAO(MobileServiceClient azureClient) : this(azureClient, true)
         {
+        }
+
+        /// <summary>
+        /// Creates a new instance of the data access object.
+        /// </summary>
+        /// <param name="azureClient">The Azure App Service client.</param>
+        /// <param name="supportLocal">Specifies whether the app will store data locally.</param>
+        public MobileAppsTableDAO(MobileServiceClient azureClient, bool supportLocal)
+        {
+            SupportsLocalStore = supportLocal;
+
             if (SupportsLocalStore)
                 TableLocal = azureClient.GetSyncTable<T>();
             else
                 TableCloud = azureClient.GetTable<T>();
-        }
-
-        public static async Task<MobileAppsTableDAO<T>> Init(MobileServiceClient azureClient)
-        {
-            return await Init(azureClient, true);
-        }
-
-        public static async Task<MobileAppsTableDAO<T>> Init(MobileServiceClient azureClient, bool supportLocal)
-        {
-            MobileAppsTableDAO<T> dao = new MobileAppsTableDAO<T>(azureClient);
-
-            if (supportLocal)
-            {
-                await LocalStore.Init(azureClient);
-                await LocalStore.Sync();
-            }
-
-            return dao;
         }
 
         /// <summary>
