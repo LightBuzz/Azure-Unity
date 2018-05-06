@@ -92,6 +92,7 @@ namespace LightBuzz
             loading.SetActive(true);
 
             await Sync();
+            await Get();
 
             loading.SetActive(false);
         }
@@ -127,28 +128,33 @@ namespace LightBuzz
 
         private async Task Insert()
         {
-            TodoItem item1 = new TodoItem
+            TodoItem item = new TodoItem
             {
                 Text = inputInsert.text,
                 Complete = toggleInsert.isOn
             };
 
-            await todoTableDAO.Insert(item1);
+            await todoTableDAO.Insert(item);
         }
 
         private async Task Delete()
         {
             List<TodoItem> list = await todoTableDAO.FindAll();
 
-            TodoItem last = list.LastOrDefault();
+            TodoItem item = list.LastOrDefault();
 
-            await todoTableDAO.Delete(last);
+            if (item != null)
+            {
+                await todoTableDAO.Delete(item);
+            }
         }
 
         private async Task Sync()
         {
-            if (todoTableDAO != null && todoTableDAO.SupportsLocalStore)
+            if (todoTableDAO.SupportsLocalStore)
+            {
                 await LocalStore.Sync();
+            }
         }
     }
 }

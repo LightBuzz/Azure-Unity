@@ -52,10 +52,6 @@ namespace LightBuzz
             {
                 while (enumerator.MoveNext())
                 {
-                    if (enumerator.Current != null)
-                    {
-                        //Debug.Log("e.current " + enumerator.Current as string);
-                    }
                 }
             }
 
@@ -64,24 +60,28 @@ namespace LightBuzz
 
         IEnumerator SendUnityRequest(string url, byte[] jsonArray, string method)
         {
-            var uwr = new UnityWebRequest(url, method);
+            UnityWebRequest uwr = new UnityWebRequest(url, method);
+
             if (jsonArray != null)
             {
                 uwr.uploadHandler = new UploadHandlerRaw(jsonArray);
             }
+
             uwr.downloadHandler = new DownloadHandlerBuffer();
             uwr.SetRequestHeader("Content-Type", ContentType);
             uwr.SetRequestHeader("ZUMO-API-VERSION", ZumoApiVersion);
 
-            //Send the request then wait here until it returns
+            // Send the request then wait until it returns.
             yield return uwr.SendWebRequest();
 
             while (!uwr.isDone)
+            {
                 yield return null;
+            }
 
             if (uwr.isNetworkError || uwr.isHttpError)
             {
-                Debug.LogWarning("Error While Sending: " + uwr.error);
+                Debug.LogWarning("Error while sending: " + uwr.error);
 
                 yield return uwr.error;
             }
