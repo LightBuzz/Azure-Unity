@@ -53,11 +53,11 @@ namespace LightBuzz
         }
 
         /// <summary>
-        /// 
+        /// Pulls the data from the remote Azure App Service and stores them into the local database.
         /// </summary>
-        /// <param name="ct"></param>
-        /// <param name="uniqueQueryId"></param>
-        /// <param name="predicate"></param>
+        /// <param name="ct">The cancellation token.</param>
+        /// <param name="uniqueQueryId">The unique ID of the query.</param>
+        /// <param name="predicate">The predicate to use.</param>
         /// <returns></returns>
         public async Task Pull(CancellationToken ct, string uniqueQueryId, Expression<Func<T, bool>> predicate)
         {
@@ -66,7 +66,7 @@ namespace LightBuzz
         }
 
         /// <summary>
-        /// Insert operation.
+        /// Performs a database Insert operation.
         /// </summary>
         /// <param name="objectToSave">The object to save.</param>
         /// <returns></returns>
@@ -79,9 +79,9 @@ namespace LightBuzz
         }
 
         /// <summary>
-        /// 
+        /// Performs a database Update operation.
         /// </summary>
-        /// <param name="objectToUpdate"></param>
+        /// <param name="objectToUpdate">The object to update.</param>
         /// <returns></returns>
         public async Task Update(T objectToUpdate)
         {
@@ -92,9 +92,9 @@ namespace LightBuzz
         }
 
         /// <summary>
-        /// 
+        /// Performs a database Delete operation.
         /// </summary>
-        /// <param name="objectToDelete"></param>
+        /// <param name="objectToDelete">The object to delete.</param>
         /// <returns></returns>
         public async Task Delete(T objectToDelete)
         {
@@ -105,7 +105,7 @@ namespace LightBuzz
         }
 
         /// <summary>
-        /// 
+        /// Performs a database Get operation and returns all of the items included in the table.
         /// </summary>
         /// <returns></returns>
         public async Task<List<T>> FindAll()
@@ -117,9 +117,9 @@ namespace LightBuzz
         }
 
         /// <summary>
-        /// 
+        /// Performs a database Get operation and returns all of the items that correspond to the specified predicate.
         /// </summary>
-        /// <param name="predicate"></param>
+        /// <param name="predicate">The predicate to use.</param>
         /// <returns></returns>
         public async Task<List<T>> FindAll(Expression<Func<T, bool>> predicate)
         {

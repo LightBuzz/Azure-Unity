@@ -9,18 +9,7 @@ using UnityEngine;
 namespace LightBuzz
 {
     /// <summary>
-    /// The target platform of the application.
-    /// </summary>
-    public enum TargetPlatform
-    {
-        Android,
-        iOS,
-        Windows,
-        UWP
-    }
-
-    /// <summary>
-    /// Platform-dependent methods.
+    /// Support local SQLite database.
     /// </summary>
     public class LocalStore
     {
@@ -43,17 +32,22 @@ namespace LightBuzz
             get
             {
 #if UNITY_ANDROID
-                return Os.Android;
+                return TargetPlatform.Android;
 #elif UNITY_IOS
-                return Os.iOS;
+                return TargetPlatform.iOS;
 #elif UNITY_STANDALONE_WIN
                 return TargetPlatform.Windows;
 #elif UNITY_WSA
-                return Os.UWP;
+                return TargetPlatform.UWP;
 #endif
             }
         }
 
+        /// <summary>
+        /// Initializes the local SQLite database.
+        /// </summary>
+        /// <param name="azureClient">The Azure Client object.</param>
+        /// <returns></returns>
         public static async Task Init(MobileServiceClient azureClient)
         {
             if (azureClient == null)
@@ -118,6 +112,10 @@ namespace LightBuzz
             _localStore.DefineTable<TodoItem>();
         }
 
+        /// <summary>
+        /// Syncs with the remote Azure App Service (pull/push operations).
+        /// </summary>
+        /// <returns></returns>
         public static async Task Sync()
         {
             try
@@ -134,6 +132,10 @@ namespace LightBuzz
             }
         }
 
+        /// <summary>
+        /// Pulls the data from the remote Azure App Service and stores them into the local database.
+        /// </summary>
+        /// <returns></returns>
         public static async Task Pull()
         {
             // EDIT - Add your own tables here.
@@ -142,6 +144,10 @@ namespace LightBuzz
             await todoTableDAO.Pull(new CancellationToken(), "todoItems", (x) => x.Id != null);
         }
 
+        /// <summary>
+        /// Pushes the data stored in the local SQLite database to the remote Azure App Service.
+        /// </summary>
+        /// <returns></returns>
         public static async Task Push()
         {
             await _azureClient.SyncContext.PushAsync();
