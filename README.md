@@ -8,7 +8,7 @@ The LightBuzz Azure App Service SDK for Unity3D is a framework that allows you t
 
 To use the SDK, you can either clone the current repository or download the .unitypackage file from the [Releases](https://github.com/LightBuzz/Azure-Unity/releases/) section.
 
-> :inbox_tray: [Download](https://github.com/LightBuzz/Azure-Unity/releases/download/v1.0.0/lightbuzz-azure-unity-1.0.0.unitypackage) the latest stable version.
+> :inbox_tray: [Download](https://github.com/LightBuzz/Azure-Unity/releases/latest) the latest stable version.
 
 ## Features
 
