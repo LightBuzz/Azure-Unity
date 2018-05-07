@@ -31,12 +31,16 @@ namespace LightBuzz
         {
             get
             {
-#if UNITY_ANDROID
+#if UNITY_EDITOR
+                return TargetPlatform.Editor;
+#elif UNITY_ANDROID
                 return TargetPlatform.Android;
 #elif UNITY_IOS
                 return TargetPlatform.iOS;
 #elif UNITY_STANDALONE_WIN
                 return TargetPlatform.Windows;
+#elif UNITY_STANDALONE_OSX
+                return TargetPlatform.MacOS;
 #elif UNITY_WSA
                 return TargetPlatform.UWP;
 #endif
@@ -78,8 +82,10 @@ namespace LightBuzz
                                     File.Copy(original, LocalDatabasePath);
                                 }
                                 break;
-                            case TargetPlatform.UWP:
+                            case TargetPlatform.MacOS:
                             case TargetPlatform.Windows:
+                            case TargetPlatform.UWP:
+                            case TargetPlatform.Editor:
                                 {
                                     string original = Path.Combine(Application.dataPath, "StreamingAssets", LocalDatabaseName);
                                     File.Copy(original, LocalDatabasePath);

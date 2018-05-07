@@ -5,9 +5,11 @@
     /// </summary>
     public enum TargetPlatform
     {
+        Editor,
         Android,
         iOS,
         Windows,
+        MacOS,
         UWP
     }
 }
