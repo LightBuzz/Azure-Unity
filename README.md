@@ -2,7 +2,7 @@
 
 The LightBuzz Azure App Service SDK for Unity3D is a framework that allows you to consume remote Azure services and even store data locally. It's secured using HTTPS. Supports Android, iOS, Windows Standalone, MacOS, and UWP.
 
-![lightbuzz-azure-unity](https://user-images.githubusercontent.com/562680/39691428-35a74822-51e6-11e8-9706-42caea67260c.png)
+![lightbuzz-azure-unity](https://user-images.githubusercontent.com/562680/39691509-70b6b07e-51e6-11e8-8111-eaa171308999.png)
 
 ## Download
 
