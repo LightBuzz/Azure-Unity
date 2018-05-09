@@ -2,6 +2,8 @@
 
 The LightBuzz Azure App Service SDK for Unity3D is a framework that allows you to consume remote Azure services and even store data locally. It's secured using HTTPS. Supports Android, iOS, Windows Standalone, MacOS, and UWP.
 
+_It's an SDK you can actually use in your apps and games without compatibility problems._
+
 ![lightbuzz-azure-unity](https://user-images.githubusercontent.com/562680/39691509-70b6b07e-51e6-11e8-8111-eaa171308999.png)
 
 ## Download
@@ -149,6 +151,11 @@ Similar to our SDK, there are a couple other SDKs available. The most popular on
 | **App Services** | ![check](https://user-images.githubusercontent.com/562680/39688758-f10e1352-51dc-11e8-9327-e428bc0eeb02.png) | ![check](https://user-images.githubusercontent.com/562680/39688758-f10e1352-51dc-11e8-9327-e428bc0eeb02.png) | ![check](https://user-images.githubusercontent.com/562680/39688758-f10e1352-51dc-11e8-9327-e428bc0eeb02.png) |
 | **HTTPS** | ![check](https://user-images.githubusercontent.com/562680/39688758-f10e1352-51dc-11e8-9327-e428bc0eeb02.png) | ![check](https://user-images.githubusercontent.com/562680/39688758-f10e1352-51dc-11e8-9327-e428bc0eeb02.png) | ![close](https://user-images.githubusercontent.com/562680/39688759-f14063ac-51dc-11e8-929c-c6625252f285.png) |
 | **Local database** | ![check](https://user-images.githubusercontent.com/562680/39688758-f10e1352-51dc-11e8-9327-e428bc0eeb02.png) | ![close](https://user-images.githubusercontent.com/562680/39688759-f14063ac-51dc-11e8-929c-c6625252f285.png) | ![close](https://user-images.githubusercontent.com/562680/39688759-f14063ac-51dc-11e8-929c-c6625252f285.png) |
+| **Windows Desktop** | ![check](https://user-images.githubusercontent.com/562680/39688758-f10e1352-51dc-11e8-9327-e428bc0eeb02.png) | ![check](https://user-images.githubusercontent.com/562680/39688758-f10e1352-51dc-11e8-9327-e428bc0eeb02.png) | ![close](https://user-images.githubusercontent.com/562680/39688759-f14063ac-51dc-11e8-929c-c6625252f285.png) |
+| **Mac OS X** | ![check](https://user-images.githubusercontent.com/562680/39688758-f10e1352-51dc-11e8-9327-e428bc0eeb02.png) | ![close](https://user-images.githubusercontent.com/562680/39688759-f14063ac-51dc-11e8-929c-c6625252f285.png) | ![close](https://user-images.githubusercontent.com/562680/39688759-f14063ac-51dc-11e8-929c-c6625252f285.png) |
+| **Android** | ![check](https://user-images.githubusercontent.com/562680/39688758-f10e1352-51dc-11e8-9327-e428bc0eeb02.png) | ![check](https://user-images.githubusercontent.com/562680/39688758-f10e1352-51dc-11e8-9327-e428bc0eeb02.png) | ![close](https://user-images.githubusercontent.com/562680/39688759-f14063ac-51dc-11e8-929c-c6625252f285.png) |
+| **iOS** | ![check](https://user-images.githubusercontent.com/562680/39688758-f10e1352-51dc-11e8-9327-e428bc0eeb02.png) | ![check](https://user-images.githubusercontent.com/562680/39688758-f10e1352-51dc-11e8-9327-e428bc0eeb02.png) | ![close](https://user-images.githubusercontent.com/562680/39688759-f14063ac-51dc-11e8-929c-c6625252f285.png) |
+| **UWP** | ![check](https://user-images.githubusercontent.com/562680/39688758-f10e1352-51dc-11e8-9327-e428bc0eeb02.png) | ![close](https://user-images.githubusercontent.com/562680/39688759-f14063ac-51dc-11e8-929c-c6625252f285.png) | ![close](https://user-images.githubusercontent.com/562680/39688759-f14063ac-51dc-11e8-929c-c6625252f285.png) |
 
 ## Resources
 
