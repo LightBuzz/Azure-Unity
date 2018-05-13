@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices.Query;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using Newtonsoft.Json.Linq;
-using SQLite4Unity3d;
+using Mono.Data.Sqlite;
 
 namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
 {
@@ -29,7 +30,7 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
         private const int MaxParametersPerQuery = 800;
 
         private Dictionary<string, TableDefinition> tableMap = new Dictionary<string, TableDefinition>(StringComparer.OrdinalIgnoreCase);
-        private SQLiteConnection connection;
+        private SqliteConnection connection;
         private readonly SemaphoreSlim operationSemaphore = new SemaphoreSlim(1, 1);
 
         protected MobileServiceSQLiteStore() { }
@@ -45,14 +46,20 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
                 throw new ArgumentNullException("fileName");
             }
 
-            if (this.connection == null)
+            if (connection == null)
             {
+                // - REMOVED
+                // - Reason: the Mono.Data.Sqlite path has a different format.
+                // - Source: https://www.connectionstrings.com/sqlite/
+
                 // Fully qualify the path
-                var dbPath = fileName.StartsWith("/") ? fileName : Path.Combine(MobileServiceClient.DefaultDatabasePath, fileName);
-                MobileServiceClient.EnsureFileExists(dbPath);
+                //var dbPath = fileName.StartsWith("/") ? fileName : Path.Combine(MobileServiceClient.DefaultDatabasePath, fileName);
+                //MobileServiceClient.EnsureFileExists(dbPath);
 
                 //this.connection = SQLitePCLRawHelpers.GetSqliteConnection(dbPath);
-                connection = new SQLiteConnection(dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
+
+                connection = new SqliteConnection(fileName);
+                connection.Open();
             }
         }
 
@@ -551,7 +558,7 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
         {
             parameters = parameters ?? new Dictionary<string, object>();
 
-            int result = connection.Execute(sql, parameters);
+            //int result = connection.Execute(sql, parameters);
 
             //sqlite3_stmt stmt;
             //int rc = raw.sqlite3_prepare_v2(connection, sql, out stmt);
@@ -630,7 +637,25 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
             parameters = parameters ?? new Dictionary<string, object>();
             //var rows = new List<JObject>();
 
-            List<JObject> rows = connection.Query<JObject>(sql, parameters);
+            //List<JObject> rows = connection.Query<JObject>(sql, parameters);
+
+            SqliteCommand command = connection.CreateCommand();
+            command.CommandType = CommandType.Text;
+            command.CommandText = sql;
+
+            SqliteDataReader reader = command.ExecuteReader();
+
+            List<JObject> rows = new List<JObject>();
+
+            while (reader.Read())
+            {
+                ColumnDefinition column;
+                JObject row = reader.GetValue(0) as JObject;
+
+                rows.Add(row);
+            }
+            
+            reader.Close();
 
             return rows;
 
@@ -658,7 +683,7 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
         private JObject ReadRow(TableDefinition table/*, sqlite3_stmt statement*/)
         {
             JObject row = new JObject();
-
+            
             return row;
             //var row = new JObject();
             //for (int i = 0; i < raw.sqlite3_column_count(statement); i++)
@@ -707,7 +732,7 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
         {
             if (disposing)
             {
-                this.connection.Dispose();
+                connection.Close();
             }
         }
     }

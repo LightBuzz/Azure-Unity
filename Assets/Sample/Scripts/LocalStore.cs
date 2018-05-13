@@ -27,6 +27,14 @@ namespace LightBuzz
             }
         }
 
+        private static string LocalDatabaseConnectionString
+        {
+            get
+            {
+                return "Data Source=" + LocalDatabasePath + ";Version=3;";
+            }
+        }
+
         public static TargetPlatform TargetPlatform
         {
             get
@@ -63,52 +71,55 @@ namespace LightBuzz
 
             if (!azureClient.SyncContext.IsInitialized)
             {
-                try
-                {
+                //try
+                //{
                     if (!File.Exists(LocalDatabasePath))
                     {
-                        switch (TargetPlatform)
-                        {
-                            case TargetPlatform.Android:
-                                {
-                                    WWW original = new WWW("jar:file://" + Application.dataPath + "!/assets/" + LocalDatabaseName);
-                                    while (!original.isDone) { }  // CAREFUL here, for safety reasons you shouldn't let this while loop unattended, place a timer and error check.
-                                    File.WriteAllBytes(LocalDatabasePath, original.bytes);
-                                }
-                                break;
-                            case TargetPlatform.iOS:
-                                {
-                                    string original = Path.Combine(Application.dataPath, "Raw", LocalDatabaseName);
-                                    File.Copy(original, LocalDatabasePath);
-                                }
-                                break;
-                            case TargetPlatform.MacOS:
-                            case TargetPlatform.Windows:
-                            case TargetPlatform.UWP:
-                            case TargetPlatform.Editor:
-                                {
-                                    string original = Path.Combine(Application.dataPath, "StreamingAssets", LocalDatabaseName);
-                                    File.Copy(original, LocalDatabasePath);
-                                }
-                                break;
-                            default:
-                                throw new Exception("You need to provide an empty database file in your StreamingAssets folder.");
-                        }
+                        string original = Path.Combine(Application.streamingAssetsPath, LocalDatabaseName);
+
+                        File.Copy(original, LocalDatabasePath);
+                        //switch (TargetPlatform)
+                        //{
+                        //    case TargetPlatform.Android:
+                        //        {
+                        //            WWW original = new WWW("jar:file://" + Application.dataPath + "!/assets/" + LocalDatabaseName);
+                        //            while (!original.isDone) { }  // CAREFUL here, for safety reasons you shouldn't let this while loop unattended, place a timer and error check.
+                        //            File.WriteAllBytes(LocalDatabasePath, original.bytes);
+                        //        }
+                        //        break;
+                        //    case TargetPlatform.iOS:
+                        //        {
+                        //            string original = Path.Combine(Application.dataPath, "Raw", LocalDatabaseName);
+                        //            File.Copy(original, LocalDatabasePath);
+                        //        }
+                        //        break;
+                        //    case TargetPlatform.MacOS:
+                        //    case TargetPlatform.Windows:
+                        //    case TargetPlatform.UWP:
+                        //    case TargetPlatform.Editor:
+                        //        {
+                        //            string original = Path.Combine(Application.dataPath, "StreamingAssets", LocalDatabaseName);
+                        //            File.Copy(original, LocalDatabasePath);
+                        //        }
+                        //        break;
+                        //    default:
+                        //        throw new Exception("You need to provide an empty database file in your StreamingAssets folder.");
+                        //}
                     }
 
-                    _localStore = new MobileServiceSQLiteStore(LocalDatabasePath);
+                    _localStore = new MobileServiceSQLiteStore(LocalDatabaseConnectionString);
 
                     DefineTables();
 
                     await _azureClient.SyncContext.InitializeAsync(_localStore);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError(e.Message);
-                    Debug.LogError(e.Source);
-                    Debug.LogError(e.StackTrace);
-                    Debug.LogError(e.ToString());
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    Debug.LogError(e.Message);
+                //    Debug.LogError(e.Source);
+                //    Debug.LogError(e.StackTrace);
+                //    Debug.LogError(e.ToString());
+                //}
             }
         }
 
