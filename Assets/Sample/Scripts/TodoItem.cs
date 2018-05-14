@@ -10,6 +10,7 @@ namespace LightBuzz
         /// <summary>
         /// The ID of the item.
         /// </summary>
+        [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
         /// <summary>
