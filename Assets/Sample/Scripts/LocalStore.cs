@@ -56,7 +56,16 @@ namespace LightBuzz
                     if (!File.Exists(LocalDatabasePath))
                     {
                         string original = Path.Combine(Application.streamingAssetsPath, LocalDatabaseName);
-                        File.Copy(original, LocalDatabasePath);
+                        if (Application.platform == RuntimePlatform.Android)
+                        {
+                            WWW reader = new WWW(original);
+                            while (!reader.isDone) { }
+                            File.WriteAllBytes(LocalDatabasePath, reader.bytes);
+                        }
+                        else
+                        {
+                            File.Copy(original, LocalDatabasePath);
+                        }
                     }
 
                     _localStore = new MobileServiceSQLiteStore(LocalDatabaseConnectionString);
