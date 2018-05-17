@@ -21,14 +21,14 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
 
         public ColumnDefinition(string name, JTokenType jsonType, string storeType)
         {
-            this.Name = name;
-            this.JsonType = jsonType;
-            this.StoreType = storeType;
+            Name = name;
+            JsonType = jsonType;
+            StoreType = storeType;
         }
 
         public override int GetHashCode()
         {
-            return Tuple.Create(this.Name, this.JsonType, this.StoreType).GetHashCode();
+            return Tuple.Create(Name, JsonType, StoreType).GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -39,14 +39,14 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
                 return base.Equals(obj);
             }
 
-            return this.Name.Equals(other.Name) &&
-                   this.JsonType.Equals(other.JsonType) &&
-                   this.StoreType.Equals(other.StoreType);
+            return Name.Equals(other.Name) &&
+                   JsonType.Equals(other.JsonType) &&
+                   StoreType.Equals(other.StoreType);
         }
 
         public override string ToString()
         {
-            return String.Format("{0}, {1}, {1}", this.Name, this.JsonType, this.StoreType);
+            return String.Format("{0}, {1}, {1}", Name, JsonType, StoreType);
         }
     }
 }

@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,8 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices.Query;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using Newtonsoft.Json.Linq;
-using SQLitePCL;
+using Mono.Data.Sqlite;
+using UnityEngine;
 
 namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
 {
@@ -29,7 +31,7 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
         private const int MaxParametersPerQuery = 800;
 
         private Dictionary<string, TableDefinition> tableMap = new Dictionary<string, TableDefinition>(StringComparer.OrdinalIgnoreCase);
-        private sqlite3 connection;
+        private SqliteConnection connection;
         private readonly SemaphoreSlim operationSemaphore = new SemaphoreSlim(1, 1);
 
         protected MobileServiceSQLiteStore() { }
@@ -45,13 +47,20 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
                 throw new ArgumentNullException("fileName");
             }
 
-            if (this.connection == null)
+            if (connection == null)
             {
-                // Fully qualify the path
-                var dbPath = fileName.StartsWith("/") ? fileName : Path.Combine(MobileServiceClient.DefaultDatabasePath, fileName);
-                MobileServiceClient.EnsureFileExists(dbPath);
+                // - REMOVED
+                // - Reason: the Mono.Data.Sqlite path has a different format.
+                // - Source: https://www.connectionstrings.com/sqlite/
 
-                this.connection = SQLitePCLRawHelpers.GetSqliteConnection(dbPath);
+                // Fully qualify the path
+                //var dbPath = fileName.StartsWith("/") ? fileName : Path.Combine(MobileServiceClient.DefaultDatabasePath, fileName);
+                //MobileServiceClient.EnsureFileExists(dbPath);
+
+                //this.connection = SQLitePCLRawHelpers.GetSqliteConnection(dbPath);
+
+                connection = new SqliteConnection(fileName);
+                connection.Open();
             }
         }
 
@@ -90,13 +99,13 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
 
             var sysProperties = GetSystemProperties(item);
 
-            this.tableMap.Add(tableName, new TableDefinition(tableDefinition, sysProperties));
+            tableMap.Add(tableName, new TableDefinition(tableDefinition, sysProperties));
         }
 
         protected override async Task OnInitialize()
         {
-            this.CreateAllTables();
-            await this.InitializeConfig();
+            CreateAllTables();
+            await InitializeConfig();
         }
 
         /// <summary>
@@ -127,10 +136,7 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
                         if (query.IncludeTotalCount)
                         {
                             sql = formatter.FormatSelectCount();
-                            IList<JObject> countRows = null;
-
-                            countRows = this.ExecuteQueryInternal(query.TableName, sql, formatter.Parameters);
-
+                            IList<JObject> countRows = ExecuteQueryInternal(query.TableName, sql, formatter.Parameters);
 
                             long count = countRows[0].Value<long>("count");
                             result = new JObject()
@@ -350,7 +356,7 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
         private TableDefinition GetTable(string tableName)
         {
             TableDefinition table;
-            if (!this.tableMap.TryGetValue(tableName, out table))
+            if (!tableMap.TryGetValue(tableName, out table))
             {
                 throw new InvalidOperationException(string.Format("Table with name '{0}' is not defined.", tableName));
             }
@@ -369,7 +375,7 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
 
         private async Task InitializeConfig()
         {
-            foreach (KeyValuePair<string, TableDefinition> table in this.tableMap)
+            foreach (KeyValuePair<string, TableDefinition> table in tableMap)
             {
                 if (!MobileServiceLocalSystemTables.All.Contains(table.Key))
                 {
@@ -383,9 +389,9 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
 
         private void CreateAllTables()
         {
-            foreach (KeyValuePair<string, TableDefinition> table in this.tableMap)
+            foreach (KeyValuePair<string, TableDefinition> table in tableMap)
             {
-                this.CreateTableFromObject(table.Key, table.Value.Values);
+                CreateTableFromObject(table.Key, table.Value.Values);
             }
         }
 
@@ -504,12 +510,12 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
                 colDefinitions.Insert(0, String.Format("{0} {1} PRIMARY KEY", SqlHelpers.FormatMember(idColumn.Name), idColumn.StoreType));
             }
 
-            String tblSql = string.Format("CREATE TABLE IF NOT EXISTS {0} ({1})", SqlHelpers.FormatTableName(tableName), String.Join(", ", colDefinitions));
-            this.ExecuteNonQueryInternal(tblSql, parameters: null);
+            string tblSql = string.Format("CREATE TABLE IF NOT EXISTS {0} ({1})", SqlHelpers.FormatTableName(tableName), String.Join(", ", colDefinitions));
+            ExecuteNonQueryInternal(tblSql, parameters: null);
 
             string infoSql = string.Format("PRAGMA table_info({0});", SqlHelpers.FormatTableName(tableName));
-            IDictionary<string, JObject> existingColumns = this.ExecuteQueryInternal((TableDefinition)null, infoSql, parameters: null)
-                                                               .ToDictionary(c => c.Value<string>("name"), StringComparer.OrdinalIgnoreCase);
+            IDictionary<string, JObject> existingColumns = ExecuteQueryInternal((TableDefinition)null, infoSql, parameters: null)
+                                                               .ToDictionary(c => c.Value<string>("name"), StringComparer.OrdinalIgnoreCase); // was: "name"
 
             // new columns that do not exist in existing columns
             var columnsToCreate = columns.Where(c => !existingColumns.ContainsKey(c.Name));
@@ -550,20 +556,32 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
         {
             parameters = parameters ?? new Dictionary<string, object>();
 
-            sqlite3_stmt stmt;
-            int rc = raw.sqlite3_prepare_v2(connection, sql, out stmt);
-            SQLitePCLRawHelpers.VerifySQLiteResponse(rc, raw.SQLITE_OK, connection);
-            using (stmt)
+            using (SqliteCommand command = new SqliteCommand(sql, connection))
             {
                 foreach (KeyValuePair<string, object> parameter in parameters)
                 {
-                    var index = raw.sqlite3_bind_parameter_index(stmt, parameter.Key);
-                    SQLitePCLRawHelpers.Bind(connection, stmt, index, parameter.Value);
+                    command.Parameters.Add(new SqliteParameter(parameter.Key, parameter.Value));
                 }
 
-                int result = raw.sqlite3_step(stmt);
-                SQLitePCLRawHelpers.VerifySQLiteResponse(result, raw.SQLITE_DONE, connection);
+                command.ExecuteNonQuery();
             }
+
+            //int result = connection.Execute(sql, parameters);
+
+            //sqlite3_stmt stmt;
+            //int rc = raw.sqlite3_prepare_v2(connection, sql, out stmt);
+            //SQLitePCLRawHelpers.VerifySQLiteResponse(rc, raw.SQLITE_OK, connection);
+            //using (stmt)
+            //{
+            //    foreach (KeyValuePair<string, object> parameter in parameters)
+            //    {
+            //        var index = raw.sqlite3_bind_parameter_index(stmt, parameter.Key);
+            //        SQLitePCLRawHelpers.Bind(connection, stmt, index, parameter.Value);
+            //    }
+
+            //    int result = raw.sqlite3_step(stmt);
+            //    SQLitePCLRawHelpers.VerifySQLiteResponse(result, raw.SQLITE_DONE, connection);
+            //}
         }
 
         /// <summary>
@@ -611,7 +629,7 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
         protected virtual IList<JObject> ExecuteQueryInternal(string tableName, string sql, IDictionary<string, object> parameters)
         {
             TableDefinition table = GetTable(tableName);
-            return this.ExecuteQueryInternal(table, sql, parameters);
+            return ExecuteQueryInternal(table, sql, parameters);
         }
 
         /// <summary>
@@ -625,50 +643,100 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
         {
             table = table ?? new TableDefinition();
             parameters = parameters ?? new Dictionary<string, object>();
-            var rows = new List<JObject>();
 
-            sqlite3_stmt statement = SQLitePCLRawHelpers.GetSqliteStatement(sql, connection);
-            using (statement)
+            List<JObject> rows = new List<JObject>();
+
+            using (SqliteCommand command = new SqliteCommand(sql, connection))
             {
                 foreach (KeyValuePair<string, object> parameter in parameters)
                 {
-                    var index = raw.sqlite3_bind_parameter_index(statement, parameter.Key);
-                    SQLitePCLRawHelpers.Bind(connection, statement, index, parameter.Value);
-                }
-                int rc;
-                while ((rc = raw.sqlite3_step(statement)) == raw.SQLITE_ROW)
-                {
-                    var row = ReadRow(table, statement);
-                    rows.Add(row);
+                    command.Parameters.Add(new SqliteParameter(parameter.Key, parameter.Value));
                 }
 
-                SQLitePCLRawHelpers.VerifySQLiteResponse(rc, raw.SQLITE_DONE, connection);
+                using (SqliteDataReader reader = command.ExecuteReader())
+                {
+					while (reader.Read())
+					{
+						JObject row = ReadRow(table, reader);
+						rows.Add(row);
+					}
+                }
             }
 
             return rows;
+
+            //table = table ?? new TableDefinition();
+            //parameters = parameters ?? new Dictionary<string, object>();
+            //var rows = new List<JObject>();
+
+            //sqlite3_stmt statement = SQLitePCLRawHelpers.GetSqliteStatement(sql, connection);
+            //using (statement)
+            //{
+            //    foreach (KeyValuePair<string, object> parameter in parameters)
+            //    {
+            //        var index = raw.sqlite3_bind_parameter_index(statement, parameter.Key);
+            //        SQLitePCLRawHelpers.Bind(connection, statement, index, parameter.Value);
+            //    }
+            //    int rc;
+            //    while ((rc = raw.sqlite3_step(statement)) == raw.SQLITE_ROW)
+            //    {
+            //        var row = ReadRow(table, statement);
+            //        rows.Add(row);
+            //    }
+
+            //    SQLitePCLRawHelpers.VerifySQLiteResponse(rc, raw.SQLITE_DONE, connection);
+            //}
+
+            //return rows;
         }
 
-        private JObject ReadRow(TableDefinition table, sqlite3_stmt statement)
-        {
-            var row = new JObject();
-            for (int i = 0; i < raw.sqlite3_column_count(statement); i++)
-            {
-                string name = raw.sqlite3_column_name(statement, i);
-                object value = SQLitePCLRawHelpers.GetValue(statement, i);
+		private JObject ReadRow(TableDefinition table, SqliteDataReader reader)
+		{
+			JObject row = new JObject();
+			for (int i = 0; i < reader.FieldCount; i++)
+			{
+				if (!reader.IsDBNull(i))
+				{
+					string name = reader.GetName(i);
+					object value = reader.GetValue(i);
 
-                ColumnDefinition column;
-                if (table.TryGetValue(name, out column))
-                {
-                    JToken jVal = SqlHelpers.DeserializeValue(value, column.StoreType, column.JsonType);
-                    row[name] = jVal;
-                }
-                else
-                {
-                    row[name] = value == null ? null : JToken.FromObject(value);
-                }
-            }
-            return row;
-        }
+					ColumnDefinition column;
+
+					if (table.TryGetValue(name, out column))
+					{
+						JToken jVal = SqlHelpers.DeserializeValue(value, column.StoreType, column.JsonType);
+						row[name] = jVal;
+					}
+					else
+					{
+						row[name] = value == null ? null : JToken.FromObject(value);
+					}
+				}
+		    }
+			return row;
+		}
+
+        //private JObject ReadRow(TableDefinition table/*, sqlite3_stmt statement*/)
+        //{
+        //    var row = new JObject();
+        //    for (int i = 0; i < raw.sqlite3_column_count(statement); i++)
+        //    {
+        //        string name = raw.sqlite3_column_name(statement, i);
+        //        object value = SQLitePCLRawHelpers.GetValue(statement, i);
+
+        //        ColumnDefinition column;
+        //        if (table.TryGetValue(name, out column))
+        //        {
+        //            JToken jVal = SqlHelpers.DeserializeValue(value, column.StoreType, column.JsonType);
+        //            row[name] = jVal;
+        //        }
+        //        else
+        //        {
+        //            row[name] = value == null ? null : JToken.FromObject(value);
+        //        }
+        //    }
+        //    return row;
+        //}
 
         private static MobileServiceSystemProperties GetSystemProperties(JObject item)
         {
@@ -697,7 +765,8 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
         {
             if (disposing)
             {
-                this.connection.Dispose();
+                connection.Close();
+                connection.Dispose();
             }
         }
     }
