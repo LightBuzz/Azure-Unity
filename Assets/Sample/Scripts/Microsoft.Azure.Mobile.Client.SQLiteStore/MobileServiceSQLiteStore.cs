@@ -515,8 +515,7 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
 
             string infoSql = string.Format("PRAGMA table_info({0});", SqlHelpers.FormatTableName(tableName));
             IDictionary<string, JObject> existingColumns = ExecuteQueryInternal((TableDefinition)null, infoSql, parameters: null)
-                                                               .ToDictionary(c => c.Value<string>("name"), StringComparer.OrdinalIgnoreCase); // was: "name"
-
+                                                               .ToDictionary(c => c.Value<string>("name"), StringComparer.OrdinalIgnoreCase);
             // new columns that do not exist in existing columns
             var columnsToCreate = columns.Where(c => !existingColumns.ContainsKey(c.Name));
 
