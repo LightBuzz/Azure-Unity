@@ -24,9 +24,9 @@ The LightBuzz SDK is built with security in mind. The native Microsoft ```HttpCl
 
 ### Local Database
 
-Unlike most of the available SDKs, the LightBuzz Azure SDK for Unity fully supports local database storage. This means you can use the Azure App Services to store data into a local SQLite database. You can sync (pull/push) your local data with the remote server.
+Unlike most of the available SDKs, the LightBuzz Azure SDK for Unity fully supports local database storage. This means you can use the Azure App Services to store data into a local SQLite database. You can sync (pull/push) your local data with the remote server. As a result, your customers can use your app/game without an active Internet connection.
 
-As a result, your customers can use your app/game without an active Internet connection.
+The local database is using the official version of **[SQLite](https://www.sqlite.org/index.html)**. SQLite is the most popular and lightweight relational database system for desktop and mobile devices. For UWP, we are using **[SQLitePCL](https://github.com/ericsink/SQLitePCL.raw)**, which is Microsoft's recommendation for Windows Store apps.
 
 ## Supported Platforms
 
@@ -41,17 +41,19 @@ The LightBuzz Azure SDK for Unity supports the following platforms:
 
 ## Requirements
 
-### Unity version
+### Scripting Runtime
 
-To use the SDK, you need **[Unity 2017.1 or later](https://store.unity.com/)**. 
+To use the SDK, **[Unity 2018](https://store.unity.com/)** is recommended. The SDK has also been tested with Unity 2017.
 
-The SDK is built with the latest C# features, so you need to use the **.NET 4.6 Scripting Runtime version**.
+The SDK is built with the latest C# features, so you need to use the **.NET 4.x Scripting Runtime version**.
 
-![unity-2017-scripting-runtime](https://user-images.githubusercontent.com/562680/40273481-543c425a-5bc9-11e8-9ebf-375804e52557.png)
-
-_If using Unity 2018, the scripting runtime is set to 4.6 by default._
+In Unity 2018, the scripting runtime is set to 4.x by default.
 
 ![unity-2018-scripting-runtime](https://user-images.githubusercontent.com/562680/40273487-65f9230a-5bc9-11e8-9a0e-17ee3c8fe69d.png)
+
+In Unity 2017, you need to explicitly select "**Experimental (.NET 4.6 Equivalent)**".
+
+![unity-2017-scripting-runtime](https://user-images.githubusercontent.com/562680/40273481-543c425a-5bc9-11e8-9ebf-375804e52557.png)
 
 ### Scripting Backend
 
@@ -68,7 +70,7 @@ The SDK works with the following Scripting Backend options:
 
 In the included samples, we have created a simple demo that implements Microsoft's [ToDo List example](https://azure.microsoft.com/en-us/resources/samples/app-service-api-dotnet-todo-list/).
 
-We have implemented a generic **Data Access Object** for you to use, called ```MobileAppsTableDAO```. The ```MobileAppsTableDAO``` supports all of the common operations out-of-the-box. All you need to do is call the proper C# methods.
+We have implemented a generic **Data Access Object** for you to use, called ```MobileAppsTableDAO```. The ```MobileAppsTableDAO``` supports all of the common HTTP & HTTPS operations out-of-the-box. All you need to do is call the proper C# methods.
 
 Using the code is fairly simple:
 
@@ -151,13 +153,17 @@ private async Task Sync()
 
 The SDK is brought to you by [LightBuzz Inc.](https://lightbuzz.com), a New York based company.
 
-* [Georgia Makoudi](https://lightbuzz.com/author/georgia/), Azure Specialist
-* [Vangos Pterneas](https://lightbuzz.com/author/vangos/), Microsoft MVP
-* [George Karakatsiotis](https://lightbuzz.com/about/), AI Scientist
+* **[Georgia Makoudi](https://lightbuzz.com/author/georgia/), Azure Specialist**
+* **[Vangos Pterneas](https://lightbuzz.com/author/vangos/), Microsoft MVP**
+* **[George Karakatsiotis](https://lightbuzz.com/about/), AI Scientist**
+
+_If you would like to contribute to the SDK, please make a pull request._
 
 ## Comparison with other SDKs
 
-Similar to our SDK, there are a couple other SDKs available. The most popular ones are the following:
+The LightBuzz Azure App Service SDK for Unity3D is the only SDK that supports local database storage. Also, it supports every major platform, including iOS, Android, MacOS, Windows Desktop, and UWP. It's also supporting HTTPS. The LightBuzz SDK is the most feature-complete Unity SDK for Microsoft Azure.
+
+Currently, the following alternatives exist:
 
 * DeadlyFingers' SDK [Unity3D Azure AppServices](https://github.com/Unity3dAzure/AppServices)
 * Brian Peek's SDK [Azure SDK for Unity3D](https://github.com/BrianPeek/AzureSDKs-Unity)
@@ -179,3 +185,7 @@ Similar to our SDK, there are a couple other SDKs available. The most popular on
 * [Getting started with Unity3D](https://unity3d.com/learn/)
 * [Getting started with App Services](http://azure.microsoft.com/documentation/articles/app-service-api-dotnet-get-started/)
 * [Azure Portal](https://portal.azure.com/)
+
+## [Contact us](https://lightbuzz.com/contact)
+
+LightBuzz has been working on Mobile and Cloud solutions since 2012. [Get in touch with us](https://lightbuzz.com/contact) to start a project with a reliable and trusted partner.
