@@ -188,4 +188,4 @@ Currently, the following alternatives exist:
 
 ## [Contact us](https://lightbuzz.com/contact)
 
-[LightBuzz](https://lightbuzz.com) has been working on Mobile and Cloud solutions for Fortune 500 and startup companies since 2012. [Get in touch with us](https://lightbuzz.com/contact) to start a project with a reliable and trusted partner.
+[LightBuzz](https://lightbuzz.com) has been developing Mobile and Cloud solutions for Fortune 500 and startup companies since 2012. [Get in touch with us](https://lightbuzz.com/contact) to start a project with a reliable and trusted partner.
