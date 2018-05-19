@@ -31,7 +31,7 @@ namespace LightBuzz
         {
             get
             {
-                return "Data Source=" + LocalDatabasePath + ";Version=3;";
+                return LocalDatabasePath;
             }
         }
 
