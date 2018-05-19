@@ -2,7 +2,7 @@
 
 The LightBuzz Azure App Service SDK for Unity3D is a framework that allows you to consume remote Azure services and even store data locally. It's secured using HTTPS. Supports Android, iOS, Windows Standalone, MacOS, and UWP.
 
-_It's an SDK you can actually use in your apps and games without compatibility problems._
+> It's across-platform SDK you can actually use in your apps and games without compatibility problems.
 
 ![lightbuzz-azure-unity](https://user-images.githubusercontent.com/562680/39691509-70b6b07e-51e6-11e8-8111-eaa171308999.png)
 
@@ -10,7 +10,7 @@ _It's an SDK you can actually use in your apps and games without compatibility p
 
 To use the SDK, you can either clone the current repository or download the .unitypackage file from the [Releases](https://github.com/LightBuzz/Azure-Unity/releases/) section.
 
-> :inbox_tray: [Download](https://github.com/LightBuzz/Azure-Unity/releases/latest) the latest stable version.
+#### [![cloud-download](https://user-images.githubusercontent.com/562680/40273695-3b3de7d6-5bce-11e8-9270-3b01f28dc0b7.png) Download the latest stable version &raquo;](https://github.com/LightBuzz/Azure-Unity/releases/latest)
 
 ## Features
 
@@ -188,4 +188,4 @@ Currently, the following alternatives exist:
 
 ## [Contact us](https://lightbuzz.com/contact)
 
-LightBuzz has been working on Mobile and Cloud solutions since 2012. [Get in touch with us](https://lightbuzz.com/contact) to start a project with a reliable and trusted partner.
+[LightBuzz](https://lightbuzz.com) has been working on Mobile and Cloud solutions for Fortune 500 and startup companies since 2012. [Get in touch with us](https://lightbuzz.com/contact) to start a project with a reliable and trusted partner.
