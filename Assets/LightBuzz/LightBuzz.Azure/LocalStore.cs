@@ -6,14 +6,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace LightBuzz
+namespace LightBuzz.Azure
 {
     /// <summary>
     /// Support local SQLite database.
     /// </summary>
     public class LocalStore
     {
-        private static readonly string LocalDatabaseName = "database.db";
+        private static readonly string DefaultLocalDatabaseName = "database.db";
+
+        private static string _localDatabasePath;
 
         private static MobileServiceSQLiteStore _localStore;
 
@@ -23,7 +25,12 @@ namespace LightBuzz
         {
             get
             {
-                return Path.Combine(Application.persistentDataPath, LocalDatabaseName);
+                if (string.IsNullOrEmpty(_localDatabasePath))
+                {
+                    return Path.Combine(Application.persistentDataPath, DefaultLocalDatabaseName);
+                }
+
+                return _localDatabasePath;
             }
         }
 
@@ -39,6 +46,12 @@ namespace LightBuzz
             }
         }
 
+        private static void DefineTables()
+        {
+            // EDIT - Add your own tables here...
+            _localStore.DefineTable<TodoItem>();
+        }
+
         /// <summary>
         /// Initializes the local SQLite database.
         /// </summary>
@@ -46,12 +59,24 @@ namespace LightBuzz
         /// <returns></returns>
         public static async Task Init(MobileServiceClient azureClient)
         {
+            await Init(azureClient, Path.Combine(Application.persistentDataPath, DefaultLocalDatabaseName));
+        }
+
+        /// <summary>
+        /// Initializes the local SQLite database.
+        /// </summary>
+        /// <param name="azureClient">The Azure Client object.</param>
+        /// <param name="localDatabasePath">The full path to the local database file, e.g. Path.Combine(Application.persistentDataPath, "database.db").</param>
+        /// <returns></returns>
+        public static async Task Init(MobileServiceClient azureClient, string localDatabasePath)
+        {
             if (azureClient == null)
             {
                 throw new NullReferenceException("Azure Client is null.");
             }
 
             _azureClient = azureClient;
+            _localDatabasePath = localDatabasePath;
 
             if (!azureClient.SyncContext.IsInitialized)
             {
@@ -59,7 +84,7 @@ namespace LightBuzz
                 {
                     if (!File.Exists(LocalDatabasePath))
                     {
-                        string original = Path.Combine(Application.streamingAssetsPath, LocalDatabaseName);
+                        string original = Path.Combine(Application.streamingAssetsPath, DefaultLocalDatabaseName);
                         if (Application.platform == RuntimePlatform.Android)
                         {
                             WWW reader = new WWW(original);
@@ -86,12 +111,6 @@ namespace LightBuzz
                     Debug.LogError(e.ToString());
                 }
             }
-        }
-
-        private static void DefineTables()
-        {
-            // EDIT - Add your own tables here...
-            _localStore.DefineTable<TodoItem>();
         }
 
         /// <summary>

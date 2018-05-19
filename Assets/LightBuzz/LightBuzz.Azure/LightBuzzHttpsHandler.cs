@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace LightBuzz
+namespace LightBuzz.Azure
 {
     /// <summary>
     /// A Unity-ready secure HTTPS handler.

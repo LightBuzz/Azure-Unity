@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 
-namespace LightBuzz
+namespace LightBuzz.Azure
 {
     /// <summary>
     /// A generic table data access object.
