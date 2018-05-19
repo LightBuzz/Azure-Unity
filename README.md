@@ -6,7 +6,7 @@ The LightBuzz Azure App Service SDK for Unity3D is a framework that allows you t
 
 ![lightbuzz-azure-unity](https://user-images.githubusercontent.com/562680/39691509-70b6b07e-51e6-11e8-8111-eaa171308999.png)
 
-## Download
+## [Download](https://github.com/LightBuzz/Azure-Unity/releases/latest)
 
 To use the SDK, you can either clone the current repository or download the .unitypackage file from the [Releases](https://github.com/LightBuzz/Azure-Unity/releases/) section.
 
@@ -16,15 +16,15 @@ To use the SDK, you can either clone the current repository or download the .uni
 
 ### Azure App Services
 
-The **LightBuzz Azure SDK for Unity** consumes [Azure App Service APIs](http://azure.microsoft.com/en-us/documentation/articles/app-service-api-apps-why-best-platform/) and supports local database storage.
+The **LightBuzz Azure SDK for Unity** consumes [Azure App Service APIs](http://azure.microsoft.com/en-us/documentation/articles/app-service-api-apps-why-best-platform/). Azure App Services are integrated services that enable you to create web and mobile apps for any platform or device.
 
 ### HTTPS
 
-The LightBuzz SDK is built with security in mind. The native Microsoft ```HttpClient``` modules do not support HTTPS in Unity. Our team has built the ```HttpClient``` from scratch to support HTTPS, providing your data with a secure connection.
+The LightBuzz SDK is built with security in mind. The native Microsoft ```HttpClient``` modules do not support HTTPS in Unity. Our team has built the HTTP requests from scratch using the ```UnityWebRequest``` class. This way, your data are encrypted and transmitted securely.
 
 ### Local Database
 
-Unlike most of the available SDKs, the LightBuzz Azure SDK for Unity fully supports local database storage. This means you can use the Azure App Services to store data into a local SQLite database. You can sync (pull/push) your local data with the remote server. As a result, your customers can use your app/game without an active Internet connection.
+Unlike most of the available SDKs, the LightBuzz Azure SDK for Unity fully supports local database storage. This means you can use the Azure App Services to store data into a local SQLite database. You can sync your local data with the remote server, performing **pull** and **push** operations. As a result, your customers can use your app/game without an active Internet connection!
 
 The local database is using the official version of **[SQLite](https://www.sqlite.org/index.html)**. SQLite is the most popular and lightweight relational database system for desktop and mobile devices. For UWP, we are using **[SQLitePCL](https://github.com/ericsink/SQLitePCL.raw)**, which is Microsoft's recommendation for Windows Store apps.
 
