@@ -47,9 +47,11 @@ To use the SDK, you need **[Unity 2017.1 or later](https://store.unity.com/)**.
 
 The SDK is built with the latest C# features, so you need to use the **.NET 4.6 Scripting Runtime version**.
 
-![unity-scripting-runtime](https://docs.unity3d.com/uploads/Main/ScriptingRunetimePreview.png)
+![unity-2017-scripting-runtime](https://user-images.githubusercontent.com/562680/40273209-dd7c0578-5bc4-11e8-8c1b-adf2c0d0e69a.png)
 
 _If using Unity 2018, the scripting runtime is set to 4.6 by default._
+
+![unity-2018-scripting-runtime](https://user-images.githubusercontent.com/562680/40273190-81339a74-5bc4-11e8-965e-1e5bfb0d8de0.png)
 
 ### Scripting Backend
 
