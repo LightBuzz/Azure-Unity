@@ -1,7 +1,5 @@
 fileFormatVersion: 2
-guid: 59b665a4d5e032d478c1215457651806
-timeCreated: 1526214894
-licenseType: Pro
+guid: fabf11d67d1aa4b45b199a1f945b9707
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -49,25 +47,25 @@ PluginImporter:
     second:
       enabled: 0
       settings:
-        CPU: AnyCPU
+        CPU: None
   - first:
       Facebook: Win64
     second:
       enabled: 0
       settings:
-        CPU: AnyCPU
+        CPU: None
   - first:
       Standalone: Linux
     second:
       enabled: 0
       settings:
-        CPU: x86
+        CPU: None
   - first:
       Standalone: Linux64
     second:
       enabled: 0
       settings:
-        CPU: x86_64
+        CPU: None
   - first:
       Standalone: LinuxUniversal
     second:
@@ -79,26 +77,26 @@ PluginImporter:
     second:
       enabled: 0
       settings:
-        CPU: AnyCPU
+        CPU: x86
   - first:
       Standalone: Win
     second:
       enabled: 0
       settings:
-        CPU: AnyCPU
+        CPU: None
   - first:
       Standalone: Win64
     second:
       enabled: 0
       settings:
-        CPU: AnyCPU
+        CPU: None
   - first:
       Windows Store Apps: WindowsStoreApps
     second:
       enabled: 1
       settings:
-        CPU: ARM
-        DontProcess: False
+        CPU: AnyCPU
+        DontProcess: true
         PlaceholderPath: 
         SDK: UWP
         ScriptingBackend: AnyScriptingBackend
@@ -107,6 +105,7 @@ PluginImporter:
     second:
       enabled: 0
       settings:
+        AddToEmbeddedBinaries: false
         CompileFlags: 
         FrameworkDependencies: 
   userData: 
