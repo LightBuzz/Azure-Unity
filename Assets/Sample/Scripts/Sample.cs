@@ -99,7 +99,11 @@ namespace LightBuzz
 
         private async Task Init()
         {
+#if !UNITY_WSA || UNITY_EDITOR
+            azureClient = new MobileServiceClient(mobileAppUri, new LightBuzzHttpsHandler());
+#else
             azureClient = new MobileServiceClient(mobileAppUri);
+#endif
             todoTableDAO = new MobileAppsTableDAO<TodoItem>(azureClient, supportLocalDatabase);
 
             if (todoTableDAO.SupportsLocalStore)

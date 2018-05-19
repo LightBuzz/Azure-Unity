@@ -31,7 +31,11 @@ namespace LightBuzz
         {
             get
             {
+#if !UNITY_WSA || UNITY_EDITOR
+                return "Data Source=" + LocalDatabasePath + ";Version=3;";
+#else
                 return LocalDatabasePath;
+#endif
             }
         }
 
