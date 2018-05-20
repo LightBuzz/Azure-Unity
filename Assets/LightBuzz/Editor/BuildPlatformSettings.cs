@@ -32,6 +32,7 @@ public class BuildPlatformSettings : MonoBehaviour
     private static void BuildSettings_UWP()
     {
         EditorUserBuildSettings.wsaSubtarget = WSASubtarget.AnyDevice;
+        PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true);
 
         SetBuildSettings(BuildTargetGroup.WSA, BuildTarget.WSAPlayer, ScriptingImplementation.WinRTDotNET);
     }
@@ -40,6 +41,7 @@ public class BuildPlatformSettings : MonoBehaviour
     private static void BuildSettings_HoloLens()
     {
         EditorUserBuildSettings.wsaSubtarget = WSASubtarget.HoloLens;
+        PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true);
 
         SetBuildSettings(BuildTargetGroup.WSA, BuildTarget.WSAPlayer, ScriptingImplementation.WinRTDotNET);
     }
@@ -48,7 +50,7 @@ public class BuildPlatformSettings : MonoBehaviour
     {
         PlayerSettings.SetScriptingBackend(group, scripting);
         PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
-
+        
         EditorUserBuildSettings.SwitchActiveBuildTarget(group, target);
     }
 
