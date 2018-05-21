@@ -82,12 +82,12 @@ namespace LightBuzz.Azure
             {
                 try
                 {
+#if !UNITY_WSA
                     if (!File.Exists(LocalDatabasePath))
                     {
-#if !UNITY_WSA
                         File.Create(LocalDatabasePath).Close();
-#endif
                     }
+#endif
 
                     _localStore = new MobileServiceSQLiteStore(LocalDatabaseConnectionString);
 
