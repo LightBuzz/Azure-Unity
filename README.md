@@ -2,7 +2,7 @@
 
 The LightBuzz Azure App Service SDK for Unity3D is a framework that allows you to consume remote Azure services and even store data locally. It's secured using HTTPS. Supports Android, iOS, Windows Standalone, Mac OS, and UWP (including **HoloLens**).
 
-> It's across-platform SDK you can actually use in your apps and games without compatibility problems.
+> It's a cross-platform SDK you can actually use in your apps and games without compatibility problems.
 
 ![lightbuzz-azure-unity](https://user-images.githubusercontent.com/562680/39691509-70b6b07e-51e6-11e8-8111-eaa171308999.png)
 
@@ -20,7 +20,7 @@ The **LightBuzz Azure SDK for Unity** consumes [Azure App Service APIs](http://a
 
 ### HTTPS
 
-The LightBuzz SDK is built with security in mind. The native Microsoft ```HttpClient``` modules do not support HTTPS in Unity. Our team has built the HTTP requests from scratch using the ```UnityWebRequest``` class. This way, your data are encrypted and transmitted securely.
+The LightBuzz SDK is built with security in mind. The native Microsoft ```MobileServiceClient``` does not support HTTPS in Unity. Our team has built the HTTP requests from scratch using the ```UnityWebRequest``` class. This way, your data are encrypted and transmitted securely.
 
 ### HTTP(S) methods
 
@@ -88,26 +88,25 @@ Using the SDK, you can apply the proper Unity Build Settings automatically. On t
 
 In the included samples, we have created a simple demo that implements Microsoft's [ToDo List example](https://azure.microsoft.com/en-us/resources/samples/app-service-api-dotnet-todo-list/).
 
-We have implemented a generic **Data Access Object** for you to use, called ```MobileAppsTableDAO```. The ```MobileAppsTableDAO``` supports all of the common HTTP & HTTPS operations out-of-the-box. All you need to do is call the proper C# methods.
+We have implemented a generic **Data Access Object** for you to use, called ```MobileAppsTableDAO```. The ```MobileAppsTableDAO``` supports all of the common CRUD operations out-of-the-box. All you need to do is call the proper C# methods.
 
 Using the code is fairly simple:
 
 ### Initialization
 
 ```
+private string mobileAppUri = "https://testtodolightbuzz.azurewebsites.net";
+private bool supportLocalDatabase = true;
+
 private MobileServiceClient azureClient;
 private MobileAppsTableDAO<TodoItem> todoTableDAO;
 
 private async Task Init()
 {
-    azureClient = new MobileServiceClient(mobileAppUri, new LightBuzzMobileServiceClient());
+    azureClient = new LightBuzzMobileServiceClient(mobileAppUri, supportLocalDatabase);
     todoTableDAO = new MobileAppsTableDAO<TodoItem>(azureClient);
 
-    if (todoTableDAO.SupportsLocalStore)
-    {
-        await LocalStore.Init(azureClient);
-        await LocalStore.Sync();
-    }
+    await azureClient.InitializeLocalStore();
 }
 ```
 
@@ -157,13 +156,12 @@ private async Task Delete()
 
 ### Sync local and remote data
 
+In case you are using the local database for offline functionality, here is how to perform the pull and push requests:
+
 ```
 private async Task Sync()
 {
-    if (todoTableDAO.SupportsLocalStore)
-    {
-        await LocalStore.Sync();
-    }
+    await azureClient.SyncStore();
 }
 ```
 
