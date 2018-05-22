@@ -22,6 +22,16 @@ The **LightBuzz Azure SDK for Unity** consumes [Azure App Service APIs](http://a
 
 The LightBuzz SDK is built with security in mind. The native Microsoft ```HttpClient``` modules do not support HTTPS in Unity. Our team has built the HTTP requests from scratch using the ```UnityWebRequest``` class. This way, your data are encrypted and transmitted securely.
 
+### HTTP(S) methods
+
+The LightBuzz SDK supports all of the HTTP(S) method requests.
+
+* GET
+* POST
+* PUT
+* PATCH
+* DELETE
+
 ### Local Database
 
 Unlike most of the available SDKs, the LightBuzz Azure SDK for Unity fully supports local database storage. This means you can use the Azure App Services to store data into a local SQLite database. You can sync your local data with the remote server, performing **pull** and **push** operations. As a result, your customers can use your app/game without an active Internet connection!
