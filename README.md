@@ -1,6 +1,6 @@
 # Azure App Service SDK for Unity3D
 
-The LightBuzz Azure App Service SDK for Unity3D is a framework that allows you to consume remote Azure services and even store data locally. It's secured using HTTPS. Supports Android, iOS, Windows Standalone, Mac OS, and UWP (including **HoloLens**).
+The LightBuzz Azure SDK for Unity3D is a framework that allows you to consume remote Azure App services and even store data locally. It's secured using HTTPS. Supports Android, iOS, Windows Standalone, Mac OS, and UWP (including **HoloLens**).
 
 > It's a cross-platform SDK you can actually use in your apps and games without compatibility problems.
 
@@ -16,7 +16,7 @@ To use the SDK, you can either clone the current repository or download the .uni
 
 ### Azure App Services
 
-The **LightBuzz Azure SDK for Unity** consumes [Azure App Service APIs](http://azure.microsoft.com/en-us/documentation/articles/app-service-api-apps-why-best-platform/). Azure App Services are integrated services that enable you to create web and mobile apps for any platform or device.
+The **LightBuzz Azure SDK for Unity** consumes [Azure App Service APIs](http://azure.microsoft.com/en-us/documentation/articles/app-service-api-apps-why-best-platform/). Azure App Services is a service for hosting web applications, REST APIs, and mobile back ends for any platform or device.
 
 ### HTTPS
 
