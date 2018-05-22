@@ -596,6 +596,7 @@ PlayerSettings:
   scriptingDefineSymbols: {}
   platformArchitecture: {}
   scriptingBackend:
+    Android: 0
     Metro: 2
     Standalone: 0
     iOS: 1

@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Assets.LightBuzz.LightBuzz.Azure;
 using UnityEngine;
 
 namespace LightBuzz.Azure
@@ -19,7 +20,7 @@ namespace LightBuzz.Azure
 
         private static MobileServiceSQLiteStore _localStore;
 
-        private static MobileServiceClient _azureClient;
+        private static LightBuzzMobileServiceClient _azureClient;
 
         private static string LocalDatabasePath
         {
@@ -57,7 +58,7 @@ namespace LightBuzz.Azure
         /// </summary>
         /// <param name="azureClient">The Azure Client object.</param>
         /// <returns></returns>
-        public static async Task Init(MobileServiceClient azureClient)
+        public static async Task Init(LightBuzzMobileServiceClient azureClient)
         {
             await Init(azureClient, Path.Combine(Application.persistentDataPath, DefaultLocalDatabaseName));
         }
@@ -68,7 +69,7 @@ namespace LightBuzz.Azure
         /// <param name="azureClient">The Azure Client object.</param>
         /// <param name="localDatabasePath">The full path to the local database file, e.g. Path.Combine(Application.persistentDataPath, "database.db").</param>
         /// <returns></returns>
-        public static async Task Init(MobileServiceClient azureClient, string localDatabasePath)
+        public static async Task Init(LightBuzzMobileServiceClient azureClient, string localDatabasePath)
         {
             if (azureClient == null)
             {

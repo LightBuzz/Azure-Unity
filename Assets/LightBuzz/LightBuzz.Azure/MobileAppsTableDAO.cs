@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Assets.LightBuzz.LightBuzz.Azure;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 
@@ -25,28 +26,19 @@ namespace LightBuzz.Azure
         public IMobileServiceTable<T> TableCloud { get; set; }
 
         /// <summary>
-        /// Specifies whether the app will store data locally.
+        /// Specifies whether the app stores data locally.
         /// </summary>
-        public bool SupportsLocalStore { get; set; }
+        private bool _supportsLocalStore { get; set; }
 
         /// <summary>
         /// Creates a new instance of the data access object.
         /// </summary>
         /// <param name="azureClient">The Azure App Service client.</param>
-        public MobileAppsTableDAO(MobileServiceClient azureClient) : this(azureClient, true)
+        public MobileAppsTableDAO(LightBuzzMobileServiceClient azureClient)
         {
-        }
+            _supportsLocalStore = azureClient.SupportsLocalStore;
 
-        /// <summary>
-        /// Creates a new instance of the data access object.
-        /// </summary>
-        /// <param name="azureClient">The Azure App Service client.</param>
-        /// <param name="supportLocal">Specifies whether the app will store data locally.</param>
-        public MobileAppsTableDAO(MobileServiceClient azureClient, bool supportLocal)
-        {
-            SupportsLocalStore = supportLocal;
-
-            if (SupportsLocalStore)
+            if (_supportsLocalStore)
                 TableLocal = azureClient.GetSyncTable<T>();
             else
                 TableCloud = azureClient.GetTable<T>();
@@ -61,7 +53,7 @@ namespace LightBuzz.Azure
         /// <returns></returns>
         public async Task Pull(CancellationToken ct, string uniqueQueryId, Expression<Func<T, bool>> predicate)
         {
-            if (SupportsLocalStore)
+            if (_supportsLocalStore)
                 await TableLocal.PullAsync(uniqueQueryId, TableLocal.Where(predicate), ct);
         }
 
@@ -72,7 +64,7 @@ namespace LightBuzz.Azure
         /// <returns></returns>
         public async Task Insert(T objectToSave)
         {
-            if (SupportsLocalStore)
+            if (_supportsLocalStore)
                 await TableLocal.InsertAsync(objectToSave);
             else
                 await TableCloud.InsertAsync(objectToSave);
@@ -85,7 +77,7 @@ namespace LightBuzz.Azure
         /// <returns></returns>
         public async Task Update(T objectToUpdate)
         {
-            if (SupportsLocalStore)
+            if (_supportsLocalStore)
                 await TableLocal.UpdateAsync(objectToUpdate);
             else
                 await TableCloud.UpdateAsync(objectToUpdate);
@@ -98,7 +90,7 @@ namespace LightBuzz.Azure
         /// <returns></returns>
         public async Task Delete(T objectToDelete)
         {
-            if (SupportsLocalStore)
+            if (_supportsLocalStore)
                 await TableLocal.DeleteAsync(objectToDelete);
             else
                 await TableCloud.DeleteAsync(objectToDelete);
@@ -110,7 +102,7 @@ namespace LightBuzz.Azure
         /// <returns></returns>
         public async Task<List<T>> FindAll()
         {
-            if (SupportsLocalStore)
+            if (_supportsLocalStore)
                 return await TableLocal.ToListAsync();
             else
                 return await TableCloud.ToListAsync();
@@ -123,7 +115,7 @@ namespace LightBuzz.Azure
         /// <returns></returns>
         public async Task<List<T>> FindAll(Expression<Func<T, bool>> predicate)
         {
-            if (SupportsLocalStore)
+            if (_supportsLocalStore)
                 return await TableLocal.Where(predicate).ToListAsync();
             else
                 return await TableCloud.Where(predicate).ToListAsync();
