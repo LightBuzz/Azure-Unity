@@ -337,7 +337,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000031504078, y: -0.000012978344}
+  m_AnchoredPosition: {x: 0.000031504078, y: -0.00005084711}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &182529950
@@ -756,6 +756,7 @@ MonoBehaviour:
   toggleInsert: {fileID: 1365450447}
   buttonDelete: {fileID: 765652751}
   buttonSync: {fileID: 1719738547}
+  textSync: {fileID: 318520211}
 --- !u!4 &265658573
 Transform:
   m_ObjectHideFlags: 0
@@ -1244,8 +1245,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1561539997}
   m_HandleRect: {fileID: 1561539996}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.9999999
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3492,7 +3493,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000012344738, y: 0.0000013049203}
+  m_AnchoredPosition: {x: 0.000012344738, y: -0.000026431855}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1680563414
@@ -3795,7 +3796,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 280840894}
   m_HandleRect: {fileID: 280840893}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

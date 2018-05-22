@@ -48,6 +48,9 @@ public class Sample : MonoBehaviour
     [SerializeField]
     private Button buttonSync;
 
+    [SerializeField]
+    private Text textSync;
+
     private async void Start()
     {
         loading.SetActive(true);
@@ -55,6 +58,12 @@ public class Sample : MonoBehaviour
         await Init();
 
         loading.SetActive(false);
+    }
+
+    private void OnValidate()
+    {
+        buttonSync.gameObject.SetActive(supportLocalDatabase);
+        textSync.gameObject.SetActive(supportLocalDatabase);
     }
 
     public async void Get_Click()
