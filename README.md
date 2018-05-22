@@ -43,9 +43,9 @@ The LightBuzz Azure SDK for Unity supports the following platforms:
 
 ## Requirements
 
-### Scripting Runtime
+To use the SDK, **[Unity 2017 LTS](https://unity3d.com/unity/qa/lts-releases)** or **[Unity 2018](https://store.unity.com/)** is recommended.
 
-To use the SDK, **[Unity 2017 LTS](https://unity3d.com/unity/qa/lts-releases)** or **[Unity 2018](https://store.unity.com/)** is recommended. The SDK has also been tested with Unity 2017.
+### Scripting Runtime
 
 The SDK is built with the latest C# features, so you need to use the **.NET 4.x Scripting Runtime version**.
 
