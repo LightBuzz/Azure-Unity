@@ -68,6 +68,12 @@ The SDK works with the following Scripting Backend options:
 | iOS | IL2CPP |
 | UWP | .NET |
 
+### Apply Build Settings
+
+Using the SDK, you can apply the proper Unity Build Settings automatically. On the Unity menu bar, select **LightBuzz** → **Apply Build Settings for...** and then select the target platform. The SDK will automatically apply the proper build settings for you.
+
+![lightbuzz-build-settings](https://user-images.githubusercontent.com/562680/40350478-9d1a2880-5db2-11e8-9ee7-11b5639a2320.png)
+
 ## How to use
 
 In the included samples, we have created a simple demo that implements Microsoft's [ToDo List example](https://azure.microsoft.com/en-us/resources/samples/app-service-api-dotnet-todo-list/).
