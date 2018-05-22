@@ -100,7 +100,7 @@ private MobileAppsTableDAO<TodoItem> todoTableDAO;
 
 private async Task Init()
 {
-    azureClient = new MobileServiceClient(mobileAppUri, new LightBuzzHttpsHandler());
+    azureClient = new MobileServiceClient(mobileAppUri, new LightBuzzMobileServiceClient());
     todoTableDAO = new MobileAppsTableDAO<TodoItem>(azureClient);
 
     if (todoTableDAO.SupportsLocalStore)
