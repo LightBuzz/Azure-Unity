@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Assets.LightBuzz.LightBuzz.Azure;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -108,15 +107,10 @@ public class Sample : MonoBehaviour
 
     private async Task Init()
     {
-
         azureClient = new LightBuzzMobileServiceClient(mobileAppUri, supportLocalDatabase);
         todoTableDAO = new MobileAppsTableDAO<TodoItem>(azureClient);
 
-        if (azureClient.SupportsLocalStore)
-        {
-            await LocalStore.Init(azureClient);
-            await LocalStore.Sync();
-        }
+        await azureClient.InitializeLocalStore();
     }
 
     private async Task Get()
@@ -161,7 +155,7 @@ public class Sample : MonoBehaviour
 
     private async Task Sync()
     {
-        await LocalStore.Sync();
+        await azureClient.SyncStore();
 
     }
 }

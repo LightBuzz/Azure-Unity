@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LightBuzz.Azure;
+﻿using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
 
-namespace Assets.LightBuzz.LightBuzz.Azure
+namespace LightBuzz.Azure
 {
     public class LightBuzzMobileServiceClient : MobileServiceClient
     {
@@ -30,6 +25,26 @@ namespace Assets.LightBuzz.LightBuzz.Azure
 
 #endif
 
+        public async Task InitializeLocalStore()
+        {
+            await InitStore();
+            await SyncStore();
+        }
 
+        public async Task InitStore()
+        {
+            if (SupportsLocalStore)
+            {
+                await LocalStore.Init(this);
+            }
+        }
+
+        public async Task SyncStore()
+        {
+            if (SupportsLocalStore)
+            {
+                await LocalStore.Sync();
+            }
+        }
     }
 }
