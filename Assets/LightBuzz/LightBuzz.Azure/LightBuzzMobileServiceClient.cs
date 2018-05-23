@@ -1,7 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//
+// Copyright (c) LightBuzz Software.
+// All rights reserved.
+//
+// http://lightbuzz.com
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+//
+// 1. Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+// FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+// COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+// BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+// OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+// AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+// WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+//
+
+using System;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
@@ -9,29 +38,65 @@ using UnityEngine;
 
 namespace LightBuzz.Azure
 {
+    /// <summary>
+    /// A Unity-ready MobileServiceClient.
+    /// Must be extended by a subclass.
+    /// </summary>
     public abstract class LightBuzzMobileServiceClient : MobileServiceClient
     {
+        /// <summary>
+        /// Defines the tables in the local store. 
+        /// Method must be implemented in a subclass.
+        /// e.g.
+        /// protected override void DefineTables()
+        /// {
+        ///    LocalStore.DefineTable<TodoItem/>();
+        /// }
+        /// </summary>
         protected abstract void DefineTables();
 
         /// <summary>
         /// Pulls the data from the remote Azure App Service and stores them into the local database.
+        /// Method must be implemented in a subclass.
+        /// e.g.
+        /// protected override async Task Pull()
+        /// {
+        ///    AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
+        ///    await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
+        ///  }
         /// </summary>
-        /// <returns></returns>
-        public abstract Task Pull();
+        protected abstract Task Pull();
+
+        /// <summary>
+        /// The default database name pattern.
+        /// </summary>
+        protected readonly string DefaultLocalDatabaseNamePattern = "database_{0}.db";
+
+        /// <summary>
+        /// The MobileServiceSQLiteStore that connects to the local database.
+        /// </summary>
+        protected MobileServiceSQLiteStore LocalStore;
 
         /// <summary>
         /// Specifies whether the app will store data locally.
         /// </summary>
         public bool SupportsLocalStore { get; set; }
 
-        protected readonly string DefaultLocalDatabaseNamePattern = "database_{0}.db";
+        /// <summary>
+        /// The local SQLite database name.
+        /// </summary>
         public string DatabaseName { get; set; }
 
+        /// <summary>
+        /// The local SQLite database path.
+        /// </summary>
         private string _localDatabasePath;
 
-        protected MobileServiceSQLiteStore LocalStore;
-
-
+        /// <summary>
+        /// Creates a new instance of the LightBuzzMobileServiceClient. 
+        /// </summary>
+        /// <param name="mobileAppUri">Azure App Service URL</param>
+        /// <param name="supportLocal">Supports local database</param>
 #if !UNITY_WSA || UNITY_EDITOR
 
         protected LightBuzzMobileServiceClient(string mobileAppUri, bool supportLocal) : base(mobileAppUri, new LightBuzzHttpsHandler())
@@ -49,28 +114,9 @@ namespace LightBuzz.Azure
 
 #endif
 
-        public async Task InitializeLocalStore()
-        {
-            await InitStore();
-            await SyncStore();
-        }
-
-        public async Task InitStore()
-        {
-            if (SupportsLocalStore)
-            {
-                await Init(this);
-            }
-        }
-
-        public async Task SyncStore()
-        {
-            if (SupportsLocalStore)
-            {
-                await Sync();
-            }
-        }
-
+        /// <summary>
+        /// Gets the local SQLite database absolute path.
+        /// </summary>
         protected string LocalDatabasePath
         {
             get
@@ -84,6 +130,9 @@ namespace LightBuzz.Azure
             }
         }
 
+        /// <summary>
+        /// Gets the local SQLite database absolute path.
+        /// </summary>
         protected string LocalDatabaseConnectionString
         {
             get
@@ -100,19 +149,9 @@ namespace LightBuzz.Azure
         /// Initializes the local SQLite database.
         /// </summary>
         /// <param name="azureClient">The Azure Client object.</param>
-        /// <returns></returns>
-        public async Task Init(LightBuzzMobileServiceClient azureClient)
-        {
-            await Init(azureClient, Path.Combine(Application.persistentDataPath, DatabaseName));
-        }
-
-        /// <summary>
-        /// Initializes the local SQLite database.
-        /// </summary>
-        /// <param name="azureClient">The Azure Client object.</param>
         /// <param name="localDatabasePath">The full path to the local database file, e.g. Path.Combine(Application.persistentDataPath, "database.db").</param>
         /// <returns></returns>
-        public async Task Init(LightBuzzMobileServiceClient azureClient, string localDatabasePath)
+        protected async Task InitStore(LightBuzzMobileServiceClient azureClient, string localDatabasePath)
         {
             if (azureClient == null)
             {
@@ -149,10 +188,20 @@ namespace LightBuzz.Azure
         }
 
         /// <summary>
+        /// Initializes the local SQLite database.
+        /// </summary>
+        /// <param name="azureClient">The Azure Client object.</param>
+        /// <returns></returns>
+        protected async Task InitStore(LightBuzzMobileServiceClient azureClient)
+        {
+            await InitStore(azureClient, Path.Combine(Application.persistentDataPath, DatabaseName));
+        }
+
+        /// <summary>
         /// Syncs with the remote Azure App Service (pull/push operations).
         /// </summary>
         /// <returns></returns>
-        public async Task Sync()
+        protected async Task SyncStore()
         {
             try
             {
@@ -175,6 +224,40 @@ namespace LightBuzz.Azure
         public async Task Push()
         {
             await SyncContext.PushAsync();
+        }
+
+        /// <summary>
+        /// Initializes local SQLite database, if local store is supported.
+        /// </summary>
+        /// <returns></returns>
+        public async Task Init()
+        {
+            if (SupportsLocalStore)
+            {
+                await InitStore(this);
+            }
+        }
+
+        /// <summary>
+        /// Syncs with the remote Azure App Service, if local store is supported.
+        /// </summary>
+        /// <returns></returns>
+        public async Task Sync()
+        {
+            if (SupportsLocalStore)
+            {
+                await SyncStore();
+            }
+        }
+
+        /// <summary>
+        /// Initializes local SQLite database connection and sync.
+        /// </summary>
+        /// <returns></returns>
+        public async Task InitializeLocalStore()
+        {
+            await Init();
+            await Sync();
         }
     }
 }
