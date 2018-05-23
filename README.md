@@ -97,7 +97,8 @@ Using the code is fairly simple:
 ```
 private string mobileAppUri = "https://testtodolightbuzz.azurewebsites.net";
 private bool supportLocalDatabase = true;
-
+```
+```
 private MobileServiceClient azureClient;
 private MobileAppsTableDAO<TodoItem> todoTableDAO;
 
