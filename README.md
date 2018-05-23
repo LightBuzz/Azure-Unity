@@ -100,14 +100,14 @@ private bool supportLocalDatabase = true;
 ```
 ```
 private MobileServiceClient azureClient;
-private MobileAppsTableDAO<TodoItem> todoTableDAO;
+private AppServiceTableDAO<TodoItem> todoTableDAO;
 
 private async Task Init()
 {
     azureClient = new SampleMobileClient(mobileAppUri, supportLocalDatabase);
     await azureClient.InitializeLocalStore();
 
-    todoTableDAO = new MobileAppsTableDAO<TodoItem>(azureClient);
+    todoTableDAO = new AppServiceTableDAO<TodoItem>(azureClient);
 }
 ```
 
@@ -162,7 +162,7 @@ In case you are using the local database for offline functionality, here is how 
 ```
 private async Task Sync()
 {
-    await azureClient.SyncStore();
+    await azureClient.Sync();
 }
 ```
 
