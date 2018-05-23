@@ -1,5 +1,4 @@
 ﻿using LightBuzz.Azure;
-using Microsoft.WindowsAzure.MobileServices;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -107,10 +106,10 @@ public class Sample : MonoBehaviour
 
     private async Task Init()
     {
-        azureClient = new LightBuzzMobileServiceClient(mobileAppUri, supportLocalDatabase);
-        todoTableDAO = new MobileAppsTableDAO<TodoItem>(azureClient);
-
+        azureClient = new SampleMobileClient(mobileAppUri, supportLocalDatabase);
         await azureClient.InitializeLocalStore();
+
+        todoTableDAO = new MobileAppsTableDAO<TodoItem>(azureClient);
     }
 
     private async Task Get()
