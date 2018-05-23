@@ -103,10 +103,10 @@ private MobileAppsTableDAO<TodoItem> todoTableDAO;
 
 private async Task Init()
 {
-    azureClient = new LightBuzzMobileServiceClient(mobileAppUri, supportLocalDatabase);
-    todoTableDAO = new MobileAppsTableDAO<TodoItem>(azureClient);
-
+    azureClient = new SampleMobileClient(mobileAppUri, supportLocalDatabase);
     await azureClient.InitializeLocalStore();
+
+    todoTableDAO = new MobileAppsTableDAO<TodoItem>(azureClient);
 }
 ```
 
