@@ -59,13 +59,13 @@ namespace LightBuzz.Azure
         /// Pulls the data from the remote Azure App Service and stores them into the local database.
         /// Method must be implemented in a subclass.
         /// e.g.
-        /// protected override async Task Pull()
+        /// public override async Task Pull()
         /// {
         ///    AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
         ///    await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
         ///  }
         /// </summary>
-        protected abstract Task Pull();
+        public abstract Task Pull();
 
         /// <summary>
         /// The default database name pattern.

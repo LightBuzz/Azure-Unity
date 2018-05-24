@@ -60,7 +60,7 @@ class SampleMobileClient : LightBuzzMobileServiceClient
     /// The implementation of abstract method Pull.
     /// </summary>
     /// <returns></returns>
-    protected override async Task Pull()
+    public override async Task Pull()
     {
         AppServiceTableDAO<TodoItem> todoTableDao = new AppServiceTableDAO<TodoItem>(this);
         await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);

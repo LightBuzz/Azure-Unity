@@ -50,7 +50,7 @@ namespace LightBuzz.Azure
             throw new NotImplementedException();
         }
 
-        protected override Task Pull()
+        public override Task Pull()
         {
             throw new NotImplementedException();
         }
