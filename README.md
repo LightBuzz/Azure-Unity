@@ -73,12 +73,9 @@ In Unity 2017, you need to explicitly select "**Experimental (.NET 4.6 Equivalen
 
 The SDK works with the following Scripting Backend options:
 
-| Platform | Scripting Backend |
-| ------- | ------- |
-| Standalone | Mono |
-| Android | Mono |
-| iOS | IL2CPP |
-| UWP | .NET |
+| Standalone | Android | iOS | UWP |
+| --- | --- | --- | --- |
+| Mono | Mono | IL2CPP | .NET |
 
 ### Apply Build Settings
 
