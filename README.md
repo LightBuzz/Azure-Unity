@@ -1,3 +1,5 @@
+![lightbuzz-azure-unity-logo](https://user-images.githubusercontent.com/562680/41097287-1d0d344c-6a60-11e8-8434-2216f40b2b5b.png)
+
 # Azure App Service SDK for Unity3D
 
 The LightBuzz Azure SDK for Unity3D is a framework that allows you to consume remote Azure App services and even store data locally. It's secured using HTTPS. Supports Android, iOS, Windows Standalone, Mac OS, and UWP (including **HoloLens**).
@@ -71,12 +73,9 @@ In Unity 2017, you need to explicitly select "**Experimental (.NET 4.6 Equivalen
 
 The SDK works with the following Scripting Backend options:
 
-| Platform | Scripting Backend |
-| ------- | ------- |
-| Standalone | Mono |
-| Android | Mono |
-| iOS | IL2CPP |
-| UWP | .NET |
+| Standalone | Android | iOS | UWP |
+| --- | --- | --- | --- |
+| Mono | Mono | IL2CPP | .NET |
 
 ### Apply Build Settings
 
