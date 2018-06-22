@@ -30,8 +30,11 @@
 //
 
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,6 +52,11 @@ namespace LightBuzz.Azure
         /// The response from the server.
         /// </summary>
         private HttpResponseMessage _result = new HttpResponseMessage();
+
+        /// <summary>
+        /// The authorization token for the request.
+        /// </summary>
+        private string _authorizationToken = string.Empty;
 
         /// <summary>
         /// The Content Type header type (default: application/json).
@@ -86,6 +94,12 @@ namespace LightBuzz.Azure
         {
             byte[] contentArray = request.Content != null ? await request.Content.ReadAsByteArrayAsync() : null;
 
+            HttpRequestHeaders headers = request.Headers;
+            IEnumerable<string> auth;
+            if (headers != null && headers.TryGetValues("X-ZUMO-AUTH", out auth))
+            {
+                _authorizationToken = headers.GetValues("X-ZUMO-AUTH").FirstOrDefault();
+            }
             IEnumerator enumerator = SendUnityRequest(request.RequestUri.AbsoluteUri, contentArray, request.Method.ToString());
 
             if (enumerator != null)
@@ -117,6 +131,10 @@ namespace LightBuzz.Azure
             uwr.downloadHandler = new DownloadHandlerBuffer();
             uwr.SetRequestHeader("Content-Type", ContentType);
             uwr.SetRequestHeader("ZUMO-API-VERSION", ZumoApiVersion);
+            if (!string.IsNullOrEmpty(_authorizationToken))
+            {
+                uwr.SetRequestHeader("X-ZUMO-AUTH", _authorizationToken);
+            }
 
             // Send the request then wait until it returns.
             yield return uwr.SendWebRequest();
@@ -129,6 +147,9 @@ namespace LightBuzz.Azure
             if (uwr.isNetworkError || uwr.isHttpError)
             {
                 Debug.LogWarning("Error while sending: " + uwr.error);
+                _result.StatusCode = (HttpStatusCode)uwr.responseCode;
+                _result.ReasonPhrase = _result.StatusCode.ToString();
+                _result.Content = new StringContent(uwr.downloadHandler.text, Encoding.UTF8, ContentType);
 
                 yield return uwr.error;
             }
