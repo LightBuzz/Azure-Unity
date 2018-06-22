@@ -31,6 +31,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LightBuzz.Azure
@@ -50,7 +51,7 @@ namespace LightBuzz.Azure
             throw new NotImplementedException();
         }
 
-        public override Task Pull()
+        public override Task Pull(CancellationToken ct)
         {
             throw new NotImplementedException();
         }

@@ -31,6 +31,7 @@
 
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
@@ -65,7 +66,9 @@ namespace LightBuzz.Azure
         ///    await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
         ///  }
         /// </summary>
-        public abstract Task Pull();
+        /// <param name="ct">Cancellation Token</param>
+        /// <returns></returns>
+        public abstract Task Pull(CancellationToken ct);
 
         /// <summary>
         /// The default database name pattern.
@@ -97,22 +100,31 @@ namespace LightBuzz.Azure
         /// </summary>
         /// <param name="mobileAppUri">Azure App Service URL</param>
         /// <param name="supportLocal">Supports local database</param>
+
+
+        protected LightBuzzMobileServiceClient(string mobileAppUri, bool supportLocal)
 #if !UNITY_WSA || UNITY_EDITOR
-
-        protected LightBuzzMobileServiceClient(string mobileAppUri, bool supportLocal) : base(mobileAppUri, new LightBuzzHttpsHandler())
-        {
-            SupportsLocalStore = supportLocal;
-            DatabaseName = string.Format(DefaultLocalDatabaseNamePattern, mobileAppUri.GetHashCode());
-        }
+            : base(mobileAppUri, new LightBuzzHttpsHandler())
 #else
+            : base(mobileAppUri)
+#endif
 
-        protected LightBuzzMobileServiceClient(string mobileAppUri,bool supportLocal) : base(mobileAppUri)
         {
             SupportsLocalStore = supportLocal;
             DatabaseName = string.Format(DefaultLocalDatabaseNamePattern, mobileAppUri.GetHashCode());
         }
 
+#if !UNITY_WSA || UNITY_EDITOR
+        protected LightBuzzMobileServiceClient(string mobileAppUri, bool supportLocal, LightBuzzHttpsHandler handler) 
+            : base(mobileAppUri, handler)
+#else
+        protected LightBuzzMobileServiceClient(string mobileAppUri, bool supportLocal, HttpMessageHandler handler) 
+            : base(mobileAppUri, handler)
 #endif
+        {
+            SupportsLocalStore = supportLocal;
+            DatabaseName = string.Format(DefaultLocalDatabaseNamePattern, mobileAppUri.GetHashCode());
+        }
 
         /// <summary>
         /// Gets the local SQLite database absolute path.
@@ -150,7 +162,7 @@ namespace LightBuzz.Azure
         /// </summary>
         /// <param name="localDatabasePath">The full path to the local database file, e.g. Path.Combine(Application.persistentDataPath, "database.db").</param>
         /// <returns></returns>
-        protected async Task InitStore(string localDatabasePath)
+        protected virtual async Task InitStore(string localDatabasePath)
         {
             _localDatabasePath = localDatabasePath;
 
@@ -211,12 +223,58 @@ namespace LightBuzz.Azure
         }
 
         /// <summary>
+        /// Syncs with the remote Azure App Service (pull/push operations).
+        /// </summary>
+        /// <param name="ct">The Cancellation Token.</param>
+        /// <returns></returns>
+        protected async Task SyncStore(CancellationToken ct)
+        {
+            try
+            {
+                await Push(ct);
+                await Pull(ct);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+                Debug.LogError(e.Source);
+                Debug.LogError(e.StackTrace);
+                Debug.LogError(e.ToString());
+            }
+        }
+        /// <summary>
         /// Pushes the data stored in the local SQLite database to the remote Azure App Service.
         /// </summary>
         /// <returns></returns>
         public async Task Push()
         {
             await SyncContext.PushAsync();
+        }
+
+        /// <summary>
+        /// Pushes the data stored in the local SQLite database to the remote Azure App Service.
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
+        /// <returns></returns>
+        public async Task Push(CancellationToken ct)
+        {
+            await SyncContext.PushAsync(ct);
+        }
+
+        /// <summary>
+        /// Pulls the data from the remote Azure App Service and stores them into the local database.
+        /// Method must be implemented in a subclass.
+        /// e.g.
+        /// public override async Task Pull()
+        /// {
+        ///    AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
+        ///    await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
+        ///  }
+        /// </summary>
+        /// <returns></returns>
+        public async Task Pull()
+        {
+            await Pull(new CancellationToken());
         }
 
         /// <summary>
