@@ -218,6 +218,7 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
             }
             if (type == JTokenType.Bytes)
             {
+                strValue = System.Text.Encoding.Default.GetString((byte[])value);
                 return Convert.FromBase64String(strValue);
             }
             if (type == JTokenType.TimeSpan)
