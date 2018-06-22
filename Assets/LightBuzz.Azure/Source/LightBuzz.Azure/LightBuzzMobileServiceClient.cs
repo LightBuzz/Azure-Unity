@@ -148,19 +148,13 @@ namespace LightBuzz.Azure
         /// <summary>
         /// Initializes the local SQLite database.
         /// </summary>
-        /// <param name="azureClient">The Azure Client object.</param>
         /// <param name="localDatabasePath">The full path to the local database file, e.g. Path.Combine(Application.persistentDataPath, "database.db").</param>
         /// <returns></returns>
-        protected async Task InitStore(LightBuzzMobileServiceClient azureClient, string localDatabasePath)
+        protected async Task InitStore(string localDatabasePath)
         {
-            if (azureClient == null)
-            {
-                throw new NullReferenceException("Azure Client is null.");
-            }
-
             _localDatabasePath = localDatabasePath;
 
-            if (!azureClient.SyncContext.IsInitialized)
+            if (!SyncContext.IsInitialized)
             {
                 try
                 {
@@ -190,11 +184,10 @@ namespace LightBuzz.Azure
         /// <summary>
         /// Initializes the local SQLite database.
         /// </summary>
-        /// <param name="azureClient">The Azure Client object.</param>
         /// <returns></returns>
-        protected async Task InitStore(LightBuzzMobileServiceClient azureClient)
+        protected async Task InitStore()
         {
-            await InitStore(azureClient, Path.Combine(Application.persistentDataPath, DatabaseName));
+            await InitStore(Path.Combine(Application.persistentDataPath, DatabaseName));
         }
 
         /// <summary>
@@ -234,7 +227,7 @@ namespace LightBuzz.Azure
         {
             if (SupportsLocalStore)
             {
-                await InitStore(this);
+                await InitStore();
             }
         }
 
