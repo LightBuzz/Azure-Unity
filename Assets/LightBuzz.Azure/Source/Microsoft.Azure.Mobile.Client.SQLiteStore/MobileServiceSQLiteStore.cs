@@ -698,9 +698,24 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
 				if (!reader.IsDBNull(i))
 				{
 					string name = reader.GetName(i);
-					object value = reader.GetValue(i);
+				    object value = new object();
+				    if (reader.GetDataTypeName(i) == "DATETIME")
+				    {
+				        try
+				        {
+				            value = reader.GetDouble(reader.GetOrdinal(name));
+				        }
+				        catch (FormatException ex)
+				        {
+				            value = reader.GetInt64(reader.GetOrdinal(name));
+				        }
+				    }
+				    else
+				    {
+				        value = reader.GetValue(i);
+				    }
 
-					ColumnDefinition column;
+                    ColumnDefinition column;
 
 					if (table.TryGetValue(name, out column))
 					{
