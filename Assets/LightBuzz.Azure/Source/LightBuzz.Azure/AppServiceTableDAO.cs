@@ -150,5 +150,18 @@ namespace LightBuzz.Azure
             else
                 return await TableCloud.Where(predicate).ToListAsync();
         }
+
+        /// <summary>
+        /// Performs a database Get operation and returns the item that corresponds to the specified id.
+        /// </summary>
+        /// <param name="id">The id to find</param>
+        /// <returns>The requested T object</returns>
+        public async Task<T> FindById(string id)
+        {
+            if (_supportsLocalStore)
+                return await TableLocal.LookupAsync(id);
+            else
+                return await TableCloud.LookupAsync(id);
+        }
     }
 }
