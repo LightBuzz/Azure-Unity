@@ -117,15 +117,14 @@ namespace LightBuzz.Azure
 #if !UNITY_WSA || UNITY_EDITOR
         protected LightBuzzMobileServiceClient(string mobileAppUri, bool supportLocal, LightBuzzHttpsHandler handler) 
             : base(mobileAppUri, handler)
-//#else
-//        protected LightBuzzMobileServiceClient(string mobileAppUri, bool supportLocal, HttpClientHandler handler) 
-//            : base(mobileAppUri, handler)
-//#endif
+#else
+        protected LightBuzzMobileServiceClient(string mobileAppUri, bool supportLocal, System.Net.Http.HttpMessageHandler handler) 
+            : base(mobileAppUri, handler)
+#endif
         {
             SupportsLocalStore = supportLocal;
             DatabaseName = string.Format(DefaultLocalDatabaseNamePattern, mobileAppUri.GetHashCode());
         }
-#endif
 
         /// <summary>
         /// Gets the local SQLite database absolute path.
