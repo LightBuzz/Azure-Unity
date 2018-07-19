@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>LightBuzz.Azure.UWP</name>
+        <name>LightBuzz.Azure</name>
     </assembly>
     <members>
         <member name="T:LightBuzz.Azure.AppServiceTableDAO`1">
@@ -144,10 +144,12 @@
             Defines the tables in the local store. 
             Method must be implemented in a subclass.
             e.g.
+            <code>
             protected override void DefineTables()
             {
                LocalStore.DefineTable<TodoItem/>();
             }
+            </code>
             </summary>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Pull(System.Threading.CancellationToken)">
@@ -155,11 +157,13 @@
             Pulls the data from the remote Azure App Service and stores them into the local database.
             Method must be implemented in a subclass.
             e.g.
+            <code>
             public override async Task Pull()
             {
                AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
                await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
-             }
+            }
+            </code>
             </summary>
             <param name="ct">Cancellation Token</param>
             <returns></returns>
@@ -193,17 +197,25 @@
             <summary>
             Creates a new instance of the LightBuzzMobileServiceClient. 
             </summary>
-            <param name="mobileAppUri">Azure App Service URL</param>
-            <param name="supportLocal">Supports local database</param>
+            <param name="mobileAppUri">The Azure App Service URI.</param>
+            <param name="supportLocal">Specifies whether a local database is supported.</param>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.#ctor(System.String,System.Boolean,System.Net.Http.HttpMessageHandler)">
+            <summary>
+            Creates a new instance of the LightBuzzMobileServiceClient. 
+            </summary>
+            <param name="mobileAppUri">The Azure App Service URI.</param>
+            <param name="supportLocal">Specifies whether a local database is supported.</param>
+            <param name="handler">The HTTP handler to use.</param>
         </member>
         <member name="P:LightBuzz.Azure.LightBuzzMobileServiceClient.LocalDatabasePath">
             <summary>
-            Gets the local SQLite database absolute path.
+            Returns the local SQLite database absolute path.
             </summary>
         </member>
         <member name="P:LightBuzz.Azure.LightBuzzMobileServiceClient.LocalDatabaseConnectionString">
             <summary>
-            Gets the local SQLite database absolute path.
+            Returns the local SQLite database absolute path.
             </summary>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.InitStore(System.String)">
@@ -274,6 +286,29 @@
             <summary>
             Initializes local SQLite database connection and sync.
             </summary>
+            <returns></returns>
+        </member>
+        <member name="T:LightBuzz.Azure.LightBuzzMobileServiceClientCloudOnly">
+            <summary>
+            Represents an Azure Service Client that has no Local Store support.
+            </summary>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClientCloudOnly.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:LightBuzz.Azure.LightBuzzMobileServiceClientCloudOnly"/>.
+            </summary>
+            <param name="mobileAppUri">The Azure service URI.</param>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClientCloudOnly.DefineTables">
+            <summary>
+            Defines the database tables in managed code.
+            </summary>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClientCloudOnly.Pull(System.Threading.CancellationToken)">
+            <summary>
+            Pulls the remote data from the server.
+            </summary>
+            <param name="ct">The Cancellation Token.</param>
             <returns></returns>
         </member>
     </members>

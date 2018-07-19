@@ -49,10 +49,12 @@ namespace LightBuzz.Azure
         /// Defines the tables in the local store. 
         /// Method must be implemented in a subclass.
         /// e.g.
+        /// <code>
         /// protected override void DefineTables()
         /// {
         ///    LocalStore.DefineTable<TodoItem/>();
         /// }
+        /// </code>
         /// </summary>
         protected abstract void DefineTables();
 
@@ -60,11 +62,13 @@ namespace LightBuzz.Azure
         /// Pulls the data from the remote Azure App Service and stores them into the local database.
         /// Method must be implemented in a subclass.
         /// e.g.
+        /// <code>
         /// public override async Task Pull()
         /// {
         ///    AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
         ///    await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
-        ///  }
+        /// }
+        /// </code>
         /// </summary>
         /// <param name="ct">Cancellation Token</param>
         /// <returns></returns>
@@ -98,10 +102,8 @@ namespace LightBuzz.Azure
         /// <summary>
         /// Creates a new instance of the LightBuzzMobileServiceClient. 
         /// </summary>
-        /// <param name="mobileAppUri">Azure App Service URL</param>
-        /// <param name="supportLocal">Supports local database</param>
-
-
+        /// <param name="mobileAppUri">The Azure App Service URI.</param>
+        /// <param name="supportLocal">Specifies whether a local database is supported.</param>
         protected LightBuzzMobileServiceClient(string mobileAppUri, bool supportLocal)
 #if !UNITY_WSA
             : base(mobileAppUri, new LightBuzzHttpsHandler())
@@ -115,9 +117,21 @@ namespace LightBuzz.Azure
         }
 
 #if !UNITY_WSA
+        /// <summary>
+        /// Creates a new instance of the LightBuzzMobileServiceClient. 
+        /// </summary>
+        /// <param name="mobileAppUri">The Azure App Service URI.</param>
+        /// <param name="supportLocal">Specifies whether a local database is supported.</param>
+        /// <param name="handler">The HTTP handler to use.</param>
         protected LightBuzzMobileServiceClient(string mobileAppUri, bool supportLocal, LightBuzzHttpsHandler handler) 
             : base(mobileAppUri, handler)
 #else
+        /// <summary>
+        /// Creates a new instance of the LightBuzzMobileServiceClient. 
+        /// </summary>
+        /// <param name="mobileAppUri">The Azure App Service URI.</param>
+        /// <param name="supportLocal">Specifies whether a local database is supported.</param>
+        /// <param name="handler">The HTTP handler to use.</param>
         protected LightBuzzMobileServiceClient(string mobileAppUri, bool supportLocal, System.Net.Http.HttpMessageHandler handler) 
             : base(mobileAppUri, handler)
 #endif
@@ -127,7 +141,7 @@ namespace LightBuzz.Azure
         }
 
         /// <summary>
-        /// Gets the local SQLite database absolute path.
+        /// Returns the local SQLite database absolute path.
         /// </summary>
         protected string LocalDatabasePath
         {
@@ -143,7 +157,7 @@ namespace LightBuzz.Azure
         }
 
         /// <summary>
-        /// Gets the local SQLite database absolute path.
+        /// Returns the local SQLite database absolute path.
         /// </summary>
         protected string LocalDatabaseConnectionString
         {

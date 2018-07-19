@@ -40,8 +40,19 @@ using System.Threading.Tasks;
 
 namespace LightBuzz.Azure
 {
+    /// <summary>
+    /// Validates a remote SSL certificate.
+    /// </summary>
     public class LightBuzzCertificateValidation
     {
+        /// <summary>
+        /// Determines whether the specified SSL certificate is valid.
+        /// </summary>
+        /// <param name="sender">The object raising the callback.</param>
+        /// <param name="certificate">The certificate to validate.</param>
+        /// <param name="chain">The certificate chain.</param>
+        /// <param name="sslPolicyErrors">The SSL policy errors.</param>
+        /// <returns>True if the certificate is valid. False otherwise.</returns>
         public static bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             bool isValidCertificate = true;

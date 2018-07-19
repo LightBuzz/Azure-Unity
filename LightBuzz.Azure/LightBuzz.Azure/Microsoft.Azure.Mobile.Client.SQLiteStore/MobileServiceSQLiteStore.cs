@@ -35,10 +35,13 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
         private SqliteConnection connection;
         private readonly SemaphoreSlim operationSemaphore = new SemaphoreSlim(1, 1);
 
+        /// <summary>
+        /// Initializes a default instance of <see cref="MobileServiceSQLiteStore"/>.
+        /// </summary>
         protected MobileServiceSQLiteStore() { }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="MobileServiceSQLiteStore"/>
+        /// Initializes a new instance of <see cref="MobileServiceSQLiteStore"/>.
         /// </summary>
         /// <param name="fileName">Name of the local SQLite database file.</param>
         public MobileServiceSQLiteStore(string fileName)
@@ -103,6 +106,10 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
             tableMap.Add(tableName, new TableDefinition(tableDefinition, sysProperties));
         }
 
+        /// <summary>
+        /// Called when the local database is initialized.
+        /// </summary>
+        /// <returns></returns>
         protected override async Task OnInitialize()
         {
             CreateAllTables();
@@ -550,7 +557,7 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
         /// <summary>
         /// Executes a sql statement on a given table in local SQLite database.
         /// </summary>
-        /// <param name="tableName">The name of the table.</param>
+        /// <param name="sql">The name of the table.</param>
         /// <param name="parameters">The query parameters.</param>
         protected virtual void ExecuteNonQueryInternal(string sql, IDictionary<string, object> parameters)
         {
@@ -705,7 +712,7 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
 				        {
 				            value = reader.GetDouble(reader.GetOrdinal(name));
 				        }
-				        catch (FormatException ex)
+				        catch (FormatException)
 				        {
 				            value = reader.GetInt64(reader.GetOrdinal(name));
 				        }
@@ -776,6 +783,10 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
             return sysProperties;
         }
 
+        /// <summary>
+        /// Closes the connection and releases any open resources.
+        /// </summary>
+        /// <param name="disposing">Specifies whether the disposing process is already running.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)

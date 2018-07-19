@@ -20,12 +20,23 @@ namespace Microsoft.WindowsAzure.MobileServices.SQLiteStore
     /// </summary>
     public static class MobileServiceSQLiteStoreExtensions
     {
+        /// <summary>
+        /// Defines a SQLite table.
+        /// </summary>
+        /// <typeparam name="T">The managed type of the table.</typeparam>
+        /// <param name="store">The local database manager.</param>
         public static void DefineTable<T>(this MobileServiceSQLiteStore store)
         {
             var settings = new MobileServiceJsonSerializerSettings();
             DefineTable<T>(store, settings);
         }
 
+        /// <summary>
+        /// Defines a SQLite table.
+        /// </summary>
+        /// <typeparam name="T">The managed class type of the table.</typeparam>
+        /// <param name="store">The local database manager.</param>
+        /// <param name="settings">The JSON serialization settings.</param>
         public static void DefineTable<T>(this MobileServiceSQLiteStore store, MobileServiceJsonSerializerSettings settings)
         {
             string tableName = settings.ContractResolver.ResolveTableName(typeof(T));

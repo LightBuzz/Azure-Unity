@@ -29,45 +29,13 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace LightBuzz.Azure
 {
     /// <summary>
-    /// Represents an Azure Service Client that has no Local Store support.
+    /// LightBuzz Azure SDK for Unity3D: a framework that allows you to consume remote Azure App services and store data locally.
     /// </summary>
-    public class LightBuzzMobileServiceClientCloudOnly : LightBuzzMobileServiceClient
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    class NamespaceDoc
     {
-        /// <summary>
-        /// Creates a new instance of the <see cref="LightBuzzMobileServiceClientCloudOnly"/>.
-        /// </summary>
-        /// <param name="mobileAppUri">The Azure service URI.</param>
-        public LightBuzzMobileServiceClientCloudOnly(string mobileAppUri) : base(mobileAppUri, false)
-        {
-        }
-
-        private LightBuzzMobileServiceClientCloudOnly(string mobileAppUri, bool supportLocal) : base(mobileAppUri, supportLocal)
-        {
-        }
-
-        /// <summary>
-        /// Defines the database tables in managed code.
-        /// </summary>
-        protected override void DefineTables()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Pulls the remote data from the server.
-        /// </summary>
-        /// <param name="ct">The Cancellation Token.</param>
-        /// <returns></returns>
-        public override Task Pull(CancellationToken ct)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
