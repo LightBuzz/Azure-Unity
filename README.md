@@ -14,6 +14,10 @@ To use the SDK, you can either clone the current repository or download the .uni
 
 #### [![cloud-download](https://user-images.githubusercontent.com/562680/40273695-3b3de7d6-5bce-11e8-9270-3b01f28dc0b7.png) Download the latest stable version &raquo;](https://github.com/LightBuzz/Azure-Unity/releases/latest)
 
+## [Documentation](https://lightbuzz.com/tools/azure-unity/documentation/)
+
+You can read the documentation online on [lightbuzz.com/tools/azure-unity/documentation](https://lightbuzz.com/tools/azure-unity/documentation/).
+
 ## Features
 
 ### Azure App Services
