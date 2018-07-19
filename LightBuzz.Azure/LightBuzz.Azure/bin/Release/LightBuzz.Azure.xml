@@ -1,0 +1,401 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LightBuzz.Azure</name>
+    </assembly>
+    <members>
+        <member name="T:LightBuzz.Azure.AppServiceTableDAO`1">
+            <summary>
+            A generic table data access object.
+            </summary>
+            <typeparam name="T">The type of table to handle.</typeparam>
+        </member>
+        <member name="P:LightBuzz.Azure.AppServiceTableDAO`1.TableLocal">
+            <summary>
+            The database table to handle.
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.AppServiceTableDAO`1.TableCloud">
+            <summary>
+            The database table to handle.
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.AppServiceTableDAO`1._supportsLocalStore">
+            <summary>
+            Specifies whether the app stores data locally.
+            </summary>
+        </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.#ctor(LightBuzz.Azure.LightBuzzMobileServiceClient)">
+            <summary>
+            Creates a new instance of the data access object.
+            </summary>
+            <param name="azureClient">The Azure App Service client.</param>
+        </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.Pull(System.Threading.CancellationToken,System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Pulls the data from the remote Azure App Service and stores them into the local database.
+            </summary>
+            <param name="ct">The cancellation token.</param>
+            <param name="uniqueQueryId">The unique ID of the query.</param>
+            <param name="predicate">The predicate to use.</param>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.Insert(`0)">
+            <summary>
+            Performs a database Insert operation.
+            </summary>
+            <param name="objectToSave">The object to save.</param>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.Update(`0)">
+            <summary>
+            Performs a database Update operation.
+            </summary>
+            <param name="objectToUpdate">The object to update.</param>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.Delete(`0)">
+            <summary>
+            Performs a database Delete operation.
+            </summary>
+            <param name="objectToDelete">The object to delete.</param>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindAll">
+            <summary>
+            Performs a database Get operation and returns all of the items included in the table.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindAll(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Performs a database Get operation and returns all of the items that correspond to the specified predicate.
+            </summary>
+            <param name="predicate">The predicate to use.</param>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindById(System.String)">
+            <summary>
+            Performs a database Get operation and returns the item that corresponds to the specified id.
+            </summary>
+            <param name="id">The id to find</param>
+            <returns>The requested T object</returns>
+        </member>
+        <member name="T:LightBuzz.Azure.LightBuzzHttpsHandler">
+            <summary>
+            A Unity-ready secure HTTPS handler.
+            </summary>
+        </member>
+        <member name="F:LightBuzz.Azure.LightBuzzHttpsHandler._result">
+            <summary>
+            The response from the server.
+            </summary>
+        </member>
+        <member name="F:LightBuzz.Azure.LightBuzzHttpsHandler._authorizationToken">
+            <summary>
+            The authorization token for the request.
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.LightBuzzHttpsHandler.ContentType">
+            <summary>
+            The Content Type header type (default: application/json).
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.LightBuzzHttpsHandler.ZumoApiVersion">
+            <summary>
+            The ZUMO API version number.
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.LightBuzzHttpsHandler.Encoding">
+            <summary>
+            The encoding of the response message.
+            </summary>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor">
+            <summary>
+            Creates a new LightBuzz secure HTTPS handler.
+            </summary>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
+            <summary>
+            A Unity-ready implementation of a secure HTTPS method to send the request.
+            </summary>
+            <param name="request">The request to send to server.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>The response from the server.</returns>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendUnityRequest(System.String,System.Byte[],System.String)">
+            <summary>
+            Sends a Unity Web Request.
+            </summary>
+            <param name="url">The request absolute uri.</param>
+            <param name="contentArray">The request content.</param>
+            <param name="method">The request method.</param>
+            <returns>An IEnumerator with the response text.</returns>
+        </member>
+        <member name="T:LightBuzz.Azure.LightBuzzMobileServiceClient">
+            <summary>
+            A Unity-ready MobileServiceClient.
+            Must be extended by a subclass.
+            </summary>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.DefineTables">
+            <summary>
+            Defines the tables in the local store. 
+            Method must be implemented in a subclass.
+            e.g.
+            protected override void DefineTables()
+            {
+               LocalStore.DefineTable<TodoItem/>();
+            }
+            </summary>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Pull(System.Threading.CancellationToken)">
+            <summary>
+            Pulls the data from the remote Azure App Service and stores them into the local database.
+            Method must be implemented in a subclass.
+            e.g.
+            public override async Task Pull()
+            {
+               AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
+               await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
+             }
+            </summary>
+            <param name="ct">Cancellation Token</param>
+            <returns></returns>
+        </member>
+        <member name="F:LightBuzz.Azure.LightBuzzMobileServiceClient.DefaultLocalDatabaseNamePattern">
+            <summary>
+            The default database name pattern.
+            </summary>
+        </member>
+        <member name="F:LightBuzz.Azure.LightBuzzMobileServiceClient.LocalStore">
+            <summary>
+            The MobileServiceSQLiteStore that connects to the local database.
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.LightBuzzMobileServiceClient.SupportsLocalStore">
+            <summary>
+            Specifies whether the app will store data locally.
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.LightBuzzMobileServiceClient.DatabaseName">
+            <summary>
+            The local SQLite database name.
+            </summary>
+        </member>
+        <member name="F:LightBuzz.Azure.LightBuzzMobileServiceClient._localDatabasePath">
+            <summary>
+            The local SQLite database path.
+            </summary>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.#ctor(System.String,System.Boolean)">
+            <summary>
+            Creates a new instance of the LightBuzzMobileServiceClient. 
+            </summary>
+            <param name="mobileAppUri">Azure App Service URL</param>
+            <param name="supportLocal">Supports local database</param>
+        </member>
+        <member name="P:LightBuzz.Azure.LightBuzzMobileServiceClient.LocalDatabasePath">
+            <summary>
+            Gets the local SQLite database absolute path.
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.LightBuzzMobileServiceClient.LocalDatabaseConnectionString">
+            <summary>
+            Gets the local SQLite database absolute path.
+            </summary>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.InitStore(System.String)">
+            <summary>
+            Initializes the local SQLite database.
+            </summary>
+            <param name="localDatabasePath">The full path to the local database file, e.g. Path.Combine(Application.persistentDataPath, "database.db").</param>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.InitStore">
+            <summary>
+            Initializes the local SQLite database.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.SyncStore">
+            <summary>
+            Syncs with the remote Azure App Service (pull/push operations).
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.SyncStore(System.Threading.CancellationToken)">
+            <summary>
+            Syncs with the remote Azure App Service (pull/push operations).
+            </summary>
+            <param name="ct">The Cancellation Token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Push">
+            <summary>
+            Pushes the data stored in the local SQLite database to the remote Azure App Service.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Push(System.Threading.CancellationToken)">
+            <summary>
+            Pushes the data stored in the local SQLite database to the remote Azure App Service.
+            </summary>
+            <param name="ct">Cancellation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Pull">
+            <summary>
+            Pulls the data from the remote Azure App Service and stores them into the local database.
+            Method must be implemented in a subclass.
+            e.g.
+            public override async Task Pull()
+            {
+               AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
+               await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
+             }
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Init">
+            <summary>
+            Initializes local SQLite database, if local store is supported.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Sync">
+            <summary>
+            Syncs with the remote Azure App Service, if local store is supported.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.InitializeLocalStore">
+            <summary>
+            Initializes local SQLite database connection and sync.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Microsoft.WindowsAzure.MobileServices.SQLiteStore.ColumnDefinition">
+            <summary>
+            A class that represents the type of column on local store
+            </summary>
+        </member>
+        <member name="T:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore">
+            <summary>
+            SQLite based implementation of <see cref="T:Microsoft.WindowsAzure.MobileServices.Sync.IMobileServiceLocalStore"/>
+            </summary>
+        </member>
+        <member name="F:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore.MaxParametersPerQuery">
+            <summary>
+            The maximum number of parameters allowed in any "upsert" prepared statement.
+            Note: The default maximum number of parameters allowed by sqlite is 999
+            See: http://www.sqlite.org/limits.html#max_variable_number
+            </summary>
+        </member>
+        <member name="M:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of <see cref="T:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore"/>
+            </summary>
+            <param name="fileName">Name of the local SQLite database file.</param>
+        </member>
+        <member name="M:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore.DefineTable(System.String,Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Defines the local table on the store.
+            </summary>
+            <param name="tableName">Name of the local table.</param>
+            <param name="item">An object that represents the structure of the table.</param>
+        </member>
+        <member name="M:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore.ReadAsync(Microsoft.WindowsAzure.MobileServices.Query.MobileServiceTableQueryDescription)">
+            <summary>
+            Reads data from local store by executing the query.
+            </summary>
+            <param name="query">The query to execute on local store.</param>
+            <returns>A task that will return with results when the query finishes.</returns>
+        </member>
+        <member name="M:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore.UpsertAsync(System.String,System.Collections.Generic.IEnumerable{Newtonsoft.Json.Linq.JObject},System.Boolean)">
+            <summary>
+            Updates or inserts data in local table.
+            </summary>
+            <param name="tableName">Name of the local table.</param>
+            <param name="items">A list of items to be inserted.</param>
+            <param name="ignoreMissingColumns"><code>true</code> if the extra properties on item can be ignored; <code>false</code> otherwise.</param>
+            <returns>A task that completes when item has been upserted in local table.</returns>
+        </member>
+        <member name="M:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore.DeleteAsync(Microsoft.WindowsAzure.MobileServices.Query.MobileServiceTableQueryDescription)">
+            <summary>
+            Deletes items from local table that match the given query.
+            </summary>
+            <param name="query">A query to find records to delete.</param>
+            <returns>A task that completes when delete query has executed.</returns>
+            <exception cref="T:System.ArgumentNullException">You must supply a query value</exception>
+        </member>
+        <member name="M:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore.DeleteAsync(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Deletes items from local table with the given list of ids
+            </summary>
+            <param name="tableName">Name of the local table.</param>
+            <param name="ids">A list of ids of the items to be deleted</param>
+            <returns>A task that completes when delete query has executed.</returns>
+        </member>
+        <member name="M:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore.LookupAsync(System.String,System.String)">
+            <summary>
+            Executes a lookup against a local table.
+            </summary>
+            <param name="tableName">Name of the local table.</param>
+            <param name="id">The id of the item to lookup.</param>
+            <returns>A task that will return with a result when the lookup finishes.</returns>
+        </member>
+        <member name="M:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore.ExecuteNonQueryInternal(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Executes a sql statement on a given table in local SQLite database.
+            </summary>
+            <param name="tableName">The name of the table.</param>
+            <param name="parameters">The query parameters.</param>
+        </member>
+        <member name="M:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore.ExecuteQueryAsync(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Executes a SQL query against the store.  This is useful for running arbitrary queries
+            that are supported by SQLite but not the SDK LINQ Provider
+            </summary>
+            <param name="tableName">The name of the table</param>
+            <param name="sql">The SQL command</param>
+            <param name="parameters">The list of parameters</param>
+            <returns>The result of the query (untyped objects)</returns>
+            <exception cref="T:System.ArgumentNullException">tableName and sql must be provided</exception>
+        </member>
+        <member name="M:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore.ExecuteQueryInternal(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Executes a sql statement on a given table in local SQLite database.
+            </summary>
+            <param name="tableName">The name of the table.</param>
+            <param name="sql">The SQL query to execute.</param>
+            <param name="parameters">The query parameters.</param>
+            <returns>The result of query.</returns>
+        </member>
+        <member name="M:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore.ExecuteQueryInternal(Microsoft.WindowsAzure.MobileServices.SQLiteStore.TableDefinition,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Executes a sql statement on a given table in local SQLite database.
+            </summary>
+            <param name="table">The table definition.</param>
+            <param name="sql">The SQL query to execute.</param>
+            <param name="parameters">The query parameters.</param>
+            <returns>The result of query.</returns>
+        </member>
+        <member name="T:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStoreExtensions">
+            <summary>
+             Provides extension methods on <see cref="T:Microsoft.WindowsAzure.MobileServices.SQLiteStore.MobileServiceSQLiteStore"/>.
+            </summary>
+        </member>
+        <member name="T:Microsoft.WindowsAzure.MobileServices.SQLiteStore.TableDefinition">
+            <summary>
+            A class that represents the structure of table on local store
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.EnumerableExtensions.Split``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+            <summary>
+            Splits the given sequence into sequences of the given length.
+            </summary>
+        </member>
+    </members>
+</doc>
