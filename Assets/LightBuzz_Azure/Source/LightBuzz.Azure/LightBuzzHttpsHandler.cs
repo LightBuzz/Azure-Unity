@@ -29,8 +29,10 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -91,6 +93,94 @@ namespace LightBuzz.Azure
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The response from the server.</returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            HttpResponseMessage result = new HttpResponseMessage();
+
+            string contentArray = request.Content != null ? await request.Content.ReadAsStringAsync() : null;
+
+            HttpRequestHeaders headers = request.Headers;
+            IEnumerable<string> auth;
+            if (headers != null && headers.TryGetValues("X-ZUMO-AUTH", out auth))
+            {
+                _authorizationToken = headers.GetValues("X-ZUMO-AUTH").FirstOrDefault();
+            }
+
+            HttpWebRequest client = (HttpWebRequest)WebRequest.Create(request.RequestUri.AbsoluteUri);
+
+            client.Method = request.Method.ToString();
+            client.KeepAlive = true;
+            client.ContentType = "application/json";
+
+            if (!WebHeaderCollection.IsRestricted("Content-Type"))
+            {
+                client.Headers.Add("Content-Type", "application/json");
+            }
+            if (!WebHeaderCollection.IsRestricted("ZUMO-API-VERSION"))
+            {
+                client.Headers.Add("ZUMO-API-VERSION", "2.0.0");
+            }
+
+            if (!string.IsNullOrEmpty(_authorizationToken))
+            {
+                if (!WebHeaderCollection.IsRestricted("X-ZUMO-AUTH"))
+                {
+                    client.Headers.Add("X-ZUMO-AUTH", _authorizationToken);
+                }
+            }
+
+#if !UNITY_WSA
+            ServicePointManager.ServerCertificateValidationCallback = LightBuzzCertificateValidation.CertificateValidationCallback;
+#endif
+
+            if (contentArray != null)
+            {
+                using (StreamWriter streamWriter = new StreamWriter(client.GetRequestStream()))
+                {
+                    streamWriter.Write(contentArray);
+                }
+            }
+
+//#if !UNITY_WSA
+//            ServicePointManager.ServerCertificateValidationCallback = LightBuzzCertificateValidation.CertificateValidationCallback;
+//#endif
+
+            try
+            {
+                using (HttpWebResponse resp = (HttpWebResponse)client.GetResponse())
+                {
+                    using (StreamReader reader = new StreamReader(resp.GetResponseStream()))
+                    {
+                        string data = reader.ReadToEnd();
+
+                        result.StatusCode = HttpStatusCode.Accepted;
+                        if (client.Method == "POST")
+                        {
+                            result.StatusCode = HttpStatusCode.Created;
+                        }
+                        if (client.Method == "PATCH")
+                        {
+                            result.StatusCode = HttpStatusCode.OK;
+                        }
+                        result.ReasonPhrase = result.StatusCode.ToString();
+                        result.Content = new StringContent(data, Encoding.UTF8, ContentType);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// A Unity-ready implementation of a secure HTTPS method to send the request.
+        /// </summary>
+        /// <param name="request">The request to send to server.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The response from the server.</returns>
+        /*protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             byte[] contentArray = request.Content != null ? await request.Content.ReadAsByteArrayAsync() : null;
 
@@ -161,6 +251,6 @@ namespace LightBuzz.Azure
 
                 yield return uwr.downloadHandler.text;
             }
-        }
+        }*/
     }
 }
