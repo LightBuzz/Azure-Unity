@@ -94,8 +94,6 @@ namespace LightBuzz.Azure
         /// <returns>The response from the server.</returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            HttpResponseMessage result = new HttpResponseMessage();
-
             string contentArray = request.Content != null ? await request.Content.ReadAsStringAsync() : null;
 
             HttpRequestHeaders headers = request.Headers;
@@ -105,19 +103,33 @@ namespace LightBuzz.Azure
                 _authorizationToken = headers.GetValues("X-ZUMO-AUTH").FirstOrDefault();
             }
 
+            SendHttpWebRequest(request, contentArray);
+
+            return _result;
+        }
+
+        /// <summary>
+        /// Sends an Http Web Request.
+        /// </summary>
+        /// <param name="request">The request message.</param>
+        /// <param name="contentArray">The request content.</param>
+        /// <returns></returns>
+        private void SendHttpWebRequest(HttpRequestMessage request, string contentArray)
+        {
             HttpWebRequest client = (HttpWebRequest)WebRequest.Create(request.RequestUri.AbsoluteUri);
 
             client.Method = request.Method.ToString();
             client.KeepAlive = true;
-            client.ContentType = "application/json";
+            client.ContentType = ContentType;
 
             if (!WebHeaderCollection.IsRestricted("Content-Type"))
             {
-                client.Headers.Add("Content-Type", "application/json");
+                client.Headers.Add("Content-Type", ContentType);
             }
+
             if (!WebHeaderCollection.IsRestricted("ZUMO-API-VERSION"))
             {
-                client.Headers.Add("ZUMO-API-VERSION", "2.0.0");
+                client.Headers.Add("ZUMO-API-VERSION", ZumoApiVersion);
             }
 
             if (!string.IsNullOrEmpty(_authorizationToken))
@@ -140,47 +152,67 @@ namespace LightBuzz.Azure
                 }
             }
 
-//#if !UNITY_WSA
-//            ServicePointManager.ServerCertificateValidationCallback = LightBuzzCertificateValidation.CertificateValidationCallback;
-//#endif
-
             try
             {
-                using (HttpWebResponse resp = (HttpWebResponse)client.GetResponse())
+                using (HttpWebResponse response = (HttpWebResponse)client.GetResponse())
                 {
-                    using (StreamReader reader = new StreamReader(resp.GetResponseStream()))
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                     {
                         string data = reader.ReadToEnd();
 
-                        result.StatusCode = HttpStatusCode.Accepted;
-                        if (client.Method == "POST")
-                        {
-                            result.StatusCode = HttpStatusCode.Created;
-                        }
-                        if (client.Method == "PATCH")
-                        {
-                            result.StatusCode = HttpStatusCode.OK;
-                        }
-                        result.ReasonPhrase = result.StatusCode.ToString();
-                        result.Content = new StringContent(data, Encoding.UTF8, ContentType);
+                        _result.StatusCode = HttpStatusCode.OK;
+                        _result.ReasonPhrase = _result.StatusCode.ToString();
+                        _result.Content = new StringContent(data, Encoding, ContentType);
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                GetResultStatusCodeFromException(ex);
+                _result.ReasonPhrase = _result.StatusCode.ToString();
+                _result.Content = new StringContent(ex.ToString(), Encoding.UTF8, ContentType);
             }
-
-            return result;
         }
 
         /// <summary>
+        /// Gets the result status code depending on the exception message
+        /// </summary>
+        /// <param name="ex">The exception</param>
+        private void GetResultStatusCodeFromException(Exception ex)
+        {
+            if (ex.Message.Contains("Unauthorized"))
+            {
+                _result.StatusCode = HttpStatusCode.Unauthorized;
+            }
+            else if (ex.Message.Contains("Bad Request"))
+            {
+                _result.StatusCode = HttpStatusCode.BadRequest;
+            }
+            else if (ex.Message.Contains("Task Cancelled"))
+            {
+                _result.StatusCode = HttpStatusCode.RequestTimeout;
+            }
+            else if (ex.Message.Contains("Precondition Failed"))
+            {
+                _result.StatusCode = HttpStatusCode.PreconditionFailed;
+            }
+            else if (ex.Message.Contains("Not Found"))
+            {
+                _result.StatusCode = HttpStatusCode.NotFound;
+            }
+            else
+            {
+                _result.StatusCode = HttpStatusCode.InternalServerError;
+            }
+        }
+
+        /*/// <summary>
         /// A Unity-ready implementation of a secure HTTPS method to send the request.
         /// </summary>
         /// <param name="request">The request to send to server.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The response from the server.</returns>
-        /*protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             byte[] contentArray = request.Content != null ? await request.Content.ReadAsByteArrayAsync() : null;
 
@@ -200,7 +232,7 @@ namespace LightBuzz.Azure
             }
 
             return _result;
-        }
+        }*/
 
         /// <summary>
         /// Sends a Unity Web Request.
@@ -251,6 +283,6 @@ namespace LightBuzz.Azure
 
                 yield return uwr.downloadHandler.text;
             }
-        }*/
+        }
     }
 }
