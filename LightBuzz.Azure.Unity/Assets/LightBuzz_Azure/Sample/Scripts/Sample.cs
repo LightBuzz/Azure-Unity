@@ -145,9 +145,13 @@ public class Sample : MonoBehaviour
 
     private async Task Get()
     {
-        List<TodoItem> list = await todoTableDAO.FindAll();
-
         StringBuilder contents = new StringBuilder();
+        List<TodoItem> list = new List<TodoItem>();
+
+        await Task.Run(async () =>
+        {
+            list = await todoTableDAO.FindAll();
+        });
 
         foreach (TodoItem item in list)
         {
@@ -156,6 +160,11 @@ public class Sample : MonoBehaviour
             contents.AppendLine("Completed: " + item.Complete);
             contents.AppendLine();
         }
+
+        TodoItem i = list[0];
+        i.Text += "Updated";
+
+        await todoTableDAO.Update(i);
 
         output.text = contents.ToString();
     }

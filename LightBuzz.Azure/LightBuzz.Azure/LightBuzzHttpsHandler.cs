@@ -29,8 +29,9 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -38,8 +39,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine;
-using UnityEngine.Networking;
 
 namespace LightBuzz.Azure
 {
@@ -51,7 +50,7 @@ namespace LightBuzz.Azure
         /// <summary>
         /// The response from the server.
         /// </summary>
-        private HttpResponseMessage _result = new HttpResponseMessage();
+        //private HttpResponseMessage _result = new HttpResponseMessage();
 
         /// <summary>
         /// The authorization token for the request.
@@ -92,7 +91,9 @@ namespace LightBuzz.Azure
         /// <returns>The response from the server.</returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            byte[] contentArray = request.Content != null ? await request.Content.ReadAsByteArrayAsync() : null;
+            HttpResponseMessage result = new HttpResponseMessage();
+
+            string contentArray = request.Content != null ? await request.Content.ReadAsStringAsync() : null;
 
             HttpRequestHeaders headers = request.Headers;
             IEnumerable<string> auth;
@@ -100,67 +101,234 @@ namespace LightBuzz.Azure
             {
                 _authorizationToken = headers.GetValues("X-ZUMO-AUTH").FirstOrDefault();
             }
-            IEnumerator enumerator = SendUnityRequest(request.RequestUri.AbsoluteUri, contentArray, request.Method.ToString());
 
-            if (enumerator != null)
+            HttpWebRequest client = (HttpWebRequest)WebRequest.Create(request.RequestUri.AbsoluteUri);
+
+            client.Method = request.Method.ToString();
+            client.KeepAlive = true;
+            client.ContentType = "application/json";
+
+            if (!WebHeaderCollection.IsRestricted("Content-Type"))
             {
-                while (enumerator.MoveNext())
+                client.Headers.Add("Content-Type", "application/json");
+            }
+            if (!WebHeaderCollection.IsRestricted("ZUMO-API-VERSION"))
+            {
+                client.Headers.Add("ZUMO-API-VERSION", "2.0.0");
+            }
+
+            if (!string.IsNullOrEmpty(_authorizationToken))
+            {
+                if (!WebHeaderCollection.IsRestricted("X-ZUMO-AUTH"))
                 {
+                    client.Headers.Add("X-ZUMO-AUTH", _authorizationToken);
                 }
             }
 
-            return _result;
-        }
-
-        /// <summary>
-        /// Sends a Unity Web Request.
-        /// </summary>
-        /// <param name="url">The request absolute uri.</param>
-        /// <param name="contentArray">The request content.</param>
-        /// <param name="method">The request method.</param>
-        /// <returns>An IEnumerator with the response text.</returns>
-        IEnumerator SendUnityRequest(string url, byte[] contentArray, string method)
-        {
-            UnityWebRequest uwr = new UnityWebRequest(url, method);
-
             if (contentArray != null)
             {
-                uwr.uploadHandler = new UploadHandlerRaw(contentArray);
+                using (StreamWriter streamWriter = new StreamWriter(client.GetRequestStream()))
+                {
+                    streamWriter.Write(contentArray);
+                }
             }
 
-            uwr.downloadHandler = new DownloadHandlerBuffer();
-            uwr.SetRequestHeader("Content-Type", ContentType);
-            uwr.SetRequestHeader("ZUMO-API-VERSION", ZumoApiVersion);
-            if (!string.IsNullOrEmpty(_authorizationToken))
+#if !UNITY_WSA
+            ServicePointManager.ServerCertificateValidationCallback = LightBuzzCertificateValidation.CertificateValidationCallback;
+#endif
+
+            try
             {
-                uwr.SetRequestHeader("X-ZUMO-AUTH", _authorizationToken);
+                using (HttpWebResponse resp = (HttpWebResponse)client.GetResponse())
+                {
+                    using (StreamReader reader = new StreamReader(resp.GetResponseStream()))
+                    {
+                        string data = reader.ReadToEnd();
+
+                        result.StatusCode = HttpStatusCode.Accepted;
+                        result.ReasonPhrase = result.StatusCode.ToString();
+                        result.Content = new StringContent(data, Encoding.UTF8, ContentType);
+                    }
+                }
             }
-
-            // Send the request then wait until it returns.
-            yield return uwr.SendWebRequest();
-
-            while (!uwr.isDone)
+            catch (Exception ex)
             {
-                yield return null;
+                throw ex;
             }
 
-            if (uwr.isNetworkError || uwr.isHttpError)
-            {
-                Debug.LogWarning("Error while sending: " + uwr.error);
-                _result.StatusCode = (HttpStatusCode)uwr.responseCode;
-                _result.ReasonPhrase = _result.StatusCode.ToString();
-                _result.Content = new StringContent(uwr.downloadHandler.text, Encoding.UTF8, ContentType);
-
-                yield return uwr.error;
-            }
-            else
-            {
-                _result.StatusCode = (HttpStatusCode)uwr.responseCode;
-                _result.ReasonPhrase = _result.StatusCode.ToString();
-                _result.Content = new StringContent(uwr.downloadHandler.text, Encoding.UTF8, ContentType);
-
-                yield return uwr.downloadHandler.text;
-            }
+            return result;
         }
+
+        //private bool RemoteCertificateValidationCallback(System.Object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        //{
+        //    bool isOk = true;
+
+        //    if (sslPolicyErrors != SslPolicyErrors.None)
+        //    {
+        //        for (int i = 0; i < chain.ChainStatus.Length; i++)
+        //        {
+        //            if (chain.ChainStatus[i].Status != X509ChainStatusFlags.RevocationStatusUnknown)
+        //            {
+        //                chain.ChainPolicy.RevocationFlag = X509RevocationFlag.EntireChain;
+        //                chain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
+        //                chain.ChainPolicy.UrlRetrievalTimeout = new TimeSpan(0, 1, 0);
+        //                chain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllFlags;
+        //                bool chainIsValid = chain.Build((X509Certificate2)certificate);
+        //                if (!chainIsValid)
+        //                {
+        //                    isOk = false;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return isOk;
+        //}
+
+        #region WebClient solution (non-working)
+
+        ///// <summary>
+        ///// A Unity-ready implementation of a secure HTTPS method to send the request.
+        ///// </summary>
+        ///// <param name="request">The request to send to server.</param>
+        ///// <param name="cancellationToken">The cancellation token.</param>
+        ///// <returns>The response from the server.</returns>
+        //protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        //{
+        //    HttpResponseMessage result = new HttpResponseMessage();
+
+        //    byte[] contentArray = request.Content != null ? await request.Content.ReadAsByteArrayAsync() : null;
+
+        //    HttpRequestHeaders headers = request.Headers;
+        //    IEnumerable<string> auth;
+        //    if (headers != null && headers.TryGetValues("X-ZUMO-AUTH", out auth))
+        //    {
+        //        _authorizationToken = headers.GetValues("X-ZUMO-AUTH").FirstOrDefault();
+        //    }
+
+        //    WebClient client = new WebClient();
+
+        //    string url = request.RequestUri.AbsoluteUri;
+
+        //    client.Headers.Add("Content-Type", ContentType);
+        //    client.Headers.Add("ZUMO-API-VERSION", ZumoApiVersion);
+
+        //    if (!string.IsNullOrEmpty(_authorizationToken))
+        //    {
+        //        client.Headers.Add("X-ZUMO-AUTH", _authorizationToken);
+        //    }
+
+        //    try
+        //    {
+        //        if (contentArray != null)
+        //        {
+        //            byte[] data = client.UploadData(url, contentArray);
+
+        //            result.StatusCode = HttpStatusCode.Accepted;
+        //            result.ReasonPhrase = result.StatusCode.ToString();
+        //            result.Content = new StringContent(Encoding.Default.GetString(data), Encoding.UTF8, ContentType);
+        //        }
+        //        else
+        //        {
+        //            string data = client.DownloadString(url);
+
+        //            result.StatusCode = HttpStatusCode.Accepted;
+        //            result.ReasonPhrase = result.StatusCode.ToString();
+        //            result.Content = new StringContent(data, Encoding.UTF8, ContentType);
+        //        }
+        //    }
+        //    catch (WebException ex)
+        //    {
+        //        result.StatusCode = HttpStatusCode.BadRequest;
+        //        result.ReasonPhrase = result.StatusCode.ToString();
+        //        result.Content = new StringContent(ex.Response.ToString(), Encoding.UTF8, ContentType);
+        //    }
+
+        //    return result;
+        //}
+
+        #endregion
+
+        #region UnityWebRequest solution (working)
+
+        ///// <summary>
+        ///// A Unity-ready implementation of a secure HTTPS method to send the request.
+        ///// </summary>
+        ///// <param name="request">The request to send to server.</param>
+        ///// <param name="cancellationToken">The cancellation token.</param>
+        ///// <returns>The response from the server.</returns>
+        //protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        //{
+        //    byte[] contentArray = request.Content != null ? await request.Content.ReadAsByteArrayAsync() : null;
+
+        //    HttpRequestHeaders headers = request.Headers;
+        //    IEnumerable<string> auth;
+        //    if (headers != null && headers.TryGetValues("X-ZUMO-AUTH", out auth))
+        //    {
+        //        _authorizationToken = headers.GetValues("X-ZUMO-AUTH").FirstOrDefault();
+        //    }
+        //    IEnumerator enumerator = SendUnityRequest(request.RequestUri.AbsoluteUri, contentArray, request.Method.ToString());
+
+        //    if (enumerator != null)
+        //    {
+        //        while (enumerator.MoveNext())
+        //        {
+        //        }
+        //    }
+
+        //    return _result;
+        //}
+
+        ///// <summary>
+        ///// Sends a Unity Web Request.
+        ///// </summary>
+        ///// <param name="url">The request absolute uri.</param>
+        ///// <param name="contentArray">The request content.</param>
+        ///// <param name="method">The request method.</param>
+        ///// <returns>An IEnumerator with the response text.</returns>
+        //IEnumerator SendUnityRequest(string url, byte[] contentArray, string method)
+        //{
+        //    UnityWebRequest uwr = new UnityWebRequest(url, method);
+
+        //    if (contentArray != null)
+        //    {
+        //        uwr.uploadHandler = new UploadHandlerRaw(contentArray);
+        //    }
+
+        //    uwr.downloadHandler = new DownloadHandlerBuffer();
+        //    uwr.SetRequestHeader("Content-Type", ContentType);
+        //    uwr.SetRequestHeader("ZUMO-API-VERSION", ZumoApiVersion);
+        //    if (!string.IsNullOrEmpty(_authorizationToken))
+        //    {
+        //        uwr.SetRequestHeader("X-ZUMO-AUTH", _authorizationToken);
+        //    }
+
+        //    // Send the request then wait until it returns.
+        //    yield return uwr.SendWebRequest();
+
+        //    while (!uwr.isDone)
+        //    {
+        //        yield return null;
+        //    }
+
+        //    if (uwr.isNetworkError || uwr.isHttpError)
+        //    {
+        //        Debug.LogWarning("Error while sending: " + uwr.error);
+        //        _result.StatusCode = (HttpStatusCode)uwr.responseCode;
+        //        _result.ReasonPhrase = _result.StatusCode.ToString();
+        //        _result.Content = new StringContent(uwr.downloadHandler.text, Encoding.UTF8, ContentType);
+
+        //        yield return uwr.error;
+        //    }
+        //    else
+        //    {
+        //        _result.StatusCode = (HttpStatusCode)uwr.responseCode;
+        //        _result.ReasonPhrase = _result.StatusCode.ToString();
+        //        _result.Content = new StringContent(uwr.downloadHandler.text, Encoding.UTF8, ContentType);
+
+        //        yield return uwr.downloadHandler.text;
+        //    }
+        //}
+
+        #endregion
     }
 }
