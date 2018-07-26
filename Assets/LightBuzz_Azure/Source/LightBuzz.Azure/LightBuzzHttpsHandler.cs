@@ -200,6 +200,10 @@ namespace LightBuzz.Azure
             {
                 _result.StatusCode = HttpStatusCode.NotFound;
             }
+            else if (ex.Message.Contains("TrustFailure"))
+            {
+                throw ex;
+            }
             else
             {
                 _result.StatusCode = HttpStatusCode.InternalServerError;

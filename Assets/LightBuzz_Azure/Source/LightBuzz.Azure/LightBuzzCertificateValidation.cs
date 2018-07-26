@@ -32,6 +32,7 @@
 #if !UNITY_WSA || UNITY_EDITOR
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
@@ -44,6 +45,12 @@ namespace LightBuzz.Azure
     {
         public static bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
+            if (certificate.Subject!="CN=*.azurewebsites.net"||
+                !certificate.Issuer.Contains("CN=Microsoft IT"))
+            {
+                return false;
+            }
+
             bool isValidCertificate = true;
 
             if (sslPolicyErrors != SslPolicyErrors.None)
