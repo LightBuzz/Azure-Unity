@@ -69,7 +69,6 @@
     <Compile Include="LightBuzzHttpsHandler.cs" />
     <Compile Include="LightBuzzMobileServiceClient.cs" />
     <Compile Include="LightBuzzMobileServiceClientCloudOnly.cs" />
-    <Compile Include="LightBuzzMobileServiceClientExtensions.cs" />
     <Compile Include="Microsoft.Azure.Mobile.Client.SQLiteStore\ColumnDefinition.cs" />
     <Compile Include="Microsoft.Azure.Mobile.Client.SQLiteStore\EnumerableExtensions.cs" />
     <Compile Include="Microsoft.Azure.Mobile.Client.SQLiteStore\MobileServiceSQLiteStore.cs" />

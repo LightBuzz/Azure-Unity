@@ -124,6 +124,20 @@
             <param name="cancellationToken">The cancellation token.</param>
             <returns>The response from the server.</returns>
         </member>
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendHttpWebRequest(System.Net.Http.HttpRequestMessage,System.String)">
+            <summary>
+            Sends an Http Web Request.
+            </summary>
+            <param name="request">The request message.</param>
+            <param name="contentArray">The request content.</param>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.GetResultStatusCodeFromException(System.Exception)">
+            <summary>
+            Gets the result status code depending on the exception message
+            </summary>
+            <param name="ex">The exception</param>
+        </member>
         <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendUnityRequest(System.String,System.Byte[],System.String)">
             <summary>
             Sends a Unity Web Request.

@@ -340,17 +340,6 @@
             <param name="ct">The Cancellation Token.</param>
             <returns></returns>
         </member>
-        <member name="T:LightBuzz.Azure.LightBuzzMobileServiceClientExtensions">
-            <summary>
-            <see cref="N:Mono.Data.Sqlite"/> extension methods.
-            </summary>
-        </member>
-        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClientExtensions.Disconnect(Mono.Data.Sqlite.SqliteConnection)">
-            <summary>
-            Closes the current connection.
-            </summary>
-            <param name="connection">The connection to close.</param>
-        </member>
         <member name="T:LightBuzz.Azure.NamespaceDoc">
             <summary>
             LightBuzz Azure SDK for Unity3D: a framework that allows you to consume remote Azure App services and store data locally.
