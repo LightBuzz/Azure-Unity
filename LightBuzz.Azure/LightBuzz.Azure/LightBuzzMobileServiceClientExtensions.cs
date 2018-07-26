@@ -11,7 +11,7 @@ namespace LightBuzz.Azure
         /// Closes the current connection.
         /// </summary>
         /// <param name="connection">The connection to close.</param>
-        public static void Close(this SqliteConnection connection)
+        public static void Disconnect(this SqliteConnection connection)
         {
             connection.Close();
         }

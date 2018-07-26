@@ -101,6 +101,11 @@
             A Unity-ready secure HTTPS handler.
             </summary>
         </member>
+        <member name="F:LightBuzz.Azure.LightBuzzHttpsHandler._result">
+            <summary>
+            The response from the server.
+            </summary>
+        </member>
         <member name="F:LightBuzz.Azure.LightBuzzHttpsHandler._authorizationToken">
             <summary>
             The authorization token for the request.
@@ -133,6 +138,29 @@
             <param name="request">The request to send to server.</param>
             <param name="cancellationToken">The cancellation token.</param>
             <returns>The response from the server.</returns>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendHttpWebRequest(System.Net.Http.HttpRequestMessage,System.String)">
+            <summary>
+            Sends an Http Web Request.
+            </summary>
+            <param name="request">The request message.</param>
+            <param name="contentArray">The request content.</param>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.GetResultStatusCodeFromException(System.Exception)">
+            <summary>
+            Gets the result status code depending on the exception message
+            </summary>
+            <param name="ex">The exception</param>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendUnityRequest(System.String,System.Byte[],System.String)">
+            <summary>
+            Sends a Unity Web Request.
+            </summary>
+            <param name="url">The request absolute uri.</param>
+            <param name="contentArray">The request content.</param>
+            <param name="method">The request method.</param>
+            <returns>An IEnumerator with the response text.</returns>
         </member>
         <member name="T:LightBuzz.Azure.LightBuzzMobileServiceClient">
             <summary>
@@ -317,7 +345,7 @@
             <see cref="N:Mono.Data.Sqlite"/> extension methods.
             </summary>
         </member>
-        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClientExtensions.Close(Mono.Data.Sqlite.SqliteConnection)">
+        <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClientExtensions.Disconnect(Mono.Data.Sqlite.SqliteConnection)">
             <summary>
             Closes the current connection.
             </summary>
