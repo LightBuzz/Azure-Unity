@@ -160,53 +160,29 @@ namespace LightBuzz.Azure
                     {
                         string data = reader.ReadToEnd();
 
-                        _result.StatusCode = HttpStatusCode.OK;
+                        _result.StatusCode = response.StatusCode;
                         _result.ReasonPhrase = _result.StatusCode.ToString();
                         _result.Content = new StringContent(data, Encoding, ContentType);
                     }
                 }
             }
-            catch (Exception ex)
+            catch (WebException webException)
             {
-                GetResultStatusCodeFromException(ex);
-                _result.ReasonPhrase = _result.StatusCode.ToString();
-                _result.Content = new StringContent(ex.ToString(), Encoding.UTF8, ContentType);
-            }
-        }
+                if (webException.Response==null)
+                {
+                    throw webException;
+                }
+                using (HttpWebResponse response = (HttpWebResponse)webException.Response)
+                {
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        string data = reader.ReadToEnd();
 
-        /// <summary>
-        /// Gets the result status code depending on the exception message
-        /// </summary>
-        /// <param name="ex">The exception</param>
-        private void GetResultStatusCodeFromException(Exception ex)
-        {
-            if (ex.Message.Contains("Unauthorized"))
-            {
-                _result.StatusCode = HttpStatusCode.Unauthorized;
-            }
-            else if (ex.Message.Contains("Bad Request"))
-            {
-                _result.StatusCode = HttpStatusCode.BadRequest;
-            }
-            else if (ex.Message.Contains("Task Cancelled"))
-            {
-                _result.StatusCode = HttpStatusCode.RequestTimeout;
-            }
-            else if (ex.Message.Contains("Precondition Failed"))
-            {
-                _result.StatusCode = HttpStatusCode.PreconditionFailed;
-            }
-            else if (ex.Message.Contains("Not Found"))
-            {
-                _result.StatusCode = HttpStatusCode.NotFound;
-            }
-            else if (ex.Message.Contains("TrustFailure"))
-            {
-                throw ex;
-            }
-            else
-            {
-                _result.StatusCode = HttpStatusCode.InternalServerError;
+                        _result.StatusCode = response.StatusCode;
+                        _result.ReasonPhrase = _result.StatusCode.ToString();
+                        _result.Content = new StringContent(data, Encoding, ContentType);
+                    }
+                }
             }
         }
 
