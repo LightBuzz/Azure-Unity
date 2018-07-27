@@ -105,6 +105,9 @@
     <Compile Include="..\LightBuzz.Azure\Microsoft.Azure.Mobile.Client.SQLiteStore\TableDefinition.cs">
       <Link>Microsoft.Azure.Mobile.Client.SQLiteStore\TableDefinition.cs</Link>
     </Compile>
+    <Compile Include="..\LightBuzz.Azure\NamespaceDoc.cs">
+      <Link>NamespaceDoc.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

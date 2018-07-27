@@ -116,6 +116,14 @@
             Creates a new LightBuzz secure HTTPS handler.
             </summary>
         </member>
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.String,System.String,System.Text.Encoding)">
+            <summary>
+            Creates a new LightBuzz secure HTTPS handler with the specified parameters.
+            </summary>
+            <param name="contentType">The Content Type header type.</param>
+            <param name="zumoApiVersion">The ZUMO API version number.</param>
+            <param name="encoding">The encoding of the response message.</param>
+        </member>
         <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
             <summary>
             A Unity-ready implementation of a secure HTTPS method to send the request.
@@ -131,12 +139,6 @@
             <param name="request">The request message.</param>
             <param name="contentArray">The request content.</param>
             <returns></returns>
-        </member>
-        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.GetResultStatusCodeFromException(System.Exception)">
-            <summary>
-            Gets the result status code depending on the exception message
-            </summary>
-            <param name="ex">The exception</param>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendUnityRequest(System.String,System.Byte[],System.String)">
             <summary>
@@ -324,6 +326,11 @@
             </summary>
             <param name="ct">The Cancellation Token.</param>
             <returns></returns>
+        </member>
+        <member name="T:LightBuzz.Azure.NamespaceDoc">
+            <summary>
+            LightBuzz Azure SDK for Unity3D: a framework that allows you to consume remote Azure App services and store data locally.
+            </summary>
         </member>
     </members>
 </doc>

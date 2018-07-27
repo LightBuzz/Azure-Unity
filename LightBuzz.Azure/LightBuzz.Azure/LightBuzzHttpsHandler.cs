@@ -29,7 +29,6 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -40,20 +39,29 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.Networking;
 
 namespace LightBuzz.Azure
 {
-	/// <summary>
-	/// A Unity-ready secure HTTPS handler.
-	/// </summary>
-	public class LightBuzzHttpsHandler : HttpClientHandler
+    /// <summary>
+    /// A Unity-ready secure HTTPS handler.
+    /// </summary>
+    public class LightBuzzHttpsHandler : HttpClientHandler
 	{
-		/// <summary>
-		/// The response from the server.
-		/// </summary>
-		private HttpResponseMessage _result = new HttpResponseMessage();
+        #region Constants
+
+        private readonly string CONTENT_TYPE = "Content-Type";
+        private readonly string X_ZUMO_AUTH = "X-ZUMO-AUTH";
+        private readonly string ZUMO_API_VERSION = "ZUMO-API-VERSION";
+
+        #endregion
+
+        #region Members
+
+        /// <summary>
+        /// The response from the server.
+        /// </summary>
+        private HttpResponseMessage _result = new HttpResponseMessage();
 
 		/// <summary>
 		/// The authorization token for the request.
@@ -75,10 +83,14 @@ namespace LightBuzz.Azure
 		/// </summary>
 		public Encoding Encoding { get; set; }
 
-		/// <summary>
-		/// Creates a new LightBuzz secure HTTPS handler.
-		/// </summary>
-		public LightBuzzHttpsHandler()
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Creates a new LightBuzz secure HTTPS handler.
+        /// </summary>
+        public LightBuzzHttpsHandler()
 		{
 			AutomaticDecompression = DecompressionMethods.Deflate;
 			ContentType = "application/json";
@@ -86,21 +98,40 @@ namespace LightBuzz.Azure
 			Encoding = Encoding.UTF8;
 		}
 
-		/// <summary>
-		/// A Unity-ready implementation of a secure HTTPS method to send the request.
-		/// </summary>
-		/// <param name="request">The request to send to server.</param>
-		/// <param name="cancellationToken">The cancellation token.</param>
-		/// <returns>The response from the server.</returns>
-		protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        /// <summary>
+        /// Creates a new LightBuzz secure HTTPS handler with the specified parameters.
+        /// </summary>
+        /// <param name="contentType">The Content Type header type.</param>
+        /// <param name="zumoApiVersion">The ZUMO API version number.</param>
+        /// <param name="encoding">The encoding of the response message.</param>
+        public LightBuzzHttpsHandler(string contentType, string zumoApiVersion, Encoding encoding)
+        {
+            AutomaticDecompression = DecompressionMethods.Deflate;
+            ContentType = contentType;
+            ZumoApiVersion = zumoApiVersion;
+            Encoding = encoding;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// A Unity-ready implementation of a secure HTTPS method to send the request.
+        /// </summary>
+        /// <param name="request">The request to send to server.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The response from the server.</returns>
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 		{
 			string contentArray = request.Content != null ? await request.Content.ReadAsStringAsync() : null;
 
 			HttpRequestHeaders headers = request.Headers;
 			IEnumerable<string> auth;
-			if (headers != null && headers.TryGetValues("X-ZUMO-AUTH", out auth))
+
+			if (headers != null && headers.TryGetValues(X_ZUMO_AUTH, out auth))
 			{
-				_authorizationToken = headers.GetValues("X-ZUMO-AUTH").FirstOrDefault();
+				_authorizationToken = headers.GetValues(X_ZUMO_AUTH).FirstOrDefault();
 			}
 
 			SendHttpWebRequest(request, contentArray);
@@ -122,21 +153,21 @@ namespace LightBuzz.Azure
 			client.KeepAlive = true;
 			client.ContentType = ContentType;
 
-			if (!WebHeaderCollection.IsRestricted("Content-Type"))
+			if (!WebHeaderCollection.IsRestricted(CONTENT_TYPE))
 			{
-				client.Headers.Add("Content-Type", ContentType);
+				client.Headers.Add(CONTENT_TYPE, ContentType);
 			}
 
-			if (!WebHeaderCollection.IsRestricted("ZUMO-API-VERSION"))
+			if (!WebHeaderCollection.IsRestricted(ZUMO_API_VERSION))
 			{
-				client.Headers.Add("ZUMO-API-VERSION", ZumoApiVersion);
+				client.Headers.Add(ZUMO_API_VERSION, ZumoApiVersion);
 			}
 
 			if (!string.IsNullOrEmpty(_authorizationToken))
 			{
-				if (!WebHeaderCollection.IsRestricted("X-ZUMO-AUTH"))
+				if (!WebHeaderCollection.IsRestricted(X_ZUMO_AUTH))
 				{
-					client.Headers.Add("X-ZUMO-AUTH", _authorizationToken);
+					client.Headers.Add(X_ZUMO_AUTH, _authorizationToken);
 				}
 			}
 
@@ -185,42 +216,14 @@ namespace LightBuzz.Azure
 			}
 		}
 
-		/*/// <summary>
-        /// A Unity-ready implementation of a secure HTTPS method to send the request.
+        /// <summary>
+        /// Sends a Unity Web Request.
         /// </summary>
-        /// <param name="request">The request to send to server.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The response from the server.</returns>
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            byte[] contentArray = request.Content != null ? await request.Content.ReadAsByteArrayAsync() : null;
-
-            HttpRequestHeaders headers = request.Headers;
-            IEnumerable<string> auth;
-            if (headers != null && headers.TryGetValues("X-ZUMO-AUTH", out auth))
-            {
-                _authorizationToken = headers.GetValues("X-ZUMO-AUTH").FirstOrDefault();
-            }
-            IEnumerator enumerator = SendUnityRequest(request.RequestUri.AbsoluteUri, contentArray, request.Method.ToString());
-
-            if (enumerator != null)
-            {
-                while (enumerator.MoveNext())
-                {
-                }
-            }
-
-            return _result;
-        }*/
-
-		/// <summary>
-		/// Sends a Unity Web Request.
-		/// </summary>
-		/// <param name="url">The request absolute uri.</param>
-		/// <param name="contentArray">The request content.</param>
-		/// <param name="method">The request method.</param>
-		/// <returns>An IEnumerator with the response text.</returns>
-		IEnumerator SendUnityRequest(string url, byte[] contentArray, string method)
+        /// <param name="url">The request absolute uri.</param>
+        /// <param name="contentArray">The request content.</param>
+        /// <param name="method">The request method.</param>
+        /// <returns>An IEnumerator with the response text.</returns>
+        IEnumerator SendUnityRequest(string url, byte[] contentArray, string method)
 		{
 			UnityWebRequest uwr = new UnityWebRequest(url, method);
 
@@ -230,11 +233,12 @@ namespace LightBuzz.Azure
 			}
 
 			uwr.downloadHandler = new DownloadHandlerBuffer();
-			uwr.SetRequestHeader("Content-Type", ContentType);
-			uwr.SetRequestHeader("ZUMO-API-VERSION", ZumoApiVersion);
+			uwr.SetRequestHeader(CONTENT_TYPE, ContentType);
+			uwr.SetRequestHeader(ZUMO_API_VERSION, ZumoApiVersion);
+
 			if (!string.IsNullOrEmpty(_authorizationToken))
 			{
-				uwr.SetRequestHeader("X-ZUMO-AUTH", _authorizationToken);
+				uwr.SetRequestHeader(X_ZUMO_AUTH, _authorizationToken);
 			}
 
 			// Send the request then wait until it returns.
@@ -247,7 +251,6 @@ namespace LightBuzz.Azure
 
 			if (uwr.isNetworkError || uwr.isHttpError)
 			{
-				Debug.LogWarning("Error while sending: " + uwr.error);
 				_result.StatusCode = (HttpStatusCode)uwr.responseCode;
 				_result.ReasonPhrase = _result.StatusCode.ToString();
 				_result.Content = new StringContent(uwr.downloadHandler.text, Encoding.UTF8, ContentType);
@@ -262,6 +265,36 @@ namespace LightBuzz.Azure
 
 				yield return uwr.downloadHandler.text;
 			}
-		}
-	}
+        }
+
+        /*/// <summary>
+        /// A Unity-ready implementation of a secure HTTPS method to send the request.
+        /// </summary>
+        /// <param name="request">The request to send to server.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The response from the server.</returns>
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            byte[] contentArray = request.Content != null ? await request.Content.ReadAsByteArrayAsync() : null;
+
+            HttpRequestHeaders headers = request.Headers;
+            IEnumerable<string> auth;
+            if (headers != null && headers.TryGetValues(X_ZUMO_AUTH, out auth))
+            {
+                _authorizationToken = headers.GetValues(X_ZUMO_AUTH).FirstOrDefault();
+            }
+            IEnumerator enumerator = SendUnityRequest(request.RequestUri.AbsoluteUri, contentArray, request.Method.ToString());
+
+            if (enumerator != null)
+            {
+                while (enumerator.MoveNext())
+                {
+                }
+            }
+
+            return _result;
+        }*/
+
+        #endregion
+    }
 }
