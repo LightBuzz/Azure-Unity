@@ -55,8 +55,8 @@ namespace LightBuzz.Azure
 		/// <returns>True if the certificate is valid. False otherwise.</returns>
 		public static bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
 		{
-			if (certificate.Subject != "CN=*.azurewebsites.net" ||
-				!certificate.Issuer.Contains("CN=Microsoft IT"))
+			if ((certificate.Subject != "CN=*.azurewebsites.net" && certificate.Subject != "CN=*.blob.core.windows.net")
+			    || !certificate.Issuer.Contains("CN=Microsoft IT"))
 			{
 				return false;
 			}
