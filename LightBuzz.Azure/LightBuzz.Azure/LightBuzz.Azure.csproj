@@ -35,9 +35,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Azure.Mobile.Client">
-      <HintPath>..\..\LightBuzz.Azure.Unity\Assets\LightBuzz_Azure\Plugins\Azure\Microsoft.Azure.Mobile.Client.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Data.Sqlite">
       <HintPath>..\..\LightBuzz.Azure.Unity\Assets\LightBuzz_Azure\Plugins\SQLite\Mono.Data.Sqlite.dll</HintPath>
     </Reference>
@@ -54,6 +51,7 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -79,8 +77,184 @@
     <Compile Include="Microsoft.Azure.Mobile.Client.SQLiteStore\SQLitePCLRawHelpers.cs" />
     <Compile Include="Microsoft.Azure.Mobile.Client.SQLiteStore\SqlQueryFormatter.cs" />
     <Compile Include="Microsoft.Azure.Mobile.Client.SQLiteStore\TableDefinition.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Authentication\MobileServiceAuthentication.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Authentication\MobileServiceAuthenticationProvider.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Authentication\MobileServicePKCEAuthentication.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Authentication\MobileServiceTokenAuthentication.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Collections\MobileServiceCollection.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Collections\MobileServiceCollectionEventArgs.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\EnumValueAttribute.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Eventing\EventManagerExtensions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Eventing\IMobileServiceEvent.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Eventing\IMobileServiceEventManager.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Eventing\ISubscription.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Eventing\MobileServiceEvent.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Eventing\MobileServiceEventManager.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Eventing\MobileServiceEventObserver.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Exceptions\MobileServiceConflictException.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Exceptions\MobileServiceInvalidOperationException.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Exceptions\MobileServiceLocalStoreException.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Exceptions\MobileServiceODataException.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Exceptions\MobileServicePreconditionFailedException.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Exceptions\MobileServicePushAbortException.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Exceptions\MobileServicePushFailedException.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\ExpressionUtility\ExpressionUtility.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\ExpressionUtility\ExpressionVisitor.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\ExpressionUtility\PartialEvaluator.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\ExpressionUtility\VisitorHelper.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Extensions\IDictionaryExtensions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Extensions\JTokenExtensions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Extensions\MobileServiceClientExtensions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Extensions\MobileServiceCollectionExtensions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Extensions\MobileServiceLocalStoreExtensions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Extensions\MobileServiceSyncContextExtensions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Extensions\MobileServiceSyncTableExtensions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Extensions\MobileServiceTableExtensions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Extensions\PlatformInformationExtensions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Extensions\StringExtensions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Extensions\TypeExtensions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Http\HttpUtility.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Http\LinkHeaderValue.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Http\MobileServiceHttpClient.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Http\MobileServiceHttpResponse.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\IMobileServiceClient.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\MobileServiceClient.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\MobileServiceFeatures.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\MobileServiceUrlBuilder.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\MobileServiceUser.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Platforms\net45\ApplicationStorage.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Platforms\net45\CurrentPlatform.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Platforms\net45\PlatformInformation.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Platform\IApplicationStorage.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Platform\IExpressionUtility.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Platform\IPlatform.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Platform\IPlatformInformation.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Platform\IPushUtility.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Platform\Platform.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Platform\PreserveAttribute.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Properties\AssemblyInfo.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Properties\InternalsVisibleTo.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Push\PushHttpClient.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Push\PushInstallationProperties.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\IMobileServiceTable.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\IMobileServiceTable.Generic.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\MobileServiceObjectReader.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\MobileServiceSystemColumns.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\MobileServiceSystemProperties.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\MobileServiceTable.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\MobileServiceTable.Generic.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\IQueryResultEnumerable.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\ITotalCountProvider.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\Linq\FilterBuildingExpressionVisitor.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\Linq\IMobileServiceTableQuery.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\Linq\MemberInfoKey.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\Linq\MobileServiceTableQuery.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\Linq\MobileServiceTableQueryProvider.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\Linq\MobileServiceTableQueryTranslator.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\MobileServiceTableQueryDescription.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\ODataOptions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\BinaryOperatorKind.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\BinaryOperatorNode.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\ConstantNode.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\ConvertNode.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\FunctionCallNode.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\MemberAccessNode.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\ODataExpressionLexer.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\ODataExpressionParser.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\ODataExpressionVisitor.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\OrderByDirection.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\OrderByNode.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\QueryNode.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\QueryNodeKind.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\QueryNodeVisitor.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\QueryToken.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\QueryTokenKind.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\UnaryOperatorKind.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\OData\UnaryOperatorNode.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\QueryResult.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\QueryResultEnumerable.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Query\QueryResultList.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Serialization\CreatedAtAttribute.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Serialization\DataTableAttribute.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Serialization\DeletedAttribute.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Serialization\ISystemPropertyAttribute.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Serialization\MobileServiceContractResolver.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Serialization\MobileServiceIsoDateTimeConverter.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Serialization\MobileServiceJsonSerializerSettings.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Serialization\MobileServicePrecisionCheckConverter.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Serialization\MobileServiceSerializer.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Serialization\UpdatedAtAttribute.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Serialization\VersionAttribute.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Eventing\LocalStoreChangeTracker.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Eventing\LocalStoreProxy.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Eventing\PurgeCompletedEvent.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Eventing\StoreChangeEvent.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Eventing\StoreChangeTrackerFactory.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Eventing\StoreOperationBatchCompletedEvent.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Eventing\StoreOperationCompletedEvent.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Eventing\StoreTrackingContext.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Eventing\StoreTrackingOptions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\IMobileServiceLocalStore.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\IMobileServiceSyncContext.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\IMobileServiceSyncHandler.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\IMobileServiceSyncTable.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\IMobileServiceSyncTable.Generic.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\LocalStoreOperationKind.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\MobileServiceLocalStore.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\MobileServiceLocalSystemTables.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\MobileServicePushCompletionResult.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\MobileServicePushStatus.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\MobileServiceRemoteTableOptions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\MobileServiceSyncContext.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\MobileServiceSyncHandler.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\MobileServiceSyncSettingsManager.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\MobileServiceSyncTable.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\MobileServiceSyncTable.Generic.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\PullOptions.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Actions\IncrementalPullStrategy.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Actions\PullAction.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Actions\PullCursor.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Actions\PullStrategy.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Actions\PurgeAction.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Actions\PushAction.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Actions\SyncAction.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Actions\TableAction.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\OperationBatch.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\OperationQueue.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Operations\DeleteOperation.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Operations\IMobileServiceTableOperation.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Operations\InsertOperation.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Operations\MobileServiceTableKind.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Operations\MobileServiceTableOperation.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Operations\MobileServiceTableOperationError.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Operations\MobileServiceTableOperationKind.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Operations\MobileServiceTableOperationState.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\Queue\Operations\UpdateOperation.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\StoreOperation.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\StoreOperationsBatch.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Table\Sync\StoreOperationSource.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Threading\ActionBlock.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Threading\AsyncLock.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Threading\AsyncLockDictionary.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Threading\AsyncReaderWriterLock.cs" />
+    <Compile Include="Microsoft.Azure.Mobile.Client\Threading\DisposeAction.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Microsoft.Azure.Mobile.Client\Properties\Microsoft.Azure.Mobile.Client.rd.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Microsoft.Azure.Mobile.Client\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
