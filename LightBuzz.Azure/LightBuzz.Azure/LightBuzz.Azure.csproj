@@ -43,7 +43,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\LightBuzz.Azure.Unity\Assets\LightBuzz_Azure\Plugins\Newtonsoft\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\LightBuzz.Azure.Unity\Assets\LightBuzz_Azure\Plugins\Newtonsoft\Assemblies\Standalone\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -133,8 +133,6 @@
     <Compile Include="Microsoft.Azure.Mobile.Client\Platform\IPushUtility.cs" />
     <Compile Include="Microsoft.Azure.Mobile.Client\Platform\Platform.cs" />
     <Compile Include="Microsoft.Azure.Mobile.Client\Platform\PreserveAttribute.cs" />
-    <Compile Include="Microsoft.Azure.Mobile.Client\Properties\AssemblyInfo.cs" />
-    <Compile Include="Microsoft.Azure.Mobile.Client\Properties\InternalsVisibleTo.cs" />
     <Compile Include="Microsoft.Azure.Mobile.Client\Push\PushHttpClient.cs" />
     <Compile Include="Microsoft.Azure.Mobile.Client\Push\PushInstallationProperties.cs" />
     <Compile Include="Microsoft.Azure.Mobile.Client\Resources.Designer.cs">
@@ -246,9 +244,6 @@
     <Compile Include="Microsoft.Azure.Mobile.Client\Threading\DisposeAction.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Microsoft.Azure.Mobile.Client\Properties\Microsoft.Azure.Mobile.Client.rd.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Microsoft.Azure.Mobile.Client\Resources.resx">

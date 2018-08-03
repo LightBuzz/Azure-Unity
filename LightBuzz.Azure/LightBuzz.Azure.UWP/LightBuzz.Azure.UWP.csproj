@@ -1,64 +1,111 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5A4B19C8-B09C-40C8-9F88-89DFFB0684F9}</ProjectGuid>
+    <ProjectGuid>{FAC74506-AAC0-49F0-95B2-02A49875BD33}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LightBuzz.Azure</RootNamespace>
     <AssemblyName>LightBuzz.Azure</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17134.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;UNITY_WSA</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;UNITY_WSA</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\LightBuzz.Azure.xml</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.Azure.Mobile.Client">
-      <HintPath>..\..\LightBuzz.Azure.Unity\Assets\LightBuzz_Azure\Plugins\Azure\Microsoft.Azure.Mobile.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.Mobile.Client.SQLiteStore">
-      <HintPath>..\..\LightBuzz.Azure.Unity\Assets\LightBuzz_Azure\Plugins\Azure\WSA\Microsoft.Azure.Mobile.Client.SQLiteStore.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Data.Sqlite">
-      <HintPath>..\..\LightBuzz.Azure.Unity\Assets\LightBuzz_Azure\Plugins\SQLite\Mono.Data.Sqlite.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\LightBuzz.Azure.Unity\Assets\LightBuzz_Azure\Plugins\Newtonsoft\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\..\Program Files\Unity\Hub\Editor\2017.4.6f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\LightBuzz.Azure\AppServiceTableDAO.cs">
       <Link>AppServiceTableDAO.cs</Link>
@@ -75,40 +122,40 @@
     <Compile Include="..\LightBuzz.Azure\LightBuzzMobileServiceClientCloudOnly.cs">
       <Link>LightBuzzMobileServiceClientCloudOnly.cs</Link>
     </Compile>
-    <Compile Include="..\LightBuzz.Azure\Microsoft.Azure.Mobile.Client.SQLiteStore\ColumnDefinition.cs">
-      <Link>Microsoft.Azure.Mobile.Client.SQLiteStore\ColumnDefinition.cs</Link>
-    </Compile>
-    <Compile Include="..\LightBuzz.Azure\Microsoft.Azure.Mobile.Client.SQLiteStore\EnumerableExtensions.cs">
-      <Link>Microsoft.Azure.Mobile.Client.SQLiteStore\EnumerableExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\LightBuzz.Azure\Microsoft.Azure.Mobile.Client.SQLiteStore\MobileServiceSQLiteStore.cs">
-      <Link>Microsoft.Azure.Mobile.Client.SQLiteStore\MobileServiceSQLiteStore.cs</Link>
-    </Compile>
-    <Compile Include="..\LightBuzz.Azure\Microsoft.Azure.Mobile.Client.SQLiteStore\MobileServiceSQLiteStoreExtensions.cs">
-      <Link>Microsoft.Azure.Mobile.Client.SQLiteStore\MobileServiceSQLiteStoreExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\LightBuzz.Azure\Microsoft.Azure.Mobile.Client.SQLiteStore\SqlColumnType.cs">
-      <Link>Microsoft.Azure.Mobile.Client.SQLiteStore\SqlColumnType.cs</Link>
-    </Compile>
-    <Compile Include="..\LightBuzz.Azure\Microsoft.Azure.Mobile.Client.SQLiteStore\SqlHelpers.cs">
-      <Link>Microsoft.Azure.Mobile.Client.SQLiteStore\SqlHelpers.cs</Link>
-    </Compile>
-    <Compile Include="..\LightBuzz.Azure\Microsoft.Azure.Mobile.Client.SQLiteStore\SQLiteException.cs">
-      <Link>Microsoft.Azure.Mobile.Client.SQLiteStore\SQLiteException.cs</Link>
-    </Compile>
-    <Compile Include="..\LightBuzz.Azure\Microsoft.Azure.Mobile.Client.SQLiteStore\SQLitePCLRawHelpers.cs">
-      <Link>Microsoft.Azure.Mobile.Client.SQLiteStore\SQLitePCLRawHelpers.cs</Link>
-    </Compile>
-    <Compile Include="..\LightBuzz.Azure\Microsoft.Azure.Mobile.Client.SQLiteStore\SqlQueryFormatter.cs">
-      <Link>Microsoft.Azure.Mobile.Client.SQLiteStore\SqlQueryFormatter.cs</Link>
-    </Compile>
-    <Compile Include="..\LightBuzz.Azure\Microsoft.Azure.Mobile.Client.SQLiteStore\TableDefinition.cs">
-      <Link>Microsoft.Azure.Mobile.Client.SQLiteStore\TableDefinition.cs</Link>
-    </Compile>
     <Compile Include="..\LightBuzz.Azure\NamespaceDoc.cs">
       <Link>NamespaceDoc.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\LightBuzz.Azure.UWP.rd.xml" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.1.7</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Azure.Mobile.Client">
+      <HintPath>..\..\LightBuzz.Azure.Unity\Assets\LightBuzz_Azure\Plugins\Azure\WSA\Microsoft.Azure.Mobile.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.Mobile.Client.SQLiteStore">
+      <HintPath>..\..\LightBuzz.Azure.Unity\Assets\LightBuzz_Azure\Plugins\Azure\WSA\Microsoft.Azure.Mobile.Client.SQLiteStore.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\LightBuzz.Azure.Unity\Assets\LightBuzz_Azure\Plugins\Newtonsoft\WSA\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\..\..\Program Files\Unity\Hub\Editor\2017.4.6f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

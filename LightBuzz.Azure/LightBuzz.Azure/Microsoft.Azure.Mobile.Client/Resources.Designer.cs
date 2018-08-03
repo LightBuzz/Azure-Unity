@@ -8,8 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LightBuzz.Azure.Microsoft.Azure.Mobile.Client {
+namespace LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client {
     using System;
+    using System.Reflection;
     
     
     /// <summary>
@@ -39,7 +40,7 @@ namespace LightBuzz.Azure.Microsoft.Azure.Mobile.Client {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources", typeof(Resources).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

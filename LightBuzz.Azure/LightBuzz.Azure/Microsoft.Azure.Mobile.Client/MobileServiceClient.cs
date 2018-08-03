@@ -10,7 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using LightBuzz.Azure.Microsoft.Azure.Mobile.Client;
+using LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client;
 using Microsoft.WindowsAzure.MobileServices.Eventing;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using Newtonsoft.Json.Linq;

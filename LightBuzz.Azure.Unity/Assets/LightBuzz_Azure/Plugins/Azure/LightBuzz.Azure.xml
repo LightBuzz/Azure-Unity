@@ -342,553 +342,553 @@
             <param name="ct">The Cancellation Token.</param>
             <returns></returns>
         </member>
-        <member name="T:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources">
+        <member name="T:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ResourceManager">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ResourceManager">
             <summary>
               Returns the cached ResourceManager instance used by this class.
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.Culture">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.Culture">
             <summary>
               Overrides the current thread's CurrentUICulture property for all
               resource lookups using this strongly typed resource class.
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ExpressionUtility_ProjectionNotSupportedOnWindowsPhone75">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ExpressionUtility_ProjectionNotSupportedOnWindowsPhone75">
             <summary>
               Looks up a localized string similar to The Linq IQueryable Select() operation is not supported on the Windows Phone 7.5 platform..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.FilterBuildingExpressionVisitor_MemberUnsupported">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.FilterBuildingExpressionVisitor_MemberUnsupported">
             <summary>
               Looks up a localized string similar to The member &apos;{0}&apos; is not supported in the &apos;Where&apos; Mobile Services query expression &apos;{1}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.FilterBuildingExpressionVisitor_OperatorUnsupported">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.FilterBuildingExpressionVisitor_OperatorUnsupported">
             <summary>
               Looks up a localized string similar to The operator &apos;{0}&apos; is not supported in the &apos;Where&apos; Mobile Services query expression &apos;{1}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.FilterBuildingExpressionVisitor_UnsupportedInWhereExpression">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.FilterBuildingExpressionVisitor_UnsupportedInWhereExpression">
             <summary>
               Looks up a localized string similar to &apos;{0}&apos; is not supported in a &apos;Where&apos; Mobile Services query expression..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.HttpMessageHandlerExtensions_WrongHandlerType">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.HttpMessageHandlerExtensions_WrongHandlerType">
             <summary>
               Looks up a localized string similar to All message handlers except the last must be of the type &apos;{0}&apos;.
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.IApplicationStorage_NullOrWhitespaceSettingName">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.IApplicationStorage_NullOrWhitespaceSettingName">
             <summary>
               Looks up a localized string similar to An application setting name must be provided. Null, empty or whitespace only names are not allowed..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.IAuthenticationBroker_AuthenticationCanceled">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.IAuthenticationBroker_AuthenticationCanceled">
             <summary>
               Looks up a localized string similar to Authentication was cancelled by the user..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.IAuthenticationBroker_AuthenticationFailed">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.IAuthenticationBroker_AuthenticationFailed">
             <summary>
               Looks up a localized string similar to Authentication failed with HTTP response code {0}..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.IAuthenticationBroker_InvalidLoginResponse">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.IAuthenticationBroker_InvalidLoginResponse">
             <summary>
               Looks up a localized string similar to Invalid format of the authentication response..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.IAuthenticationBroker_LoginFailed">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.IAuthenticationBroker_LoginFailed">
             <summary>
               Looks up a localized string similar to Login failed: {0}.
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.IAuthenticationBroker_LoginInProgress">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.IAuthenticationBroker_LoginInProgress">
             <summary>
               Looks up a localized string similar to Authentication is already in progress..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.IAuthenticationBroker_NoLoginInProgress">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.IAuthenticationBroker_NoLoginInProgress">
             <summary>
               Looks up a localized string similar to Authentication has not been started..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceClient_EmptyArgument">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceClient_EmptyArgument">
             <summary>
               Looks up a localized string similar to {0} cannot be null, empty or only whitespace..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceClient_ErrorMessage">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceClient_ErrorMessage">
             <summary>
               Looks up a localized string similar to The request could not be completed.  ({0}).
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceClient_InnerHandlerMustBeNull">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceClient_InnerHandlerMustBeNull">
             <summary>
               Looks up a localized string similar to The &apos;InnerHandler&apos; property of the delegating handler must be null..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceClient_InvalidAlternateLoginHost">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceClient_InvalidAlternateLoginHost">
             <summary>
               Looks up a localized string similar to {0} is invalid.AlternateLoginHost must be a valid https URI with hostname only.
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceClient_NoResponseContent">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceClient_NoResponseContent">
             <summary>
               Looks up a localized string similar to The server did not provide a response with the expected content..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceClient_NotAnAbsoluteURI">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceClient_NotAnAbsoluteURI">
             <summary>
               Looks up a localized string similar to {0} is not an absolute URI..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceCollection_IncrementalLoadingFailed">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceCollection_IncrementalLoadingFailed">
             <summary>
               Looks up a localized string similar to Failed to incrementally load more items of type &apos;{0}&apos;. See the inner exception for details..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceCollection_LoadInProcess">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceCollection_LoadInProcess">
             <summary>
               Looks up a localized string similar to Loading of more items already in process..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceContractResolver_IntegerIdTypeWithSystemPropertyAttributes">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceContractResolver_IntegerIdTypeWithSystemPropertyAttributes">
             <summary>
               Looks up a localized string similar to The type &apos;{0}&apos; has an integer id member and therefore can not have any members with the system property attribute &apos;{1}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceContractResolver_MemberNotFound">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceContractResolver_MemberNotFound">
             <summary>
               Looks up a localized string similar to No &apos;{0}&apos; member found on type &apos;{1}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceContractResolver_MultipleSystemPropertyAttributes">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceContractResolver_MultipleSystemPropertyAttributes">
             <summary>
               Looks up a localized string similar to A member can only have one system property attribute. The member &apos;{0}&apos; on type &apos;{1}&apos; has system property attributes &apos;{2}&apos; and &apos;{3}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceContractResolver_NumberOutOfRange">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceContractResolver_NumberOutOfRange">
             <summary>
               Looks up a localized string similar to The value {0} for member {1} is outside the valid range for numeric columns..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceContractResolver_SamePropertyName">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceContractResolver_SamePropertyName">
             <summary>
               Looks up a localized string similar to Only one member may have the property name &apos;{0}&apos; (regardless of casing) on type &apos;{1}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceContractResolver_TypeNoDataContractButBaseWithDataContract">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceContractResolver_TypeNoDataContractButBaseWithDataContract">
             <summary>
               Looks up a localized string similar to The type &apos;{0}&apos; does not have a DataContractAttribute, but the type derives from the type &apos;{1}&apos;, which does have a DataContractAttribute. If a type has a DataContractAttribute, any type that derives from that type must also have a DataContractAttribute..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceContractResolver_TypeWithDataMemberButNoDataContract">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceContractResolver_TypeWithDataMemberButNoDataContract">
             <summary>
               Looks up a localized string similar to The type &apos;{0}&apos; has one or members with a DataMemberAttribute, but the type itself does not have a DataContractAttribute. Use the Newtonsoft.Json.JsonPropertyAttribute in place of the DataMemberAttribute and set the PropertyName to the desired name..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceJsonSerializerSettings_NullOrInvalidContractResolver">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceJsonSerializerSettings_NullOrInvalidContractResolver">
             <summary>
               Looks up a localized string similar to The member &apos;{0}.ContractResolver&apos; must be set to an instance of the &apos;{1}&apos; class or a class that inherits from the &apos;{1}&apos; class..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServicePrecisionCheckConverter_ReadNotSupported">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServicePrecisionCheckConverter_ReadNotSupported">
             <summary>
               Looks up a localized string similar to The {0} does not support reading JSON..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServicesAuthentication_LoginAlreadyInProgress">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServicesAuthentication_LoginAlreadyInProgress">
             <summary>
               Looks up a localized string similar to Cannot start a login operation because login is already in progress..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_IdCasingIncorrect">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_IdCasingIncorrect">
             <summary>
               Looks up a localized string similar to The casing of the &apos;{0}&apos; property is invalid..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_IdNotFound">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_IdNotFound">
             <summary>
               Looks up a localized string similar to Expected {0} member not found..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_IdTypeMismatch">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_IdTypeMismatch">
             <summary>
               Looks up a localized string similar to You might be affected by Mobile Services latest changes to support string Ids. For more details: http://go.microsoft.com/fwlink/?LinkId=330396.
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_InvalidIntegerId">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_InvalidIntegerId">
             <summary>
               Looks up a localized string similar to The integer id &apos;{0}&apos; is not a positive integer value..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_InvalidStringId">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_InvalidStringId">
             <summary>
               Looks up a localized string similar to The string id &apos;{0}&apos; is invalid. An id must not contain any control characters or the characters &quot;,+,?,\,/,`..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_LookupInvalidIdType">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_LookupInvalidIdType">
             <summary>
               Looks up a localized string similar to The id parameter type &apos;{0}&apos; is invalid for looking up items of type &apos;{1}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_NullOrEmptyStringId">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_NullOrEmptyStringId">
             <summary>
               Looks up a localized string similar to The id can not be null or an empty string..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_StringIdTooLong">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSerializer_StringIdTooLong">
             <summary>
               Looks up a localized string similar to The string id &apos;{0}&apos; is longer than the max string id length of {1} characters..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_IdMustBeString">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_IdMustBeString">
             <summary>
               Looks up a localized string similar to The id must be of type string..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_IncrementalPullWithOrderNotAllowed">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_IncrementalPullWithOrderNotAllowed">
             <summary>
               Looks up a localized string similar to Incremental pull query must not have orderby clause..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_IncrementalPullWithSkipTopNotSupported">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_IncrementalPullWithSkipTopNotSupported">
             <summary>
               Looks up a localized string similar to Incremental pull query must not have skip or top specified..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_InvalidQueryId">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_InvalidQueryId">
             <summary>
               Looks up a localized string similar to The query id must not contain pipe character and should be less than 50 characters in length..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_OrderByNotAllowed">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_OrderByNotAllowed">
             <summary>
               Looks up a localized string similar to The supported table options does not include orderby..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_PullWithSelectNotSupported">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_PullWithSelectNotSupported">
             <summary>
               Looks up a localized string similar to Pull query with select clause is not supported..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_SkipNotAllowed">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_SkipNotAllowed">
             <summary>
               Looks up a localized string similar to The supported table options does not include skip. .
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_TopNotAllowed">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceSyncTable_TopNotAllowed">
             <summary>
               Looks up a localized string similar to The supported table options does not include top..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTable_DeleteWithoutId">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTable_DeleteWithoutId">
             <summary>
               Looks up a localized string similar to Cannot delete if the {0} member is set to a default value..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTable_ExpectedArray">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTable_ExpectedArray">
             <summary>
               Looks up a localized string similar to Could not get an array from response {0}..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTable_InsertWithExistingId">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTable_InsertWithExistingId">
             <summary>
               Looks up a localized string similar to Cannot insert if the {0} member is already set..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTable_ItemNotFoundInStore">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTable_ItemNotFoundInStore">
             <summary>
               Looks up a localized string similar to Item not found in local store..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTable_NotSingleObject">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTable_NotSingleObject">
             <summary>
               Looks up a localized string similar to Could not get object from response {0}..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTable_QueryUriHostIsDifferent">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTable_QueryUriHostIsDifferent">
             <summary>
               Looks up a localized string similar to The query uri must be on the same host as the Mobile Service..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTable_UpdateWithoutId">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTable_UpdateWithoutId">
             <summary>
               Looks up a localized string similar to Cannot update if the {0} member is set to a default value..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableOperation_ItemNotFound">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableOperation_ItemNotFound">
             <summary>
               Looks up a localized string similar to Operation must have an item associated with it..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableOperation_ResultNotJObject">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableOperation_ResultNotJObject">
             <summary>
               Looks up a localized string similar to Mobile Service table operation returned an unexpected response..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableQueryDescription_UnrecognizedQueryParameter">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableQueryDescription_UnrecognizedQueryParameter">
             <summary>
               Looks up a localized string similar to Unrecognized query parameter &apos;{0}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableQueryTranslator_MembersOnlyInExpression">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableQueryTranslator_MembersOnlyInExpression">
             <summary>
               Looks up a localized string similar to &apos;{0}&apos; Mobile Services query expressions must consist of members only, not &apos;{1}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableQueryTranslator_SingleIntegerOnly">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableQueryTranslator_SingleIntegerOnly">
             <summary>
               Looks up a localized string similar to &apos;{0}&apos; Mobile Services query expressions must consist of a single integer, not &apos;{1}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableQueryTranslator_UnsupportedExpression">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableQueryTranslator_UnsupportedExpression">
             <summary>
               Looks up a localized string similar to Expression &apos;{1}&apos; is not a supported &apos;{0}&apos; Mobile Services query expression..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableSerializer_CannotDeserializeValue">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableSerializer_CannotDeserializeValue">
             <summary>
               Looks up a localized string similar to Cannot deserialize value {0} into &apos;{1}.{2}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableSerializer_MissingRequiredMember">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableSerializer_MissingRequiredMember">
             <summary>
               Looks up a localized string similar to Cannot deserialize type &apos;{0}&apos; because the JSON object did not have required member(s) &apos;{1}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableSerializer_NeedObject">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableSerializer_NeedObject">
             <summary>
               Looks up a localized string similar to Expected a JSON object to deserialize, not &apos;{0}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableSerializer_UnknownType">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableSerializer_UnknownType">
             <summary>
               Looks up a localized string similar to Cannot serialize member &apos;{0}&apos; of type &apos;{1}&apos; declared on type &apos;{2}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableUrlBuilder_InvalidParameterBeginsWithDollarSign">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.MobileServiceTableUrlBuilder_InvalidParameterBeginsWithDollarSign">
             <summary>
               Looks up a localized string similar to {0} is an invalid user-defined query string parameter. User-defined query string parameters must not begin with a \&apos;$\&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_CloseParenOrCommaExpected">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_CloseParenOrCommaExpected">
             <summary>
               Looks up a localized string similar to &quot;&apos;)&apos; or &apos;,&apos; expected..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_CloseParenOrOperatorExpected">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_CloseParenOrOperatorExpected">
             <summary>
               Looks up a localized string similar to &apos;)&apos; or operator expected.
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_DigitExpected">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_DigitExpected">
             <summary>
               Looks up a localized string similar to Digit expected..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_ExpressionExpected">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_ExpressionExpected">
             <summary>
               Looks up a localized string similar to Expression expected..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_FunctionArgsCount">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_FunctionArgsCount">
             <summary>
               Looks up a localized string similar to Function &apos;{0}&apos; requires {1} parameter(s)..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_IdentifierExpected">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_IdentifierExpected">
             <summary>
               Looks up a localized string similar to Expected identifier..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_IntegerLiteralExpected">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_IntegerLiteralExpected">
             <summary>
               Looks up a localized string similar to Expected integer literal..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_InvalidIntegerLiteral">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_InvalidIntegerLiteral">
             <summary>
               Looks up a localized string similar to The specified odata query has invalid integer literal &apos;{0}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_InvalidRealLiteral">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_InvalidRealLiteral">
             <summary>
               Looks up a localized string similar to The specified odata query has invalid real literal &apos;{0}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_InvalidTypeCreation">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_InvalidTypeCreation">
             <summary>
               Looks up a localized string similar to The specified odata query has invalid &apos;{0}&apos; type creation expression..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_OpenParenExpected">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_OpenParenExpected">
             <summary>
               Looks up a localized string similar to &apos;(&apos; expected..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_RealLiteralExpected">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_RealLiteralExpected">
             <summary>
               Looks up a localized string similar to Expected real literal..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_StringLiteralExpected">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_StringLiteralExpected">
             <summary>
               Looks up a localized string similar to Expected string literal..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_SubstringArgsCount">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_SubstringArgsCount">
             <summary>
               Looks up a localized string similar to Function &apos;substring&apos; requires 2 or 3 parameters..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_SyntaxError">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_SyntaxError">
             <summary>
               Looks up a localized string similar to The specified odata query has syntax errors..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_UnterminatedStringLiteral">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.ODataExpressionParser_UnterminatedStringLiteral">
             <summary>
               Looks up a localized string similar to The specified odata query has unterminated string literal..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.Platform_AssemblyNotFound">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.Platform_AssemblyNotFound">
             <summary>
               Looks up a localized string similar to A Microsoft Azure Mobile Services assembly for the current platform was not found. Ensure that the current project references both {0} and the following platform-specific assembly: {1}..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.Platform_InstantiationFailed">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.Platform_InstantiationFailed">
             <summary>
               Looks up a localized string similar to Failed to instantiate the platform implementation of {0} from the assembly {1} due to the following error: {2}.
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.Pull_Cannot_Use_Reserved_Key">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.Pull_Cannot_Use_Reserved_Key">
             <summary>
               Looks up a localized string similar to The key &apos;{0}&apos; is reserved and cannot be specified as a query parameter..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.Push_BodyTemplateMustBeXml">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.Push_BodyTemplateMustBeXml">
             <summary>
               Looks up a localized string similar to Valid XML is required for any template without a raw header..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.Push_BodyTemplateMustContainElement">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.Push_BodyTemplateMustContainElement">
             <summary>
               Looks up a localized string similar to XML must contain an XML node of Element type..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.Push_ConflictWithReservedName">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.Push_ConflictWithReservedName">
             <summary>
               Looks up a localized string similar to Template name conflicts with reserved name &apos;{0}&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.Push_Failure">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.Push_Failure">
             <summary>
               Looks up a localized string similar to Push operation has failed. See the PushResult for details..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.Push_InvalidTemplateName">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.Push_InvalidTemplateName">
             <summary>
               Looks up a localized string similar to Template name cannot contain &quot;;&quot; or &quot;:&quot;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.Push_NotSupportedXMLFormatAsBodyTemplateWin8">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.Push_NotSupportedXMLFormatAsBodyTemplateWin8">
             <summary>
               Looks up a localized string similar to The bodyTemplate is not in accepted XML format. The first node of the bodyTemplate should be Badge/Tile/Toast, except for the wns/raw template, which needs to be an valid XML..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.Push_TagNoCommas">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.Push_TagNoCommas">
             <summary>
               Looks up a localized string similar to Tags must not contain &apos;,&apos;..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncContext_DeletePending">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncContext_DeletePending">
             <summary>
               Looks up a localized string similar to A delete operation on the item is already in the queue..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncContext_DuplicateInsert">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncContext_DuplicateInsert">
             <summary>
               Looks up a localized string similar to An insert operation on the item is already in the queue..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncContext_InsertAttempted">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncContext_InsertAttempted">
             <summary>
               Looks up a localized string similar to The item is in inconsistent state in the local store. Please complete the pending sync by calling PushAsync()before deleting the item..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncContext_NotInitialized">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncContext_NotInitialized">
             <summary>
               Looks up a localized string similar to SyncContext is not yet initialized..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncContext_PurgeOnDirtyTable">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncContext_PurgeOnDirtyTable">
             <summary>
               Looks up a localized string similar to The table cannot be purged because it has pending operations..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncContext_UpdatePending">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncContext_UpdatePending">
             <summary>
               Looks up a localized string similar to An update operation on the item is already in the queue..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncError_OperationUpdated">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncError_OperationUpdated">
             <summary>
               Looks up a localized string similar to The operation has been updated and cannot be cancelled..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncStore_AlreadyInitialized">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncStore_AlreadyInitialized">
             <summary>
               Looks up a localized string similar to The store is already initialized..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncStore_FailedToDeleteError">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncStore_FailedToDeleteError">
             <summary>
               Looks up a localized string similar to Failed to delete error from the local store..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncStore_FailedToDeleteOperation">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncStore_FailedToDeleteOperation">
             <summary>
               Looks up a localized string similar to Failed to delete operation from the local store..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncStore_FailedToLoadError">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncStore_FailedToLoadError">
             <summary>
               Looks up a localized string similar to Failed to read errors from the local store..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncStore_FailedToReadItem">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncStore_FailedToReadItem">
             <summary>
               Looks up a localized string similar to Failed to read the item from local store..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncStore_FailedToUpdateOperation">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncStore_FailedToUpdateOperation">
             <summary>
               Looks up a localized string similar to Failed to update operation in the local store..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncStore_FailedToUpsertItem">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncStore_FailedToUpsertItem">
             <summary>
               Looks up a localized string similar to Failed to update the item in the local store..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncStore_NotInitialized">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncStore_NotInitialized">
             <summary>
               Looks up a localized string similar to The store must be initialized before it can be used..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.SyncStore_OperationFailed">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.SyncStore_OperationFailed">
             <summary>
               Looks up a localized string similar to Failed to perform operation on local store..
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.Microsoft.Azure.Mobile.Client.Resources.WP8LoginPage_MustBeCalledFromAuthBroker">
+        <member name="P:LightBuzz.Azure.UWP.Microsoft.Azure.Mobile.Client.Resources.WP8LoginPage_MustBeCalledFromAuthBroker">
             <summary>
               Looks up a localized string similar to This page must be called from the type &apos;{0}&apos;..
             </summary>

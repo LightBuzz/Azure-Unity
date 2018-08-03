@@ -29,6 +29,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
+#if !UNITY_WSA
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -48,15 +49,15 @@ namespace LightBuzz.Azure
     /// </summary>
     public class LightBuzzHttpsHandler : HttpClientHandler
 	{
-        #region Constants
+#region Constants
 
         private readonly string CONTENT_TYPE = "Content-Type";
         private readonly string X_ZUMO_AUTH = "X-ZUMO-AUTH";
         private readonly string ZUMO_API_VERSION = "ZUMO-API-VERSION";
 
-        #endregion
+#endregion
 
-        #region Members
+#region Members
 
         /// <summary>
         /// The response from the server.
@@ -83,9 +84,9 @@ namespace LightBuzz.Azure
 		/// </summary>
 		public Encoding Encoding { get; set; }
 
-        #endregion
+#endregion
 
-        #region Constructors
+#region Constructors
 
         /// <summary>
         /// Creates a new LightBuzz secure HTTPS handler.
@@ -112,9 +113,9 @@ namespace LightBuzz.Azure
             Encoding = encoding;
         }
 
-        #endregion
+#endregion
 
-        #region Methods
+#region Methods
 
         /// <summary>
         /// A Unity-ready implementation of a secure HTTPS method to send the request.
@@ -171,9 +172,7 @@ namespace LightBuzz.Azure
 				}
 			}
 
-#if !UNITY_WSA
 			ServicePointManager.ServerCertificateValidationCallback = LightBuzzCertificateValidation.CertificateValidationCallback;
-#endif
 
 			if (contentArray != null)
 			{
@@ -295,6 +294,8 @@ namespace LightBuzz.Azure
             return _result;
         }*/
 
-        #endregion
+#endregion
     }
 }
+
+#endif
