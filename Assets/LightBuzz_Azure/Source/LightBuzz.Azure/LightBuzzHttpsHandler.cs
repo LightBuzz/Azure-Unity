@@ -86,6 +86,8 @@ namespace LightBuzz.Azure
             Encoding = Encoding.UTF8;
         }
 
+#if !UNITY_2018_2
+
         /// <summary>
         /// A Unity-ready implementation of a secure HTTPS method to send the request.
         /// </summary>
@@ -264,5 +266,8 @@ namespace LightBuzz.Azure
                 yield return uwr.downloadHandler.text;
             }
         }
+
+#endif
+
     }
 }
