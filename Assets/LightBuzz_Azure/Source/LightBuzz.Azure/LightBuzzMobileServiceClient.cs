@@ -78,7 +78,7 @@ namespace LightBuzz.Azure
         /// <summary>
         /// The MobileServiceSQLiteStore that connects to the local database.
         /// </summary>
-        protected MobileServiceSQLiteStore LocalStore;
+        public MobileServiceSQLiteStore LocalStore;
 
         /// <summary>
         /// Specifies whether the app will store data locally.
