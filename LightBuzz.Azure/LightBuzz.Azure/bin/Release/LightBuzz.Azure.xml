@@ -25,6 +25,11 @@
             Specifies whether the app stores data locally.
             </summary>
         </member>
+        <member name="F:LightBuzz.Azure.AppServiceTableDAO`1._store">
+            <summary>
+            The MobileServiceSQLiteStore that connects to the local database.
+            </summary>
+        </member>
         <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.#ctor(LightBuzz.Azure.LightBuzzMobileServiceClient)">
             <summary>
             Creates a new instance of the data access object.
@@ -67,12 +72,27 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindAll(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindAll(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Collections.Generic.Dictionary{System.String,System.Object})">
             <summary>
             Performs a database Get operation and returns all of the items that correspond to the specified predicate.
             </summary>
             <param name="predicate">The predicate to use.</param>
+            <param name="criteria">The criteria for the where clause.</param>
+            <returns>The list of T objects matching the predicate or the criteria</returns>
+        </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.PredicateCanRunAsSql(System.String)">
+            <summary>
+            Returns true if the predicate matches our citeria to run as Sql
+            </summary>
+            <param name="predicateString">The predicate to examine</param>
             <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindAllSql(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Performs a database Get operation and returns all of the items that correspond to the specified criteria after building an Sql Query.
+            </summary>
+            <param name="criteria">The criteria for the where clause.</param>
+            <returns>The list of T objects matching the criteria</returns>
         </member>
         <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindById(System.String)">
             <summary>

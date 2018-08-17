@@ -161,13 +161,8 @@ public class Sample : MonoBehaviour
             contents.AppendLine();
         }
 
-        TodoItem i = list[0];
-        i.Text += "Updated";
-
-        await todoTableDAO.Update(i);
-
         output.text = contents.ToString();
-    }
+   }
 
     private async Task Insert()
     {

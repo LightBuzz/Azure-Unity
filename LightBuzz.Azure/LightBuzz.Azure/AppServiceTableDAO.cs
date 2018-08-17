@@ -31,11 +31,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
+using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using UnityEngine;
 
 namespace LightBuzz.Azure
 {
@@ -61,12 +66,18 @@ namespace LightBuzz.Azure
         private bool _supportsLocalStore { get; set; }
 
         /// <summary>
+        /// The MobileServiceSQLiteStore that connects to the local database.
+        /// </summary>
+        private MobileServiceSQLiteStore _store;
+
+        /// <summary>
         /// Creates a new instance of the data access object.
         /// </summary>
         /// <param name="azureClient">The Azure App Service client.</param>
         public AppServiceTableDAO(LightBuzzMobileServiceClient azureClient)
         {
             _supportsLocalStore = azureClient.SupportsLocalStore;
+            _store = azureClient.LocalStore;
 
             if (_supportsLocalStore)
                 TableLocal = azureClient.GetSyncTable<T>();
@@ -142,13 +153,73 @@ namespace LightBuzz.Azure
         /// Performs a database Get operation and returns all of the items that correspond to the specified predicate.
         /// </summary>
         /// <param name="predicate">The predicate to use.</param>
-        /// <returns></returns>
-        public async Task<List<T>> FindAll(Expression<Func<T, bool>> predicate)
+        /// <param name="criteria">The criteria for the where clause.</param>
+        /// <returns>The list of T objects matching the predicate or the criteria</returns>
+        public async Task<List<T>> FindAll(Expression<Func<T, bool>> predicate, Dictionary<string, object> criteria = null)
         {
             if (_supportsLocalStore)
+            {
+
+                if (Application.platform == RuntimePlatform.IPhonePlayer)
+                {
+                    if (PredicateCanRunAsSql(predicate.Body.ToString()) && criteria != null)
+                    {
+                        return FindAllSql(criteria);
+                    }
+                }
+
                 return await TableLocal.Where(predicate).ToListAsync();
+            }
             else
+            {
                 return await TableCloud.Where(predicate).ToListAsync();
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the predicate matches our citeria to run as Sql
+        /// </summary>
+        /// <param name="predicateString">The predicate to examine</param>
+        /// <returns></returns>
+        private bool PredicateCanRunAsSql(string predicateString)
+        {
+            return predicateString.Contains("value(") && !predicateString.Contains("orElse");
+        }
+
+        /// <summary>
+        /// Performs a database Get operation and returns all of the items that correspond to the specified criteria after building an Sql Query.
+        /// </summary>
+        /// <param name="criteria">The criteria for the where clause.</param>
+        /// <returns>The list of T objects matching the criteria</returns>
+        public List<T> FindAllSql(Dictionary<string, object> criteria)
+        {
+            List<T> listObj = new List<T>();
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            string whereClause = string.Empty;
+
+            foreach (var set in criteria)
+            {
+                parameters.Add("@" + set.Key, set.Value);
+                if (!string.IsNullOrEmpty(whereClause))
+                {
+                    whereClause += " and ";
+                }
+                whereClause += set.Key + "=" + "@" + set.Key;
+            }
+
+            string sqlQuery = $"Select * from {TableLocal.TableName}";
+            if (!string.IsNullOrEmpty(whereClause))
+            {
+                sqlQuery += $" where {whereClause}";
+            }
+
+            List<JObject> result = _store.ExecuteQueryAsync(TableLocal.TableName, sqlQuery, parameters).Result.ToList();
+            foreach (var obj in result)
+            {
+                listObj.Add(JsonConvert.DeserializeObject<T>(obj.ToString()));
+            }
+
+            return listObj;
         }
 
         /// <summary>
