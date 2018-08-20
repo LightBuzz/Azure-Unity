@@ -167,7 +167,7 @@
             <param name="cancellationToken">The cancellation token.</param>
             <returns>The response from the server.</returns>
         </member>
-        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendHttpWebRequest(System.Net.Http.HttpRequestMessage,System.String)">
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendHttpWebRequest(System.Net.Http.HttpRequestMessage)">
             <summary>
             Sends an Http Web Request.
             </summary>

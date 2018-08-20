@@ -125,17 +125,7 @@ namespace LightBuzz.Azure
         /// <returns>The response from the server.</returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 		{
-			string contentArray = request.Content != null ? await request.Content.ReadAsStringAsync() : null;
-
-			HttpRequestHeaders headers = request.Headers;
-			IEnumerable<string> auth;
-
-			if (headers != null && headers.TryGetValues(X_ZUMO_AUTH, out auth))
-			{
-				_authorizationToken = headers.GetValues(X_ZUMO_AUTH).FirstOrDefault();
-			}
-
-			SendHttpWebRequest(request, contentArray);
+			await SendHttpWebRequest(request);
 
 			return _result;
 		}
@@ -146,7 +136,7 @@ namespace LightBuzz.Azure
 		/// <param name="request">The request message.</param>
 		/// <param name="contentArray">The request content.</param>
 		/// <returns></returns>
-		private void SendHttpWebRequest(HttpRequestMessage request, string contentArray)
+		private async Task SendHttpWebRequest(HttpRequestMessage request)
 		{
 			HttpWebRequest client = (HttpWebRequest)WebRequest.Create(request.RequestUri.AbsoluteUri);
 
@@ -154,27 +144,22 @@ namespace LightBuzz.Azure
 			client.KeepAlive = true;
 			client.ContentType = ContentType;
 
-			if (!WebHeaderCollection.IsRestricted(CONTENT_TYPE))
-			{
-				client.Headers.Add(CONTENT_TYPE, ContentType);
-			}
+		    HttpRequestHeaders headers = request.Headers;
+		    if (headers != null)
+		    {
+		        foreach (var header in headers)
+		        {
+		            if (!WebHeaderCollection.IsRestricted(header.Key) && header.Value!= null && header.Value.Count()!=0)
+                    {
+                        client.Headers.Add(header.Key, header.Value.FirstOrDefault());
+                    }
+                }
+		    }
 
-			if (!WebHeaderCollection.IsRestricted(ZUMO_API_VERSION))
-			{
-				client.Headers.Add(ZUMO_API_VERSION, ZumoApiVersion);
-			}
+            ServicePointManager.ServerCertificateValidationCallback = LightBuzzCertificateValidation.CertificateValidationCallback;
 
-			if (!string.IsNullOrEmpty(_authorizationToken))
-			{
-				if (!WebHeaderCollection.IsRestricted(X_ZUMO_AUTH))
-				{
-					client.Headers.Add(X_ZUMO_AUTH, _authorizationToken);
-				}
-			}
-
-			ServicePointManager.ServerCertificateValidationCallback = LightBuzzCertificateValidation.CertificateValidationCallback;
-
-			if (contentArray != null)
+		    string contentArray = request.Content != null ? await request.Content.ReadAsStringAsync() : null;
+            if (contentArray != null)
 			{
 				using (StreamWriter streamWriter = new StreamWriter(client.GetRequestStream()))
 				{
