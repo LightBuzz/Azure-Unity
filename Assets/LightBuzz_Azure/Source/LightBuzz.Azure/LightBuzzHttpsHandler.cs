@@ -121,14 +121,9 @@ namespace LightBuzz.Azure
                 {
                     if (!WebHeaderCollection.IsRestricted(header.Key) && header.Value != null && header.Value.Count() != 0)
                     {
-                        foreach (var value in header.Value)
-                        {
-                            Debug.Log("Key " + header.Key + " value "+ value);
-                        }
                         client.Headers.Add(header.Key, header.Value.FirstOrDefault());
                     }
                 }
-                Debug.Log("END OF HEADERS");
             }
 
 #if !UNITY_WSA
