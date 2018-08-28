@@ -30,60 +30,62 @@
 //
 
 #if !UNITY_WSA
-
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace LightBuzz.Azure
 {
-    /// <summary>
-    /// HTTPS Azure Certificate validator.
-    /// </summary>
-    public class LightBuzzCertificateValidation
-    {
-        /// <summary>
-        /// Validates the server certificate.
-        /// </summary>
-        /// <param name="sender">The sender object.</param>
-        /// <param name="certificate">The certificate to validate.</param>
-        /// <param name="chain">The X509 chain.</param>
-        /// <param name="sslPolicyErrors">The SSL policy errors</param>
-        /// <returns>True if the certificate is a valid Azure certificate. False otherwise.</returns>
-        public static bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-        {
-            if ((certificate.Subject != "CN=*.azurewebsites.net" && certificate.Subject != "CN=*.blob.core.windows.net")
-                || !certificate.Issuer.Contains("CN=Microsoft IT"))
-            {
-                return false;
-            }
+	/// <summary>
+	/// Validates a remote SSL certificate.
+	/// </summary>
+	public class LightBuzzCertificateValidation
+	{
+		/// <summary>
+		/// Determines whether the specified SSL certificate is valid.
+		/// </summary>
+		/// <param name="sender">The object raising the callback.</param>
+		/// <param name="certificate">The certificate to validate.</param>
+		/// <param name="chain">The certificate chain.</param>
+		/// <param name="sslPolicyErrors">The SSL policy errors.</param>
+		/// <returns>True if the certificate is valid. False otherwise.</returns>
+		public static bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+		{
+			if ((certificate.Subject != "CN=*.azurewebsites.net" && certificate.Subject != "CN=*.blob.core.windows.net")
+			    || !certificate.Issuer.Contains("CN=Microsoft IT"))
+			{
+				return false;
+			}
 
-            bool isValidCertificate = true;
+			bool isValidCertificate = true;
 
-            if (sslPolicyErrors != SslPolicyErrors.None)
-            {
-                foreach (var st in chain.ChainStatus)
-                {
-                    if (st.Status == X509ChainStatusFlags.RevocationStatusUnknown)
-                    {
-                        continue;
-                    }
+			if (sslPolicyErrors != SslPolicyErrors.None)
+			{
+				foreach (var st in chain.ChainStatus)
+				{
+					if (st.Status == X509ChainStatusFlags.RevocationStatusUnknown)
+					{
+						continue;
+					}
 
-                    chain.ChainPolicy.RevocationFlag = X509RevocationFlag.EntireChain;
-                    chain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
-                    chain.ChainPolicy.UrlRetrievalTimeout = new TimeSpan(0, 1, 0);
-                    chain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllFlags;
+					chain.ChainPolicy.RevocationFlag = X509RevocationFlag.EntireChain;
+					chain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
+					chain.ChainPolicy.UrlRetrievalTimeout = new TimeSpan(0, 1, 0);
+					chain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllFlags;
 
-                    if (!chain.Build((X509Certificate2)certificate))
-                    {
-                        isValidCertificate = false;
-                        break;
-                    }
-                }
-            }
-            return isValidCertificate;
-        }
-    }
+					if (!chain.Build((X509Certificate2)certificate))
+					{
+						isValidCertificate = false;
+						break;
+					}
+				}
+			}
+			return isValidCertificate;
+		}
+	}
 }
-
 #endif

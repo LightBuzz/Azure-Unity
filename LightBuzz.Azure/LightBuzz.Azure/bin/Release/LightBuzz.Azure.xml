@@ -72,11 +72,19 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindAll(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindAll(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Collections.Generic.Dictionary{System.String,System.Object})">
             <summary>
             Performs a database Get operation and returns all of the items that correspond to the specified predicate.
             </summary>
             <param name="predicate">The predicate to use.</param>
+            <param name="criteria">The criteria for the where clause.</param>
+            <returns>The list of T objects matching the predicate or the criteria</returns>
+        </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.PredicateCanRunAsSql(System.String)">
+            <summary>
+            Returns true if the predicate matches our citeria to run as Sql
+            </summary>
+            <param name="predicateString">The predicate to examine</param>
             <returns></returns>
         </member>
         <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindAllSql(System.Collections.Generic.Dictionary{System.String,System.Object})">
@@ -84,7 +92,7 @@
             Performs a database Get operation and returns all of the items that correspond to the specified criteria after building an Sql Query.
             </summary>
             <param name="criteria">The criteria for the where clause.</param>
-            <returns></returns>
+            <returns>The list of T objects matching the criteria</returns>
         </member>
         <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindById(System.String)">
             <summary>
@@ -95,22 +103,32 @@
         </member>
         <member name="T:LightBuzz.Azure.LightBuzzCertificateValidation">
             <summary>
-            HTTPS Azure Certificate validator.
+            Validates a remote SSL certificate.
             </summary>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzCertificateValidation.CertificateValidationCallback(System.Object,System.Security.Cryptography.X509Certificates.X509Certificate,System.Security.Cryptography.X509Certificates.X509Chain,System.Net.Security.SslPolicyErrors)">
             <summary>
-            Validates the server certificate.
+            Determines whether the specified SSL certificate is valid.
             </summary>
-            <param name="sender">The sender object.</param>
+            <param name="sender">The object raising the callback.</param>
             <param name="certificate">The certificate to validate.</param>
-            <param name="chain">The X509 chain.</param>
-            <param name="sslPolicyErrors">The SSL policy errors</param>
-            <returns>True if the certificate is a valid Azure certificate. False otherwise.</returns>
+            <param name="chain">The certificate chain.</param>
+            <param name="sslPolicyErrors">The SSL policy errors.</param>
+            <returns>True if the certificate is valid. False otherwise.</returns>
         </member>
         <member name="T:LightBuzz.Azure.LightBuzzHttpsHandler">
             <summary>
             A Unity-ready secure HTTPS handler.
+            </summary>
+        </member>
+        <member name="F:LightBuzz.Azure.LightBuzzHttpsHandler._result">
+            <summary>
+            The response from the server.
+            </summary>
+        </member>
+        <member name="F:LightBuzz.Azure.LightBuzzHttpsHandler._authorizationToken">
+            <summary>
+            The authorization token for the request.
             </summary>
         </member>
         <member name="P:LightBuzz.Azure.LightBuzzHttpsHandler.ContentType">
@@ -154,7 +172,17 @@
             Sends an Http Web Request.
             </summary>
             <param name="request">The request message.</param>
-            <returns>Void.</returns>
+            <param name="contentArray">The request content.</param>
+            <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendUnityRequest(System.String,System.Byte[],System.String)">
+            <summary>
+            Sends a Unity Web Request.
+            </summary>
+            <param name="url">The request absolute uri.</param>
+            <param name="contentArray">The request content.</param>
+            <param name="method">The request method.</param>
+            <returns>An IEnumerator with the response text.</returns>
         </member>
         <member name="T:LightBuzz.Azure.LightBuzzMobileServiceClient">
             <summary>
@@ -167,10 +195,12 @@
             Defines the tables in the local store. 
             Method must be implemented in a subclass.
             e.g.
+            <code>
             protected override void DefineTables()
             {
                LocalStore.DefineTable<TodoItem/>();
             }
+            </code>
             </summary>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Pull(System.Threading.CancellationToken)">
@@ -178,11 +208,13 @@
             Pulls the data from the remote Azure App Service and stores them into the local database.
             Method must be implemented in a subclass.
             e.g.
-            <code>public override async Task Pull()
+            <code>
+            public override async Task Pull()
             {
-               AppServiceTableDAO&lt;TodoItem&gt; todoTableDao = new AppServiceTableDAO&lt;TodoItem&gt;(this);
+               AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
                await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
-            }</code>
+            }
+            </code>
             </summary>
             <param name="ct">Cancellation Token</param>
             <returns></returns>
@@ -216,25 +248,25 @@
             <summary>
             Creates a new instance of the LightBuzzMobileServiceClient. 
             </summary>
-            <param name="mobileAppUri">Azure App Service URL</param>
-            <param name="supportLocal">Supports local database</param>
+            <param name="mobileAppUri">The Azure App Service URI.</param>
+            <param name="supportLocal">Specifies whether a local database is supported.</param>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.#ctor(System.String,System.Boolean,LightBuzz.Azure.LightBuzzHttpsHandler)">
             <summary>
-            Creates a new Azure Mobile Service Client.
+            Creates a new instance of the LightBuzzMobileServiceClient. 
             </summary>
-            <param name="mobileAppUri">The App Service URI.</param>
-            <param name="supportLocal">Specifies whether the client will support local database storage.</param>
-            <param name="handler">A custom HTTPS message handler.</param>
+            <param name="mobileAppUri">The Azure App Service URI.</param>
+            <param name="supportLocal">Specifies whether a local database is supported.</param>
+            <param name="handler">The HTTP handler to use.</param>
         </member>
         <member name="P:LightBuzz.Azure.LightBuzzMobileServiceClient.LocalDatabasePath">
             <summary>
-            Gets the local SQLite database absolute path.
+            Returns the local SQLite database absolute path.
             </summary>
         </member>
         <member name="P:LightBuzz.Azure.LightBuzzMobileServiceClient.LocalDatabaseConnectionString">
             <summary>
-            Gets the local SQLite database absolute path.
+            Returns the local SQLite database absolute path.
             </summary>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.InitStore(System.String)">
@@ -242,7 +274,7 @@
             Initializes the local SQLite database.
             </summary>
             <param name="localDatabasePath">The full path to the local database file, e.g. Path.Combine(Application.persistentDataPath, "database.db").</param>
-            <returns>Void.</returns>
+            <returns></returns>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.InitStore">
             <summary>
@@ -254,20 +286,20 @@
             <summary>
             Syncs with the remote Azure App Service (pull/push operations).
             </summary>
-            <returns>Void.</returns>
+            <returns></returns>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.SyncStore(System.Threading.CancellationToken)">
             <summary>
             Syncs with the remote Azure App Service (pull/push operations).
             </summary>
             <param name="ct">The Cancellation Token.</param>
-            <returns>Void.</returns>
+            <returns></returns>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Push">
             <summary>
             Pushes the data stored in the local SQLite database to the remote Azure App Service.
             </summary>
-            <returns>Void.</returns>
+            <returns></returns>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Push(System.Threading.CancellationToken)">
             <summary>
@@ -281,13 +313,13 @@
             Pulls the data from the remote Azure App Service and stores them into the local database.
             Method must be implemented in a subclass.
             e.g.
-            <code>public override async Task Pull()
+            public override async Task Pull()
             {
-               AppServiceTableDAO&lt;TodoItem&gt; todoTableDao = new AppServiceTableDAO&lt;TodoItem&gt;(this);
+               AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
                await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
-            }</code>
+             }
             </summary>
-            <returns>Void.</returns>
+            <returns></returns>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Init">
             <summary>
@@ -299,13 +331,13 @@
             <summary>
             Syncs with the remote Azure App Service, if local store is supported.
             </summary>
-            <returns>Void.</returns>
+            <returns></returns>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.InitializeLocalStore">
             <summary>
             Initializes local SQLite database connection and sync.
             </summary>
-            <returns>Void.</returns>
+            <returns></returns>
         </member>
         <member name="T:LightBuzz.Azure.LightBuzzMobileServiceClientCloudOnly">
             <summary>

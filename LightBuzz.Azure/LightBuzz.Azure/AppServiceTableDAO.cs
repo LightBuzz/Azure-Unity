@@ -40,6 +40,7 @@ using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using UnityEngine;
 
 namespace LightBuzz.Azure
 {
@@ -152,20 +153,44 @@ namespace LightBuzz.Azure
         /// Performs a database Get operation and returns all of the items that correspond to the specified predicate.
         /// </summary>
         /// <param name="predicate">The predicate to use.</param>
-        /// <returns></returns>
-        public async Task<List<T>> FindAll(Expression<Func<T, bool>> predicate)
+        /// <param name="criteria">The criteria for the where clause.</param>
+        /// <returns>The list of T objects matching the predicate or the criteria</returns>
+        public async Task<List<T>> FindAll(Expression<Func<T, bool>> predicate, Dictionary<string, object> criteria = null)
         {
             if (_supportsLocalStore)
+            {
+
+                if (Application.platform == RuntimePlatform.IPhonePlayer)
+                {
+                    if (PredicateCanRunAsSql(predicate.Body.ToString()) && criteria != null)
+                    {
+                        return FindAllSql(criteria);
+                    }
+                }
+
                 return await TableLocal.Where(predicate).ToListAsync();
+            }
             else
+            {
                 return await TableCloud.Where(predicate).ToListAsync();
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the predicate matches our citeria to run as Sql
+        /// </summary>
+        /// <param name="predicateString">The predicate to examine</param>
+        /// <returns></returns>
+        private bool PredicateCanRunAsSql(string predicateString)
+        {
+            return predicateString.Contains("value(") && !predicateString.Contains("orElse");
         }
 
         /// <summary>
         /// Performs a database Get operation and returns all of the items that correspond to the specified criteria after building an Sql Query.
         /// </summary>
         /// <param name="criteria">The criteria for the where clause.</param>
-        /// <returns></returns>
+        /// <returns>The list of T objects matching the criteria</returns>
         public List<T> FindAllSql(Dictionary<string, object> criteria)
         {
             List<T> listObj = new List<T>();
