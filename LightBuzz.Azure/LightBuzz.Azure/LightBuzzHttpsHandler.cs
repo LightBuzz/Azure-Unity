@@ -30,8 +30,7 @@
 //
 
 #if !UNITY_WSA
-using System.Collections;
-using System.Collections.Generic;
+
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -40,7 +39,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine.Networking;
 
 namespace LightBuzz.Azure
 {
@@ -48,56 +46,38 @@ namespace LightBuzz.Azure
     /// A Unity-ready secure HTTPS handler.
     /// </summary>
     public class LightBuzzHttpsHandler : HttpClientHandler
-	{
-#region Constants
-
-        private readonly string CONTENT_TYPE = "Content-Type";
-        private readonly string X_ZUMO_AUTH = "X-ZUMO-AUTH";
-        private readonly string ZUMO_API_VERSION = "ZUMO-API-VERSION";
-
-#endregion
-
-#region Members
+    {
+        #region Members
 
         /// <summary>
-        /// The response from the server.
+        /// The Content Type header type (default: application/json).
         /// </summary>
-        private HttpResponseMessage _result = new HttpResponseMessage();
+        public string ContentType { get; set; }
 
-		/// <summary>
-		/// The authorization token for the request.
-		/// </summary>
-		private string _authorizationToken = string.Empty;
+        /// <summary>
+        /// The ZUMO API version number.
+        /// </summary>
+        public string ZumoApiVersion { get; set; }
 
-		/// <summary>
-		/// The Content Type header type (default: application/json).
-		/// </summary>
-		public string ContentType { get; set; }
+        /// <summary>
+        /// The encoding of the response message.
+        /// </summary>
+        public Encoding Encoding { get; set; }
 
-		/// <summary>
-		/// The ZUMO API version number.
-		/// </summary>
-		public string ZumoApiVersion { get; set; }
+        #endregion
 
-		/// <summary>
-		/// The encoding of the response message.
-		/// </summary>
-		public Encoding Encoding { get; set; }
-
-#endregion
-
-#region Constructors
+        #region Constructors
 
         /// <summary>
         /// Creates a new LightBuzz secure HTTPS handler.
         /// </summary>
         public LightBuzzHttpsHandler()
-		{
-			AutomaticDecompression = DecompressionMethods.Deflate;
-			ContentType = "application/json";
-			ZumoApiVersion = "2.0.0";
-			Encoding = Encoding.UTF8;
-		}
+        {
+            AutomaticDecompression = DecompressionMethods.Deflate;
+            ContentType = "application/json";
+            ZumoApiVersion = "2.0.0";
+            Encoding = Encoding.UTF8;
+        }
 
         /// <summary>
         /// Creates a new LightBuzz secure HTTPS handler with the specified parameters.
@@ -113,145 +93,11 @@ namespace LightBuzz.Azure
             Encoding = encoding;
         }
 
-#endregion
+        #endregion
 
-#region Methods
-
-        /// <summary>
-        /// A Unity-ready implementation of a secure HTTPS method to send the request.
-        /// </summary>
-        /// <param name="request">The request to send to server.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The response from the server.</returns>
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-		{
-			await SendHttpWebRequest(request);
-
-			return _result;
-		}
-
-		/// <summary>
-		/// Sends an Http Web Request.
-		/// </summary>
-		/// <param name="request">The request message.</param>
-		/// <param name="contentArray">The request content.</param>
-		/// <returns></returns>
-		private async Task SendHttpWebRequest(HttpRequestMessage request)
-		{
-			HttpWebRequest client = (HttpWebRequest)WebRequest.Create(request.RequestUri.AbsoluteUri);
-
-			client.Method = request.Method.ToString();
-			client.KeepAlive = true;
-			client.ContentType = ContentType;
-
-		    HttpRequestHeaders headers = request.Headers;
-		    if (headers != null)
-		    {
-		        foreach (var header in headers)
-		        {
-		            if (!WebHeaderCollection.IsRestricted(header.Key) && header.Value!= null && header.Value.Count()!=0)
-                    {
-                        client.Headers.Add(header.Key, header.Value.FirstOrDefault());
-                    }
-                }
-		    }
-
-            ServicePointManager.ServerCertificateValidationCallback = LightBuzzCertificateValidation.CertificateValidationCallback;
-
-		    string contentArray = request.Content != null ? await request.Content.ReadAsStringAsync() : null;
-            if (contentArray != null)
-			{
-				using (StreamWriter streamWriter = new StreamWriter(client.GetRequestStream()))
-				{
-					streamWriter.Write(contentArray);
-				}
-			}
-
-			try
-			{
-				using (HttpWebResponse response = (HttpWebResponse)client.GetResponse())
-				{
-					using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-					{
-						string data = reader.ReadToEnd();
-
-						_result.StatusCode = response.StatusCode;
-						_result.ReasonPhrase = _result.StatusCode.ToString();
-						_result.Content = new StringContent(data, Encoding, ContentType);
-					}
-				}
-			}
-			catch (WebException webException)
-			{
-				if (webException.Response == null)
-				{
-					throw webException;
-				}
-				using (HttpWebResponse response = (HttpWebResponse)webException.Response)
-				{
-					using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-					{
-						string data = reader.ReadToEnd();
-						_result.StatusCode = response.StatusCode;
-						_result.ReasonPhrase = _result.StatusCode.ToString();
-						_result.Content = new StringContent(data, Encoding, ContentType);
-					}
-				}
-			}
-		}
+        #region Methods
 
         /// <summary>
-        /// Sends a Unity Web Request.
-        /// </summary>
-        /// <param name="url">The request absolute uri.</param>
-        /// <param name="contentArray">The request content.</param>
-        /// <param name="method">The request method.</param>
-        /// <returns>An IEnumerator with the response text.</returns>
-        IEnumerator SendUnityRequest(string url, byte[] contentArray, string method)
-		{
-			UnityWebRequest uwr = new UnityWebRequest(url, method);
-
-			if (contentArray != null)
-			{
-				uwr.uploadHandler = new UploadHandlerRaw(contentArray);
-			}
-
-			uwr.downloadHandler = new DownloadHandlerBuffer();
-			uwr.SetRequestHeader(CONTENT_TYPE, ContentType);
-			uwr.SetRequestHeader(ZUMO_API_VERSION, ZumoApiVersion);
-
-			if (!string.IsNullOrEmpty(_authorizationToken))
-			{
-				uwr.SetRequestHeader(X_ZUMO_AUTH, _authorizationToken);
-			}
-
-			// Send the request then wait until it returns.
-			yield return uwr.SendWebRequest();
-
-			while (!uwr.isDone)
-			{
-				yield return null;
-			}
-
-			if (uwr.isNetworkError || uwr.isHttpError)
-			{
-				_result.StatusCode = (HttpStatusCode)uwr.responseCode;
-				_result.ReasonPhrase = _result.StatusCode.ToString();
-				_result.Content = new StringContent(uwr.downloadHandler.text, Encoding.UTF8, ContentType);
-
-				yield return uwr.error;
-			}
-			else
-			{
-				_result.StatusCode = (HttpStatusCode)uwr.responseCode;
-				_result.ReasonPhrase = _result.StatusCode.ToString();
-				_result.Content = new StringContent(uwr.downloadHandler.text, Encoding.UTF8, ContentType);
-
-				yield return uwr.downloadHandler.text;
-			}
-        }
-
-        /*/// <summary>
         /// A Unity-ready implementation of a secure HTTPS method to send the request.
         /// </summary>
         /// <param name="request">The request to send to server.</param>
@@ -259,27 +105,90 @@ namespace LightBuzz.Azure
         /// <returns>The response from the server.</returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            byte[] contentArray = request.Content != null ? await request.Content.ReadAsByteArrayAsync() : null;
+            return await SendHttpWebRequest(request);
+        }
 
+        /// <summary>
+        /// Sends an Http Web Request.
+        /// </summary>
+        /// <param name="request">The request message.</param>
+        /// <returns>Void.</returns>
+        private async Task<HttpResponseMessage> SendHttpWebRequest(HttpRequestMessage request)
+        {
+            HttpResponseMessage result = new HttpResponseMessage();
             HttpRequestHeaders headers = request.Headers;
-            IEnumerable<string> auth;
-            if (headers != null && headers.TryGetValues(X_ZUMO_AUTH, out auth))
-            {
-                _authorizationToken = headers.GetValues(X_ZUMO_AUTH).FirstOrDefault();
-            }
-            IEnumerator enumerator = SendUnityRequest(request.RequestUri.AbsoluteUri, contentArray, request.Method.ToString());
 
-            if (enumerator != null)
+            HttpWebRequest client = (HttpWebRequest)WebRequest.Create(request.RequestUri.AbsoluteUri);
+            client.Method = request.Method.ToString();
+            client.KeepAlive = true;
+            client.ContentType = ContentType;
+
+            if (request.Content == null)
             {
-                while (enumerator.MoveNext())
+                request.Content = new StringContent(string.Empty);
+            }
+
+            if (headers != null)
+            {
+                foreach (var header in headers)
                 {
+                    if (!WebHeaderCollection.IsRestricted(header.Key) && header.Value != null && header.Value.Count() != 0)
+                    {
+                        client.Headers.Add(header.Key, header.Value.FirstOrDefault());
+                    }
                 }
             }
 
-            return _result;
-        }*/
+            ServicePointManager.ServerCertificateValidationCallback = LightBuzzCertificateValidation.CertificateValidationCallback;
 
-#endregion
+            string contentArray = await request.Content.ReadAsStringAsync();
+
+            if (!string.IsNullOrEmpty(contentArray))
+            {
+                using (StreamWriter streamWriter = new StreamWriter(client.GetRequestStream()))
+                {
+                    streamWriter.Write(contentArray);
+                }
+            }
+
+            try
+            {
+                using (HttpWebResponse response = (HttpWebResponse)client.GetResponse())
+                {
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        string data = reader.ReadToEnd();
+
+                        result.StatusCode = response.StatusCode;
+                        result.ReasonPhrase = result.StatusCode.ToString();
+                        result.Content = new StringContent(data, Encoding, ContentType);
+                    }
+                }
+            }
+            catch (WebException webException)
+            {
+                if (webException.Response == null)
+                {
+                    throw webException;
+                }
+
+                using (HttpWebResponse response = (HttpWebResponse)webException.Response)
+                {
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        string data = reader.ReadToEnd();
+
+                        result.StatusCode = response.StatusCode;
+                        result.ReasonPhrase = result.StatusCode.ToString();
+                        result.Content = new StringContent(data, Encoding, ContentType);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        #endregion
     }
 }
 

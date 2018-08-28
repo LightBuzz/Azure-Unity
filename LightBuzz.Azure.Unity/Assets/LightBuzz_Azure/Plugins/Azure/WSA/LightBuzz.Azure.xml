@@ -25,6 +25,11 @@
             Specifies whether the app stores data locally.
             </summary>
         </member>
+        <member name="F:LightBuzz.Azure.AppServiceTableDAO`1._store">
+            <summary>
+            The MobileServiceSQLiteStore that connects to the local database.
+            </summary>
+        </member>
         <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.#ctor(LightBuzz.Azure.LightBuzzMobileServiceClient)">
             <summary>
             Creates a new instance of the data access object.
@@ -74,6 +79,13 @@
             <param name="predicate">The predicate to use.</param>
             <returns></returns>
         </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindAllSql(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Performs a database Get operation and returns all of the items that correspond to the specified criteria after building an Sql Query.
+            </summary>
+            <param name="criteria">The criteria for the where clause.</param>
+            <returns></returns>
+        </member>
         <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindById(System.String)">
             <summary>
             Performs a database Get operation and returns the item that corresponds to the specified id.
@@ -92,12 +104,10 @@
             Defines the tables in the local store. 
             Method must be implemented in a subclass.
             e.g.
-            <code>
             protected override void DefineTables()
             {
                LocalStore.DefineTable<TodoItem/>();
             }
-            </code>
             </summary>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Pull(System.Threading.CancellationToken)">
@@ -105,13 +115,11 @@
             Pulls the data from the remote Azure App Service and stores them into the local database.
             Method must be implemented in a subclass.
             e.g.
-            <code>
-            public override async Task Pull()
+            <code>public override async Task Pull()
             {
-               AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
+               AppServiceTableDAO&lt;TodoItem&gt; todoTableDao = new AppServiceTableDAO&lt;TodoItem&gt;(this);
                await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
-            }
-            </code>
+            }</code>
             </summary>
             <param name="ct">Cancellation Token</param>
             <returns></returns>
@@ -145,25 +153,25 @@
             <summary>
             Creates a new instance of the LightBuzzMobileServiceClient. 
             </summary>
-            <param name="mobileAppUri">The Azure App Service URI.</param>
-            <param name="supportLocal">Specifies whether a local database is supported.</param>
+            <param name="mobileAppUri">Azure App Service URL</param>
+            <param name="supportLocal">Supports local database</param>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.#ctor(System.String,System.Boolean,System.Net.Http.HttpMessageHandler)">
             <summary>
-            Creates a new instance of the LightBuzzMobileServiceClient. 
+            Creates a new Azure Mobile Service Client.
             </summary>
-            <param name="mobileAppUri">The Azure App Service URI.</param>
-            <param name="supportLocal">Specifies whether a local database is supported.</param>
-            <param name="handler">The HTTP handler to use.</param>
+            <param name="mobileAppUri">The App Service URI.</param>
+            <param name="supportLocal">Specifies whether the client will support local database storage.</param>
+            <param name="handler">An HTTPS message handler.</param>
         </member>
         <member name="P:LightBuzz.Azure.LightBuzzMobileServiceClient.LocalDatabasePath">
             <summary>
-            Returns the local SQLite database absolute path.
+            Gets the local SQLite database absolute path.
             </summary>
         </member>
         <member name="P:LightBuzz.Azure.LightBuzzMobileServiceClient.LocalDatabaseConnectionString">
             <summary>
-            Returns the local SQLite database absolute path.
+            Gets the local SQLite database absolute path.
             </summary>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.InitStore(System.String)">
@@ -171,7 +179,7 @@
             Initializes the local SQLite database.
             </summary>
             <param name="localDatabasePath">The full path to the local database file, e.g. Path.Combine(Application.persistentDataPath, "database.db").</param>
-            <returns></returns>
+            <returns>Void.</returns>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.InitStore">
             <summary>
@@ -183,20 +191,20 @@
             <summary>
             Syncs with the remote Azure App Service (pull/push operations).
             </summary>
-            <returns></returns>
+            <returns>Void.</returns>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.SyncStore(System.Threading.CancellationToken)">
             <summary>
             Syncs with the remote Azure App Service (pull/push operations).
             </summary>
             <param name="ct">The Cancellation Token.</param>
-            <returns></returns>
+            <returns>Void.</returns>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Push">
             <summary>
             Pushes the data stored in the local SQLite database to the remote Azure App Service.
             </summary>
-            <returns></returns>
+            <returns>Void.</returns>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Push(System.Threading.CancellationToken)">
             <summary>
@@ -210,13 +218,13 @@
             Pulls the data from the remote Azure App Service and stores them into the local database.
             Method must be implemented in a subclass.
             e.g.
-            public override async Task Pull()
+            <code>public override async Task Pull()
             {
-               AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
+               AppServiceTableDAO&lt;TodoItem&gt; todoTableDao = new AppServiceTableDAO&lt;TodoItem&gt;(this);
                await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
-             }
+            }</code>
             </summary>
-            <returns></returns>
+            <returns>Void.</returns>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.Init">
             <summary>
@@ -228,13 +236,13 @@
             <summary>
             Syncs with the remote Azure App Service, if local store is supported.
             </summary>
-            <returns></returns>
+            <returns>Void.</returns>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzMobileServiceClient.InitializeLocalStore">
             <summary>
             Initializes local SQLite database connection and sync.
             </summary>
-            <returns></returns>
+            <returns>Void.</returns>
         </member>
         <member name="T:LightBuzz.Azure.LightBuzzMobileServiceClientCloudOnly">
             <summary>

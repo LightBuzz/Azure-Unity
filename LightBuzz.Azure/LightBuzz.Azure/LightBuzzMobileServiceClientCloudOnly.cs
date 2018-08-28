@@ -57,7 +57,7 @@ namespace LightBuzz.Azure
         /// </summary>
         protected override void DefineTables()
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace LightBuzz.Azure
         /// <returns></returns>
         public override Task Pull(CancellationToken ct)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
     }
 }
