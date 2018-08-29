@@ -4,6 +4,11 @@
         <name>LightBuzz.Azure</name>
     </assembly>
     <members>
+        <member name="T:LightBuzz.Azure.AppServiceTableCriteria">
+            <summary>
+            An iOS utility that encapsulates a C# predicate as a set of SQL commands.
+            </summary>
+        </member>
         <member name="T:LightBuzz.Azure.AppServiceTableDAO`1">
             <summary>
             A generic table data access object.
@@ -23,6 +28,11 @@
         <member name="P:LightBuzz.Azure.AppServiceTableDAO`1._supportsLocalStore">
             <summary>
             Specifies whether the app stores data locally.
+            </summary>
+        </member>
+        <member name="F:LightBuzz.Azure.AppServiceTableDAO`1._store">
+            <summary>
+            The MobileServiceSQLiteStore that connects to the local database.
             </summary>
         </member>
         <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.#ctor(LightBuzz.Azure.LightBuzzMobileServiceClient)">
@@ -67,12 +77,34 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindAll(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindAll(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Collections.Generic.Dictionary{System.String,System.Object})">
             <summary>
             Performs a database Get operation and returns all of the items that correspond to the specified predicate.
             </summary>
             <param name="predicate">The predicate to use.</param>
+            <param name="criteria">The criteria for the where clause.</param>
+            <returns>The list of T objects matching the predicate or the criteria</returns>
+        </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.PredicateCanRunAsSql(System.String)">
+            <summary>
+            Returns true if the predicate matches our citeria to run as Sql
+            </summary>
+            <param name="predicateString">The predicate to examine</param>
             <returns></returns>
+        </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindAllSql(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Performs a database Get operation and returns all of the items that correspond to the specified criteria after building an Sql Query.
+            </summary>
+            <param name="criteria">The criteria for the where clause.</param>
+            <returns>The list of T objects matching the criteria</returns>
+        </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindAllSql(LightBuzz.Azure.AppServiceTableCriteria)">
+            <summary>
+            Performs a database Get operation and returns all of the items that correspond to the specified criteria after building an Sql Query.
+            </summary>
+            <param name="criteria">The criteria for the where clause.</param>
+            <returns>The list of T objects matching the criteria</returns>
         </member>
         <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindById(System.String)">
             <summary>
@@ -80,6 +112,26 @@
             </summary>
             <param name="id">The id to find</param>
             <returns>The requested T object</returns>
+        </member>
+        <member name="T:LightBuzz.Azure.AppServiceTablePredicate">
+            <summary>
+            An iOS utility that maps the C# predicate clauses to SQL commands.
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.AppServiceTablePredicate.AdditiveOperator">
+            <summary>
+            The additive operator, e.g. "and".
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.AppServiceTablePredicate.ComparisonOperator">
+            <summary>
+            The  comparison operator, e.g. "=".
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.AppServiceTablePredicate.Data">
+            <summary>
+            The value parameter.
+            </summary>
         </member>
         <member name="T:LightBuzz.Azure.LightBuzzMobileServiceClient">
             <summary>
@@ -95,7 +147,7 @@
             <code>
             protected override void DefineTables()
             {
-               LocalStore.DefineTable<TodoItem/>();
+               LocalStore.DefineTable&lt;TodoItem&gt;();
             }
             </code>
             </summary>
@@ -108,7 +160,7 @@
             <code>
             public override async Task Pull()
             {
-               AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
+               AppServiceTableDAO&lt;TodoItem&gt; todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
                await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
             }
             </code>
@@ -210,11 +262,11 @@
             Pulls the data from the remote Azure App Service and stores them into the local database.
             Method must be implemented in a subclass.
             e.g.
-            public override async Task Pull()
+            <code>public override async Task Pull()
             {
-               AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
+               AppServiceTableDAO&lt;TodoItem&gt; todoTableDao = new AppServiceTableDAO&lt;TodoItem&gt;(this);
                await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
-             }
+            }</code>
             </summary>
             <returns></returns>
         </member>

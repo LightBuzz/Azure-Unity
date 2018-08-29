@@ -29,45 +29,26 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace LightBuzz.Azure
 {
     /// <summary>
-    /// Represents an Azure Service Client that has no Local Store support.
+    /// An iOS utility that maps the C# predicate clauses to SQL commands.
     /// </summary>
-    public class LightBuzzMobileServiceClientCloudOnly : LightBuzzMobileServiceClient
+    public class AppServiceTablePredicate
     {
         /// <summary>
-        /// Creates a new instance of the <see cref="LightBuzzMobileServiceClientCloudOnly"/>.
+        /// The additive operator, e.g. "and".
         /// </summary>
-        /// <param name="mobileAppUri">The Azure service URI.</param>
-        public LightBuzzMobileServiceClientCloudOnly(string mobileAppUri) : base(mobileAppUri, false)
-        {
-        }
-
-        private LightBuzzMobileServiceClientCloudOnly(string mobileAppUri, bool supportLocal) : base(mobileAppUri, supportLocal)
-        {
-        }
+        public string AdditiveOperator { get; set; }
 
         /// <summary>
-        /// Defines the database tables in managed code.
+        /// The  comparison operator, e.g. "=".
         /// </summary>
-        protected override void DefineTables()
-        {
-            throw new NotImplementedException();
-        }
+        public string ComparisonOperator { get; set; }
 
         /// <summary>
-        /// Pulls the remote data from the server.
+        /// The value parameter.
         /// </summary>
-        /// <param name="ct">The Cancellation Token.</param>
-        /// <returns></returns>
-        public override Task Pull(CancellationToken ct)
-        {
-            throw new NotImplementedException();
-        }
+        public object Data { get; set; }
     }
 }

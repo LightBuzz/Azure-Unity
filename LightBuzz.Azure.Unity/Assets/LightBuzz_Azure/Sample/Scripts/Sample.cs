@@ -92,8 +92,15 @@ public class Sample : MonoBehaviour
 
     private void OnValidate()
     {
-        buttonSync.gameObject.SetActive(supportLocalDatabase);
-        textSync.gameObject.SetActive(supportLocalDatabase);
+        if (buttonSync != null)
+        {
+            buttonSync.gameObject.SetActive(supportLocalDatabase);
+        }
+
+        if (textSync != null)
+        {
+            textSync.gameObject.SetActive(supportLocalDatabase);
+        }
     }
 
     public async void Get_Click()

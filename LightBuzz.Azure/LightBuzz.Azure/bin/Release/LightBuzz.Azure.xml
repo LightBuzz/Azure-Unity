@@ -4,6 +4,31 @@
         <name>LightBuzz.Azure</name>
     </assembly>
     <members>
+        <member name="T:LightBuzz.Azure.AppServiceTableCriteria">
+            <summary>
+            An iOS utility that encapsulates a C# predicate as a set of SQL commands.
+            </summary>
+        </member>
+        <member name="T:LightBuzz.Azure.AppServiceTablePredicate">
+            <summary>
+            An iOS utility that maps the C# predicate clauses to SQL commands.
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.AppServiceTablePredicate.AdditiveOperator">
+            <summary>
+            The additive operator, e.g. "and".
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.AppServiceTablePredicate.ComparisonOperator">
+            <summary>
+            The  comparison operator, e.g. "=".
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.AppServiceTablePredicate.Data">
+            <summary>
+            The value parameter.
+            </summary>
+        </member>
         <member name="T:LightBuzz.Azure.AppServiceTableDAO`1">
             <summary>
             A generic table data access object.
@@ -94,6 +119,13 @@
             <param name="criteria">The criteria for the where clause.</param>
             <returns>The list of T objects matching the criteria</returns>
         </member>
+        <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindAllSql(LightBuzz.Azure.AppServiceTableCriteria)">
+            <summary>
+            Performs a database Get operation and returns all of the items that correspond to the specified criteria after building an Sql Query.
+            </summary>
+            <param name="criteria">The criteria for the where clause.</param>
+            <returns>The list of T objects matching the criteria</returns>
+        </member>
         <member name="M:LightBuzz.Azure.AppServiceTableDAO`1.FindById(System.String)">
             <summary>
             Performs a database Get operation and returns the item that corresponds to the specified id.
@@ -119,11 +151,6 @@
         <member name="T:LightBuzz.Azure.LightBuzzHttpsHandler">
             <summary>
             A Unity-ready secure HTTPS handler.
-            </summary>
-        </member>
-        <member name="F:LightBuzz.Azure.LightBuzzHttpsHandler._result">
-            <summary>
-            The response from the server.
             </summary>
         </member>
         <member name="F:LightBuzz.Azure.LightBuzzHttpsHandler._authorizationToken">
@@ -167,23 +194,6 @@
             <param name="cancellationToken">The cancellation token.</param>
             <returns>The response from the server.</returns>
         </member>
-        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendHttpWebRequest(System.Net.Http.HttpRequestMessage)">
-            <summary>
-            Sends an Http Web Request.
-            </summary>
-            <param name="request">The request message.</param>
-            <param name="contentArray">The request content.</param>
-            <returns></returns>
-        </member>
-        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendUnityRequest(System.String,System.Byte[],System.String)">
-            <summary>
-            Sends a Unity Web Request.
-            </summary>
-            <param name="url">The request absolute uri.</param>
-            <param name="contentArray">The request content.</param>
-            <param name="method">The request method.</param>
-            <returns>An IEnumerator with the response text.</returns>
-        </member>
         <member name="T:LightBuzz.Azure.LightBuzzMobileServiceClient">
             <summary>
             A Unity-ready MobileServiceClient.
@@ -198,7 +208,7 @@
             <code>
             protected override void DefineTables()
             {
-               LocalStore.DefineTable<TodoItem/>();
+               LocalStore.DefineTable&lt;TodoItem&gt;();
             }
             </code>
             </summary>
@@ -211,7 +221,7 @@
             <code>
             public override async Task Pull()
             {
-               AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
+               AppServiceTableDAO&lt;TodoItem&gt; todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
                await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
             }
             </code>
@@ -313,11 +323,11 @@
             Pulls the data from the remote Azure App Service and stores them into the local database.
             Method must be implemented in a subclass.
             e.g.
-            public override async Task Pull()
+            <code>public override async Task Pull()
             {
-               AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
+               AppServiceTableDAO&lt;TodoItem&gt; todoTableDao = new AppServiceTableDAO&lt;TodoItem&gt;(this);
                await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
-             }
+            }</code>
             </summary>
             <returns></returns>
         </member>

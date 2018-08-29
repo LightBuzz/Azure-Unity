@@ -107,8 +107,14 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\LightBuzz.Azure\AppServiceTableCriteria.cs">
+      <Link>AppServiceTableCriteria.cs</Link>
+    </Compile>
     <Compile Include="..\LightBuzz.Azure\AppServiceTableDAO.cs">
       <Link>AppServiceTableDAO.cs</Link>
+    </Compile>
+    <Compile Include="..\LightBuzz.Azure\AppServiceTablePredicate.cs">
+      <Link>AppServiceTablePredicate.cs</Link>
     </Compile>
     <Compile Include="..\LightBuzz.Azure\LightBuzzCertificateValidation.cs">
       <Link>LightBuzzCertificateValidation.cs</Link>
@@ -140,7 +146,8 @@
     <Reference Include="Microsoft.Azure.Mobile.Client.SQLiteStore">
       <HintPath>..\..\LightBuzz.Azure.Unity\Assets\LightBuzz_Azure\Plugins\Azure\WSA\Microsoft.Azure.Mobile.Client.SQLiteStore.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\LightBuzz.Azure.Unity\Assets\LightBuzz_Azure\Plugins\Newtonsoft\WSA\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">

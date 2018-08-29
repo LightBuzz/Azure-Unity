@@ -52,7 +52,7 @@ namespace LightBuzz.Azure
         /// <code>
         /// protected override void DefineTables()
         /// {
-        ///    LocalStore.DefineTable<TodoItem/>();
+        ///    LocalStore.DefineTable&lt;TodoItem&gt;();
         /// }
         /// </code>
         /// </summary>
@@ -65,7 +65,7 @@ namespace LightBuzz.Azure
         /// <code>
         /// public override async Task Pull()
         /// {
-        ///    AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
+        ///    AppServiceTableDAO&lt;TodoItem&gt; todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
         ///    await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
         /// }
         /// </code>
@@ -117,6 +117,7 @@ namespace LightBuzz.Azure
         }
 
 #if !UNITY_WSA
+
         /// <summary>
         /// Creates a new instance of the LightBuzzMobileServiceClient. 
         /// </summary>
@@ -279,11 +280,11 @@ namespace LightBuzz.Azure
         /// Pulls the data from the remote Azure App Service and stores them into the local database.
         /// Method must be implemented in a subclass.
         /// e.g.
-        /// public override async Task Pull()
+        /// <code>public override async Task Pull()
         /// {
-        ///    AppServiceTableDAO<TodoItem/> todoTableDao = new AppServiceTableDAO<TodoItem/>(this);
+        ///    AppServiceTableDAO&lt;TodoItem&gt; todoTableDao = new AppServiceTableDAO&lt;TodoItem&gt;(this);
         ///    await todoTableDao.Pull(new CancellationToken(), "TodoItems", x => x.Id != null);
-        ///  }
+        /// }</code>
         /// </summary>
         /// <returns></returns>
         public async Task Pull()

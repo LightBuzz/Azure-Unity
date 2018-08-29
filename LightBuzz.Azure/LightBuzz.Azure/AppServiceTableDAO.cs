@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
@@ -194,26 +195,74 @@ namespace LightBuzz.Azure
         public List<T> FindAllSql(Dictionary<string, object> criteria)
         {
             List<T> listObj = new List<T>();
-            Dictionary<string, object> parameters = new Dictionary<string, object>();
-            string whereClause = string.Empty;
 
-            foreach (var set in criteria)
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+
+            StringBuilder whereClause = new StringBuilder();
+
+            foreach (KeyValuePair<string, object> set in criteria)
             {
                 parameters.Add("@" + set.Key, set.Value);
-                if (!string.IsNullOrEmpty(whereClause))
+
+                if (whereClause.Length > 0)
                 {
-                    whereClause += " and ";
+                    whereClause.Append(" and ");
                 }
-                whereClause += set.Key + "=" + "@" + set.Key;
+
+                whereClause.Append(set.Key + "=" + "@" + set.Key);
             }
 
             string sqlQuery = $"Select * from {TableLocal.TableName}";
-            if (!string.IsNullOrEmpty(whereClause))
+
+            if (!string.IsNullOrEmpty(whereClause.ToString()))
             {
                 sqlQuery += $" where {whereClause}";
             }
 
             List<JObject> result = _store.ExecuteQueryAsync(TableLocal.TableName, sqlQuery, parameters).Result.ToList();
+
+            foreach (var obj in result)
+            {
+                listObj.Add(JsonConvert.DeserializeObject<T>(obj.ToString()));
+            }
+
+            return listObj;
+        }
+
+        /// <summary>
+        /// Performs a database Get operation and returns all of the items that correspond to the specified criteria after building an Sql Query.
+        /// </summary>
+        /// <param name="criteria">The criteria for the where clause.</param>
+        /// <returns>The list of T objects matching the criteria</returns>
+        public List<T> FindAllSql(AppServiceTableCriteria criteria)
+        {
+            List<T> listObj = new List<T>();
+
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+
+            StringBuilder whereClause = new StringBuilder();
+
+            foreach (KeyValuePair<string, AppServiceTablePredicate> set in criteria)
+            {
+                parameters.Add("@" + set.Key, set.Value.Data);
+
+                if (whereClause.Length > 0)
+                {
+                    whereClause.Append(" " + set.Value.AdditiveOperator + " ");
+                }
+
+                whereClause.Append(set.Key + "=" + "@" + set.Key);
+            }
+
+            string sqlQuery = $"Select * from {TableLocal.TableName}";
+
+            if (!string.IsNullOrEmpty(whereClause.ToString()))
+            {
+                sqlQuery += $" where {whereClause}";
+            }
+
+            List<JObject> result = _store.ExecuteQueryAsync(TableLocal.TableName, sqlQuery, parameters).Result.ToList();
+
             foreach (var obj in result)
             {
                 listObj.Add(JsonConvert.DeserializeObject<T>(obj.ToString()));
