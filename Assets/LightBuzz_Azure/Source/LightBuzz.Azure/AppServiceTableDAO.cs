@@ -161,7 +161,7 @@ namespace LightBuzz.Azure
             if (_supportsLocalStore)
             {
 
-                if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform==RuntimePlatform.WindowsEditor)
+                if (Application.platform == RuntimePlatform.IPhonePlayer)
                 {
                     if (PredicateCanRunAsSql(predicate.Body.ToString()) && criteria != null)
                     {
