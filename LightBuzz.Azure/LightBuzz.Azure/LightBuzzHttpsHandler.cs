@@ -77,33 +77,42 @@ namespace LightBuzz.Azure
         /// </summary>
         public Encoding Encoding { get; set; }
 
-        #endregion
+		/// <summary>
+		/// The time-out value for the request in milliseconds. Default value is 600000.
+		/// </summary>
+		public int RequestTimeout { get; set; }
 
-        #region Constructors
+		#endregion
 
-        /// <summary>
-        /// Creates a new LightBuzz secure HTTPS handler.
-        /// </summary>
-        public LightBuzzHttpsHandler()
+		#region Constructors
+
+		/// <summary>
+		/// Creates a new LightBuzz secure HTTPS handler.
+		/// </summary>
+		public LightBuzzHttpsHandler()
         {
             AutomaticDecompression = DecompressionMethods.Deflate;
             ContentType = "application/json";
             ZumoApiVersion = "2.0.0";
             Encoding = Encoding.UTF8;
+	        RequestTimeout = 600000;
+
         }
 
-        /// <summary>
-        /// Creates a new LightBuzz secure HTTPS handler with the specified parameters.
-        /// </summary>
-        /// <param name="contentType">The Content Type header type.</param>
-        /// <param name="zumoApiVersion">The ZUMO API version number.</param>
-        /// <param name="encoding">The encoding of the response message.</param>
-        public LightBuzzHttpsHandler(string contentType, string zumoApiVersion, Encoding encoding)
+	    /// <summary>
+	    /// Creates a new LightBuzz secure HTTPS handler with the specified parameters.
+	    /// </summary>
+	    /// <param name="contentType">The Content Type header type.</param>
+	    /// <param name="zumoApiVersion">The ZUMO API version number.</param>
+	    /// <param name="encoding">The encoding of the response message.</param>
+	    /// <param name="requestTimeout">The request timeout value in milliseconds.</param>
+	    public LightBuzzHttpsHandler(string contentType, string zumoApiVersion, Encoding encoding, int requestTimeout)
         {
             AutomaticDecompression = DecompressionMethods.Deflate;
             ContentType = contentType;
             ZumoApiVersion = zumoApiVersion;
             Encoding = encoding;
+	        RequestTimeout = requestTimeout;
         }
 
         #endregion
@@ -122,7 +131,8 @@ namespace LightBuzz.Azure
             HttpWebRequest client = (HttpWebRequest)WebRequest.Create(request.RequestUri.AbsoluteUri);
 
             client.Method = request.Method.ToString();
-            client.KeepAlive = true;
+	        client.Timeout = RequestTimeout;
+			client.KeepAlive = true;
             client.ContentType = ContentType;
 
             HttpRequestHeaders headers = request.Headers;

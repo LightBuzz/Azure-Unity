@@ -173,18 +173,24 @@
             The encoding of the response message.
             </summary>
         </member>
+        <member name="P:LightBuzz.Azure.LightBuzzHttpsHandler.RequestTimeout">
+            <summary>
+            The time-out value for the request in milliseconds. Default value is 600000.
+            </summary>
+        </member>
         <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor">
             <summary>
             Creates a new LightBuzz secure HTTPS handler.
             </summary>
         </member>
-        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.String,System.String,System.Text.Encoding)">
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.String,System.String,System.Text.Encoding,System.Int32)">
             <summary>
             Creates a new LightBuzz secure HTTPS handler with the specified parameters.
             </summary>
             <param name="contentType">The Content Type header type.</param>
             <param name="zumoApiVersion">The ZUMO API version number.</param>
             <param name="encoding">The encoding of the response message.</param>
+            <param name="requestTimeout">The request timeout value in milliseconds.</param>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
             <summary>
