@@ -52,15 +52,20 @@ namespace LightBuzz.Azure
         private readonly string CONTENT_TYPE = "Content-Type";
         private readonly string X_ZUMO_AUTH = "X-ZUMO-AUTH";
         private readonly string ZUMO_API_VERSION = "ZUMO-API-VERSION";
+		private const string DefaultContentType = "application/json";
+	    private const string DefaultZumoApiVersion = "2.0.0";
+	    private const int DefaultTimeout = 60000;
+		private readonly Encoding DefaultEncoding = Encoding.UTF8;
 
-        #endregion
 
-        #region Members
+		#endregion
 
-        /// <summary>
-        /// The authorization token for the request.
-        /// </summary>
-        private string _authorizationToken = string.Empty;
+		#region Members
+
+		/// <summary>
+		/// The authorization token for the request.
+		/// </summary>
+		private string _authorizationToken = string.Empty;
 
         /// <summary>
         /// The Content Type header type (default: application/json).
@@ -78,9 +83,14 @@ namespace LightBuzz.Azure
         public Encoding Encoding { get; set; }
 
 		/// <summary>
-		/// The time-out value for the request in milliseconds. Default value is 600000.
+		/// The time-out value for the request in milliseconds. Default value is 60000.
 		/// </summary>
 		public int RequestTimeout { get; set; }
+
+	    /// <summary>
+	    /// The information for the client's proxy. If no proxy is used, should be null or empty.
+	    /// </summary>
+	    public string ProxyInfo { get; set; }
 
 		#endregion
 
@@ -92,40 +102,72 @@ namespace LightBuzz.Azure
 		public LightBuzzHttpsHandler()
         {
             AutomaticDecompression = DecompressionMethods.Deflate;
-            ContentType = "application/json";
-            ZumoApiVersion = "2.0.0";
-            Encoding = Encoding.UTF8;
-	        RequestTimeout = 600000;
-
+	        ContentType = DefaultContentType;
+	        ZumoApiVersion = DefaultZumoApiVersion;
+	        Encoding = DefaultEncoding;
+	        RequestTimeout = DefaultTimeout;
+	        ProxyInfo = string.Empty;
         }
 
 	    /// <summary>
 	    /// Creates a new LightBuzz secure HTTPS handler with the specified parameters.
 	    /// </summary>
-	    /// <param name="contentType">The Content Type header type.</param>
-	    /// <param name="zumoApiVersion">The ZUMO API version number.</param>
-	    /// <param name="encoding">The encoding of the response message.</param>
 	    /// <param name="requestTimeout">The request timeout value in milliseconds.</param>
-	    public LightBuzzHttpsHandler(string contentType, string zumoApiVersion, Encoding encoding, int requestTimeout)
+	    /// <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
+	    public LightBuzzHttpsHandler(int requestTimeout, string proxyInfo)
+	    {
+		    AutomaticDecompression = DecompressionMethods.Deflate;
+			ContentType = DefaultContentType;
+		    ZumoApiVersion = DefaultZumoApiVersion;
+		    Encoding = DefaultEncoding;
+			RequestTimeout = requestTimeout;
+		    ProxyInfo = proxyInfo;
+	    }
+
+	    /// <summary>
+	    /// Creates a new LightBuzz secure HTTPS handler with the specified parameters.
+	    /// </summary>
+	    /// <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
+	    public LightBuzzHttpsHandler(string proxyInfo)
+	    {
+		    AutomaticDecompression = DecompressionMethods.Deflate;
+			ContentType = DefaultContentType;
+		    ZumoApiVersion = DefaultZumoApiVersion;
+		    Encoding = DefaultEncoding;
+		    RequestTimeout = DefaultTimeout;
+			ProxyInfo = proxyInfo;
+	    }
+
+
+		/// <summary>
+		/// Creates a new LightBuzz secure HTTPS handler with the specified parameters.
+		/// </summary>
+		/// <param name="contentType">The Content Type header type.</param>
+		/// <param name="zumoApiVersion">The ZUMO API version number.</param>
+		/// <param name="encoding">The encoding of the response message.</param>
+		/// <param name="requestTimeout">The request timeout value in milliseconds.</param>
+		/// <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
+		public LightBuzzHttpsHandler(string contentType, string zumoApiVersion, Encoding encoding, int requestTimeout, string proxyInfo)
         {
             AutomaticDecompression = DecompressionMethods.Deflate;
             ContentType = contentType;
             ZumoApiVersion = zumoApiVersion;
             Encoding = encoding;
 	        RequestTimeout = requestTimeout;
+	        ProxyInfo = proxyInfo;
         }
 
-        #endregion
+		#endregion
 
-        #region Methods
+		#region Methods
 
-        /// <summary>
-        /// A Unity-ready implementation of a secure HTTPS method to send the request.
-        /// </summary>
-        /// <param name="request">The request to send to server.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The response from the server.</returns>
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+		/// <summary>
+		/// A Unity-ready implementation of a secure HTTPS method to send the request.
+		/// </summary>
+		/// <param name="request">The request to send to server.</param>
+		/// <param name="cancellationToken">The cancellation token.</param>
+		/// <returns>The response from the server.</returns>
+		protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             HttpResponseMessage result = new HttpResponseMessage();
             HttpWebRequest client = (HttpWebRequest)WebRequest.Create(request.RequestUri.AbsoluteUri);
@@ -148,7 +190,8 @@ namespace LightBuzz.Azure
                 }
             }
 
-            ServicePointManager.ServerCertificateValidationCallback = LightBuzzCertificateValidation.CertificateValidationCallback;
+	        LightBuzzCertificateValidation.ProxyInfo = ProxyInfo;
+			ServicePointManager.ServerCertificateValidationCallback = LightBuzzCertificateValidation.CertificateValidationCallback;
 
             string contentArray = request.Content != null ? await request.Content.ReadAsStringAsync() : null;
 

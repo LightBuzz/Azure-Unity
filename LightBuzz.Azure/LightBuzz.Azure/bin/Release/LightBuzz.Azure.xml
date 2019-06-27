@@ -138,6 +138,11 @@
             Validates a remote SSL certificate.
             </summary>
         </member>
+        <member name="P:LightBuzz.Azure.LightBuzzCertificateValidation.ProxyInfo">
+            <summary>
+            The information for the client's proxy. If no proxy is used, should be null or empty.
+            </summary>
+        </member>
         <member name="M:LightBuzz.Azure.LightBuzzCertificateValidation.CertificateValidationCallback(System.Object,System.Security.Cryptography.X509Certificates.X509Certificate,System.Security.Cryptography.X509Certificates.X509Chain,System.Net.Security.SslPolicyErrors)">
             <summary>
             Determines whether the specified SSL certificate is valid.
@@ -175,7 +180,12 @@
         </member>
         <member name="P:LightBuzz.Azure.LightBuzzHttpsHandler.RequestTimeout">
             <summary>
-            The time-out value for the request in milliseconds. Default value is 600000.
+            The time-out value for the request in milliseconds. Default value is 60000.
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.LightBuzzHttpsHandler.ProxyInfo">
+            <summary>
+            The information for the client's proxy. If no proxy is used, should be null or empty.
             </summary>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor">
@@ -183,7 +193,20 @@
             Creates a new LightBuzz secure HTTPS handler.
             </summary>
         </member>
-        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.String,System.String,System.Text.Encoding,System.Int32)">
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.Int32,System.String)">
+            <summary>
+            Creates a new LightBuzz secure HTTPS handler with the specified parameters.
+            </summary>
+            <param name="requestTimeout">The request timeout value in milliseconds.</param>
+            <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.String)">
+            <summary>
+            Creates a new LightBuzz secure HTTPS handler with the specified parameters.
+            </summary>
+            <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.String,System.String,System.Text.Encoding,System.Int32,System.String)">
             <summary>
             Creates a new LightBuzz secure HTTPS handler with the specified parameters.
             </summary>
@@ -191,6 +214,7 @@
             <param name="zumoApiVersion">The ZUMO API version number.</param>
             <param name="encoding">The encoding of the response message.</param>
             <param name="requestTimeout">The request timeout value in milliseconds.</param>
+            <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
             <summary>
