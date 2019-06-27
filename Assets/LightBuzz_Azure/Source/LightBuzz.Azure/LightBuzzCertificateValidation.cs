@@ -31,24 +31,31 @@
 
 #if !UNITY_WSA || UNITY_EDITOR
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LightBuzz.Azure
 {
     public class LightBuzzCertificateValidation
     {
+        public static string ProxyInfo { get; set; }
         public static bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
-            if ((certificate.Subject != "CN=*.azurewebsites.net" && certificate.Subject != "CN=*.blob.core.windows.net")
-                || !certificate.Issuer.Contains("CN=Microsoft IT"))
+            if (certificate.Subject != "CN=*.azurewebsites.net" && certificate.Subject != "CN=*.blob.core.windows.net")
             {
                 return false;
+            }
+
+            if (!string.IsNullOrEmpty(ProxyInfo))
+            {
+                return true;
+            }
+            else
+            {
+                if (!certificate.Issuer.Contains("CN=Microsoft IT"))
+                {
+                    return false;
+                }
             }
 
             bool isValidCertificate = true;
