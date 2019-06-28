@@ -206,6 +206,15 @@
             </summary>
             <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
         </member>
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.String,System.String,System.Text.Encoding,System.Int32)">
+            <summary>
+            Creates a new LightBuzz secure HTTPS handler with the specified parameters.
+            </summary>
+            <param name="contentType">The Content Type header type.</param>
+            <param name="zumoApiVersion">The ZUMO API version number.</param>
+            <param name="encoding">The encoding of the response message.</param>
+            <param name="requestTimeout">The request timeout value in milliseconds.</param>
+        </member>
         <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.String,System.String,System.Text.Encoding,System.Int32,System.String)">
             <summary>
             Creates a new LightBuzz secure HTTPS handler with the specified parameters.

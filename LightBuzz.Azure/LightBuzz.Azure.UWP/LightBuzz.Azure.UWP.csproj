@@ -116,12 +116,6 @@
     <Compile Include="..\LightBuzz.Azure\AppServiceTablePredicate.cs">
       <Link>AppServiceTablePredicate.cs</Link>
     </Compile>
-    <Compile Include="..\LightBuzz.Azure\LightBuzzCertificateValidation.cs">
-      <Link>LightBuzzCertificateValidation.cs</Link>
-    </Compile>
-    <Compile Include="..\LightBuzz.Azure\LightBuzzHttpsHandler.cs">
-      <Link>LightBuzzHttpsHandler.cs</Link>
-    </Compile>
     <Compile Include="..\LightBuzz.Azure\LightBuzzMobileServiceClient.cs">
       <Link>LightBuzzMobileServiceClient.cs</Link>
     </Compile>
