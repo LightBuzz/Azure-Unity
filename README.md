@@ -175,7 +175,7 @@ The SDK is brought to you by [LightBuzz Inc.](https://lightbuzz.com), a New York
 
 * **[Georgia Makoudi](https://lightbuzz.com/author/georgia/), Azure Specialist**
 * **[Vangos Pterneas](https://lightbuzz.com/author/vangos/), Microsoft MVP**
-* **[George Karakatsiotis](https://lightbuzz.com/about/), AI Scientist**
+* **[George Karakatsiotis](https://lightbuzz.com/about/), Lead Software Engineer**
 
 _If you would like to contribute to the SDK, please make a pull request._
 
