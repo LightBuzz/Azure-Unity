@@ -133,6 +133,22 @@ namespace LightBuzz.Azure
             ProxyInfo = proxyInfo;
         }
 
+        /// <summary>
+        /// Creates a new LightBuzz secure HTTPS handler with the specified parameters.
+        /// </summary>
+        /// <param name="contentType">The Content Type header type.</param>
+        /// <param name="zumoApiVersion">The ZUMO API version number.</param>
+        /// <param name="encoding">The encoding of the response message.</param>
+        /// <param name="requestTimeout">The request timeout value in milliseconds.</param>
+        public LightBuzzHttpsHandler(string contentType, string zumoApiVersion, Encoding encoding, int requestTimeout)
+        {
+            AutomaticDecompression = DecompressionMethods.Deflate;
+            ContentType = contentType;
+            ZumoApiVersion = zumoApiVersion;
+            Encoding = encoding;
+            RequestTimeout = requestTimeout;
+            ProxyInfo = string.Empty;
+        }
 
         /// <summary>
         /// Creates a new LightBuzz secure HTTPS handler with the specified parameters.
