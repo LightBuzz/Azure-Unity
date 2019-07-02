@@ -41,7 +41,7 @@ namespace LightBuzz.Azure
         public static string ProxyInfo { get; set; }
         public static bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
-            if (certificate.Subject != "CN=*.azurewebsites.net" && certificate.Subject != "CN=*.blob.core.windows.net")
+            if (!certificate.Subject.Contains("CN=*.azurewebsites.net") && !certificate.Subject.Contains("CN=*.blob.core.windows.net"))
             {
                 return false;
             }
@@ -49,13 +49,6 @@ namespace LightBuzz.Azure
             if (!string.IsNullOrEmpty(ProxyInfo))
             {
                 return true;
-            }
-            else
-            {
-                if (!certificate.Issuer.Contains("CN=Microsoft IT"))
-                {
-                    return false;
-                }
             }
 
             bool isValidCertificate = true;
