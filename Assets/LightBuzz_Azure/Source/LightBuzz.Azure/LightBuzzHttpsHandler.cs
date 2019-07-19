@@ -29,9 +29,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -53,7 +51,8 @@ namespace LightBuzz.Azure
         private const string DefaultContentType = "application/json";
         private const string DefaultZumoApiVersion = "2.0.0";
         private const int DefaultTimeout = 60000;
-        private readonly Encoding DefaultEncoding = Encoding.UTF8;
+        private static readonly Encoding DefaultEncoding = Encoding.UTF8;
+        private readonly ICertificateValidator Validator;
 
         /// <summary>
         /// The response from the server.
@@ -85,52 +84,41 @@ namespace LightBuzz.Azure
         /// </summary>
         public int RequestTimeout { get; set; }
 
-        /// <summary>
-        /// The information for the client's proxy. If no proxy is used, should be null or empty.
-        /// </summary>
-        public string ProxyInfo { get; set; }
 
         /// <summary>
         /// Creates a new LightBuzz secure HTTPS handler.
         /// </summary>
-        public LightBuzzHttpsHandler()
+        public LightBuzzHttpsHandler() :
+            this(DefaultContentType, DefaultZumoApiVersion, DefaultEncoding, DefaultTimeout, new AzureCertificateValidation(string.Empty))
         {
-            AutomaticDecompression = DecompressionMethods.Deflate;
-            ContentType = DefaultContentType;
-            ZumoApiVersion = DefaultZumoApiVersion;
-            Encoding = DefaultEncoding;
-            RequestTimeout = DefaultTimeout;
-            ProxyInfo = string.Empty;
-
         }
 
         /// <summary>
 	    /// Creates a new LightBuzz secure HTTPS handler with the specified parameters.
 	    /// </summary>
 	    /// <param name="requestTimeout">The request timeout value in milliseconds.</param>
-	    /// <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
-	    public LightBuzzHttpsHandler(int requestTimeout, string proxyInfo)
+	    public LightBuzzHttpsHandler(int requestTimeout) :
+            this(DefaultContentType, DefaultZumoApiVersion, DefaultEncoding, requestTimeout, new AzureCertificateValidation(string.Empty))
         {
-            AutomaticDecompression = DecompressionMethods.Deflate;
-            ContentType = DefaultContentType;
-            ZumoApiVersion = DefaultZumoApiVersion;
-            Encoding = DefaultEncoding;
-            RequestTimeout = requestTimeout;
-            ProxyInfo = proxyInfo;
         }
 
         /// <summary>
         /// Creates a new LightBuzz secure HTTPS handler with the specified parameters.
         /// </summary>
-        /// <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
-        public LightBuzzHttpsHandler(string proxyInfo)
+        /// <param name="requestTimeout">The request timeout value in milliseconds.</param>
+        /// <param name="validator">The certificate validator</param>
+        public LightBuzzHttpsHandler(int requestTimeout, ICertificateValidator validator) :
+            this(DefaultContentType, DefaultZumoApiVersion, DefaultEncoding, requestTimeout, validator)
         {
-            AutomaticDecompression = DecompressionMethods.Deflate;
-            ContentType = DefaultContentType;
-            ZumoApiVersion = DefaultZumoApiVersion;
-            Encoding = DefaultEncoding;
-            RequestTimeout = DefaultTimeout;
-            ProxyInfo = proxyInfo;
+        }
+
+        /// <summary>
+        /// Creates a new LightBuzz secure HTTPS handler with the specified parameters.
+        /// </summary>
+        /// <param name="validator">The certificate validator</param>
+        public LightBuzzHttpsHandler(ICertificateValidator validator) :
+            this(DefaultContentType, DefaultZumoApiVersion, DefaultEncoding, DefaultTimeout, validator)
+        {
         }
 
         /// <summary>
@@ -140,14 +128,9 @@ namespace LightBuzz.Azure
         /// <param name="zumoApiVersion">The ZUMO API version number.</param>
         /// <param name="encoding">The encoding of the response message.</param>
         /// <param name="requestTimeout">The request timeout value in milliseconds.</param>
-        public LightBuzzHttpsHandler(string contentType, string zumoApiVersion, Encoding encoding, int requestTimeout)
+        public LightBuzzHttpsHandler(string contentType, string zumoApiVersion, Encoding encoding, int requestTimeout) :
+            this(contentType, zumoApiVersion, encoding, requestTimeout, new AzureCertificateValidation(string.Empty))
         {
-            AutomaticDecompression = DecompressionMethods.Deflate;
-            ContentType = contentType;
-            ZumoApiVersion = zumoApiVersion;
-            Encoding = encoding;
-            RequestTimeout = requestTimeout;
-            ProxyInfo = string.Empty;
         }
 
         /// <summary>
@@ -157,26 +140,26 @@ namespace LightBuzz.Azure
         /// <param name="zumoApiVersion">The ZUMO API version number.</param>
         /// <param name="encoding">The encoding of the response message.</param>
         /// <param name="requestTimeout">The request timeout value in milliseconds.</param>
-        /// <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
-        public LightBuzzHttpsHandler(string contentType, string zumoApiVersion, Encoding encoding, int requestTimeout, string proxyInfo)
+        /// <param name="validator">The certificate validator</param>
+        public LightBuzzHttpsHandler(string contentType, string zumoApiVersion, Encoding encoding, int requestTimeout, ICertificateValidator validator)
         {
             AutomaticDecompression = DecompressionMethods.Deflate;
             ContentType = contentType;
             ZumoApiVersion = zumoApiVersion;
             Encoding = encoding;
             RequestTimeout = requestTimeout;
-            ProxyInfo = proxyInfo;
+            Validator = validator;
         }
 
 #if !UNITY_2018_2
 
-        /// <summary>
-        /// A Unity-ready implementation of a secure HTTPS method to send the request.
-        /// </summary>
-        /// <param name="request">The request to send to server.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The response from the server.</returns>
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+		/// <summary>
+		/// A Unity-ready implementation of a secure HTTPS method to send the request.
+		/// </summary>
+		/// <param name="request">The request to send to server.</param>
+		/// <param name="cancellationToken">The cancellation token.</param>
+		/// <returns>The response from the server.</returns>
+		protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             await SendHttpWebRequest(request);
             return _result;
@@ -186,7 +169,6 @@ namespace LightBuzz.Azure
         /// Sends an Http Web Request.
         /// </summary>
         /// <param name="request">The request message.</param>
-        /// <param name="contentArray">The request content.</param>
         /// <returns></returns>
         private async Task SendHttpWebRequest(HttpRequestMessage request)
         {
@@ -210,8 +192,7 @@ namespace LightBuzz.Azure
             }
 
 #if !UNITY_WSA
-            LightBuzzCertificateValidation.ProxyInfo = ProxyInfo;
-            ServicePointManager.ServerCertificateValidationCallback = LightBuzzCertificateValidation.CertificateValidationCallback;
+            ServicePointManager.ServerCertificateValidationCallback = Validator.CertificateValidationCallback;
 #endif
 
             string contentArray = request.Content != null ? await request.Content.ReadAsStringAsync() : null;
@@ -239,7 +220,7 @@ namespace LightBuzz.Azure
             }
             catch (WebException webException)
             {
-                if (webException.Response==null)
+                if (webException.Response == null)
                 {
                     throw webException;
                 }

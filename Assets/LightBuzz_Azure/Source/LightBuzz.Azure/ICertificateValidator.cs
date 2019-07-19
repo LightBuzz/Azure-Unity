@@ -29,45 +29,24 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 
 namespace LightBuzz.Azure
 {
     /// <summary>
-    /// Represents an Azure Service Client that has no Local Store support.
+    /// Validates a remote SSL certificate.
     /// </summary>
-    public class LightBuzzMobileServiceClientCloudOnly : LightBuzzMobileServiceClient
+    public interface ICertificateValidator
     {
         /// <summary>
-        /// Creates a new instance of the <see cref="LightBuzzMobileServiceClientCloudOnly"/>.
+        /// Determines whether the specified SSL certificate is valid.
         /// </summary>
-        /// <param name="mobileAppUri">The Azure service URI.</param>
-        public LightBuzzMobileServiceClientCloudOnly(string mobileAppUri) : base(mobileAppUri, false)
-        {
-        }
-
-        private LightBuzzMobileServiceClientCloudOnly(string mobileAppUri, bool supportLocal) : base(mobileAppUri, supportLocal)
-        {
-        }
-
-        /// <summary>
-        /// Defines the database tables in managed code.
-        /// </summary>
-        protected override void DefineTables()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Pulls the remote data from the server.
-        /// </summary>
-        /// <param name="ct">The Cancellation Token.</param>
-        /// <returns></returns>
-        public override Task Pull(CancellationToken ct)
-        {
-            throw new NotImplementedException();
-        }
+        /// <param name="sender">The object raising the callback.</param>
+        /// <param name="certificate">The certificate to validate.</param>
+        /// <param name="chain">The certificate chain.</param>
+        /// <param name="sslPolicyErrors">The SSL policy errors.</param>
+        /// <returns>True if the certificate is valid. False otherwise.</returns>
+        bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors);
     }
 }

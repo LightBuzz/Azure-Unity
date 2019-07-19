@@ -202,14 +202,32 @@ namespace LightBuzz.Azure
 
             foreach (KeyValuePair<string, object> set in criteria)
             {
-                parameters.Add("@" + set.Key, set.Value);
-
                 if (whereClause.Length > 0)
                 {
                     whereClause.Append(" and ");
                 }
 
-                whereClause.Append(set.Key + "=" + "@" + set.Key);
+                var list = set.Value as List<string>;
+                if (list != null)
+                {
+                    whereClause.Append(set.Key + " IN (");
+                    int lastIndex = list.Count;
+                    for (int i = 0; i < lastIndex; i++)
+                    {
+                        whereClause.Append("'" + list[i] + "'");
+                        if (i != lastIndex - 1)
+                        {
+                            whereClause.Append(",");
+                        }
+                    }
+                    whereClause.Append(")");
+                }
+                else
+                {
+                    parameters.Add("@" + set.Key, set.Value);
+
+                    whereClause.Append(set.Key + "=" + "@" + set.Key);
+                }
             }
 
             string sqlQuery = $"Select * from {TableLocal.TableName}";

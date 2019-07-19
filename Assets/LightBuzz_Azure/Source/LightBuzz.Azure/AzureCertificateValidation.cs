@@ -36,23 +36,36 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace LightBuzz.Azure
 {
-    public class LightBuzzCertificateValidation
+    /// <summary>
+    /// Validates a remote SSL certificate for Azure.
+    /// </summary>
+    public class AzureCertificateValidation : ICertificateValidator
     {
-        public static string ProxyInfo { get; set; }
-        public static bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        /// <summary>
+        /// The information for the client's proxy. If no proxy is used, should be null or empty.
+        /// </summary>
+        public string ProxyInfo { get; set; }
+
+        /// <summary>
+        /// Creates a new AzureCertificateValidation.
+        /// </summary>
+        /// <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
+        public AzureCertificateValidation(string proxyInfo)
         {
-            if (!certificate.Subject.Contains("CN=*.azurewebsites.net") && !certificate.Subject.Contains("CN=*.blob.core.windows.net"))
-            {
-                return false;
-            }
+            ProxyInfo = proxyInfo;
+        }
 
-            if (!string.IsNullOrEmpty(ProxyInfo))
-            {
-                return true;
-            }
-
+        /// <summary>
+        /// Determines whether the specified SSL certificate is valid. Implemented for Azure certificates.
+        /// </summary>
+        /// <param name="sender">The object raising the callback.</param>
+        /// <param name="certificate">The certificate to validate.</param>
+        /// <param name="chain">The certificate chain.</param>
+        /// <param name="sslPolicyErrors">The SSL policy errors.</param>
+        /// <returns>True if the certificate is valid. False otherwise.</returns>
+        public bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
             bool isValidCertificate = true;
-
             if (sslPolicyErrors != SslPolicyErrors.None)
             {
                 foreach (var st in chain.ChainStatus)
@@ -74,6 +87,15 @@ namespace LightBuzz.Azure
                     }
                 }
             }
+
+            if (string.IsNullOrEmpty(ProxyInfo))
+            {
+                if (!certificate.Subject.Contains("CN=*.azurewebsites.net") && !certificate.Subject.Contains("CN=*.blob.core.windows.net"))
+                {
+                    return false;
+                }
+            }
+
             return isValidCertificate;
         }
     }
