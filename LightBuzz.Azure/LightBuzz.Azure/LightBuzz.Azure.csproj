@@ -65,7 +65,8 @@
     <Compile Include="AppServiceTableCriteria.cs" />
     <Compile Include="AppServiceTablePredicate.cs" />
     <Compile Include="AppServiceTableDAO.cs" />
-    <Compile Include="LightBuzzCertificateValidation.cs" />
+    <Compile Include="ICertificateValidator.cs" />
+    <Compile Include="AzureCertificateValidation.cs" />
     <Compile Include="LightBuzzHttpsHandler.cs" />
     <Compile Include="LightBuzzMobileServiceClient.cs" />
     <Compile Include="LightBuzzMobileServiceClientCloudOnly.cs" />

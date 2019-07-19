@@ -133,19 +133,40 @@
             <param name="id">The id to find</param>
             <returns>The requested T object</returns>
         </member>
-        <member name="T:LightBuzz.Azure.LightBuzzCertificateValidation">
+        <member name="T:LightBuzz.Azure.ICertificateValidator">
             <summary>
             Validates a remote SSL certificate.
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.LightBuzzCertificateValidation.ProxyInfo">
+        <member name="M:LightBuzz.Azure.ICertificateValidator.CertificateValidationCallback(System.Object,System.Security.Cryptography.X509Certificates.X509Certificate,System.Security.Cryptography.X509Certificates.X509Chain,System.Net.Security.SslPolicyErrors)">
+            <summary>
+            Determines whether the specified SSL certificate is valid.
+            </summary>
+            <param name="sender">The object raising the callback.</param>
+            <param name="certificate">The certificate to validate.</param>
+            <param name="chain">The certificate chain.</param>
+            <param name="sslPolicyErrors">The SSL policy errors.</param>
+            <returns>True if the certificate is valid. False otherwise.</returns>
+        </member>
+        <member name="T:LightBuzz.Azure.AzureCertificateValidation">
+            <summary>
+            Validates a remote SSL certificate for Azure.
+            </summary>
+        </member>
+        <member name="P:LightBuzz.Azure.AzureCertificateValidation.ProxyInfo">
             <summary>
             The information for the client's proxy. If no proxy is used, should be null or empty.
             </summary>
         </member>
-        <member name="M:LightBuzz.Azure.LightBuzzCertificateValidation.CertificateValidationCallback(System.Object,System.Security.Cryptography.X509Certificates.X509Certificate,System.Security.Cryptography.X509Certificates.X509Chain,System.Net.Security.SslPolicyErrors)">
+        <member name="M:LightBuzz.Azure.AzureCertificateValidation.#ctor(System.String)">
             <summary>
-            Determines whether the specified SSL certificate is valid.
+            Creates a new AzureCertificateValidation.
+            </summary>
+            <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
+        </member>
+        <member name="M:LightBuzz.Azure.AzureCertificateValidation.CertificateValidationCallback(System.Object,System.Security.Cryptography.X509Certificates.X509Certificate,System.Security.Cryptography.X509Certificates.X509Chain,System.Net.Security.SslPolicyErrors)">
+            <summary>
+            Determines whether the specified SSL certificate is valid. Implemented for Azure certificates.
             </summary>
             <param name="sender">The object raising the callback.</param>
             <param name="certificate">The certificate to validate.</param>
@@ -183,28 +204,29 @@
             The time-out value for the request in milliseconds. Default value is 60000.
             </summary>
         </member>
-        <member name="P:LightBuzz.Azure.LightBuzzHttpsHandler.ProxyInfo">
-            <summary>
-            The information for the client's proxy. If no proxy is used, should be null or empty.
-            </summary>
-        </member>
         <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor">
             <summary>
             Creates a new LightBuzz secure HTTPS handler.
             </summary>
         </member>
-        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.Int32,System.String)">
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.Int32)">
             <summary>
             Creates a new LightBuzz secure HTTPS handler with the specified parameters.
             </summary>
             <param name="requestTimeout">The request timeout value in milliseconds.</param>
-            <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
         </member>
-        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.String)">
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.Int32,LightBuzz.Azure.ICertificateValidator)">
             <summary>
             Creates a new LightBuzz secure HTTPS handler with the specified parameters.
             </summary>
-            <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
+            <param name="requestTimeout">The request timeout value in milliseconds.</param>
+            <param name="validator">The certificate validator</param>
+        </member>
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(LightBuzz.Azure.ICertificateValidator)">
+            <summary>
+            Creates a new LightBuzz secure HTTPS handler with the specified parameters.
+            </summary>
+            <param name="validator">The certificate validator</param>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.String,System.String,System.Text.Encoding,System.Int32)">
             <summary>
@@ -215,7 +237,7 @@
             <param name="encoding">The encoding of the response message.</param>
             <param name="requestTimeout">The request timeout value in milliseconds.</param>
         </member>
-        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.String,System.String,System.Text.Encoding,System.Int32,System.String)">
+        <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.#ctor(System.String,System.String,System.Text.Encoding,System.Int32,LightBuzz.Azure.ICertificateValidator)">
             <summary>
             Creates a new LightBuzz secure HTTPS handler with the specified parameters.
             </summary>
@@ -223,7 +245,7 @@
             <param name="zumoApiVersion">The ZUMO API version number.</param>
             <param name="encoding">The encoding of the response message.</param>
             <param name="requestTimeout">The request timeout value in milliseconds.</param>
-            <param name="proxyInfo">The information for the client's proxy. If no proxy is used, should be null or empty.</param>
+            <param name="validator">The certificate validator</param>
         </member>
         <member name="M:LightBuzz.Azure.LightBuzzHttpsHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
             <summary>
