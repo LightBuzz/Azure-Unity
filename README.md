@@ -97,11 +97,11 @@ Using the code is fairly simple:
 
 ### Initialization
 
-```
+```csharp
 private string mobileAppUri = "https://testtodolightbuzz.azurewebsites.net";
 private bool supportLocalDatabase = true;
 ```
-```
+```csharp
 private MobileServiceClient azureClient;
 private AppServiceTableDAO<TodoItem> todoTableDAO;
 
@@ -116,7 +116,7 @@ private async Task Init()
 
 ### Get
 
-```
+```csharp
 private async Task Get()
 {
     List<TodoItem> list = await todoTableDAO.FindAll();
@@ -130,7 +130,7 @@ private async Task Get()
 
 ### Insert
 
-```
+```csharp
 private async Task Insert()
 {
     TodoItem item = new TodoItem
@@ -144,7 +144,7 @@ private async Task Insert()
 
 ### Delete
 
-```
+```csharp
 private async Task Delete()
 {
     List<TodoItem> list = await todoTableDAO.FindAll();
@@ -162,7 +162,7 @@ private async Task Delete()
 
 In case you are using the local database for offline functionality, here is how to perform the pull and push requests:
 
-```
+```csharp
 private async Task Sync()
 {
     await azureClient.Sync();
